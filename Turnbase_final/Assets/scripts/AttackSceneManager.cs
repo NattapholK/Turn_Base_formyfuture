@@ -34,6 +34,7 @@ public class AttackSceneManager : MonoBehaviour
     private bool isEnding = false;
     void Start()
     {
+        enemy_anim = enemy.GetComponent<Animator>();
         MoveToPosition(targetList[0].position);
 
         // ดึง Animator ของแต่ละโปเกม่อนมาเก็บไว้
@@ -113,7 +114,7 @@ public class AttackSceneManager : MonoBehaviour
                 }
 
                 string bossTrigger = "isAttack" + bossSkillToUse;
-                // enemy_anim.SetBool(bossTrigger, true);
+                enemy_anim.SetBool(bossTrigger, true);
 
                 Debug.Log("บอสใช้สกิล: " + bossSkillToUse);
 
