@@ -7,9 +7,10 @@ public class setattack : MonoBehaviour
     [Header("type")]
     public bool isPlayer = true;
 
-    [Header("player")]
+    [Header("สำหรับ player")]
     public GameObject enemy;
-    [Header("enemy")]
+
+    [Header("สำหรับ  boss")]
     public GameObject poke1;
     public GameObject poke2;
     public GameObject poke3;
@@ -26,10 +27,10 @@ public class setattack : MonoBehaviour
     private Animator poke1anim;
     private Animator poke2anim;
     private Animator poke3anim;
-    private AttackSceneManager managerScript;
+    private StatusSysyemScript statusScript;
     public void Start()
     {
-        managerScript = attackManager.GetComponent<AttackSceneManager>();
+        statusScript = attackManager.GetComponent<StatusSysyemScript>();
         anim = GetComponent<Animator>();
         if (isPlayer)
         {
@@ -51,12 +52,27 @@ public class setattack : MonoBehaviour
 
         if(isAttacking1)
         {
-            managerScript.playerAttack(3);
+            statusScript.playerAttack(3);
             //ใส่take damage ตรงนี้
         }
         if(isAttacking2)
         {
-            managerScript.playerAttack(5);
+            switch (gameObject.name)
+            {
+                case "player1":
+                    statusScript.useMana(1,2);
+                    break;
+                case "player2":
+                    statusScript.useMana(2,2);
+                    break;
+                case "player3":
+                    statusScript.useMana(3,2);
+                    break;
+                default:
+                    Debug.Log("เป้าหมายไม่ถูกต้อง");
+                    break;
+            }
+            statusScript.playerAttack(5);
             //ใส่take damage ตรงนี้
         }
 
@@ -75,32 +91,32 @@ public class setattack : MonoBehaviour
 
         if(isAttacking10)
         {
-            managerScript.enemyAttack(2,"player1");
+            statusScript.enemyAttack(2,"player1");
             //ใส่take damage ตรงนี้
         }
         if(isAttacking20)
         {
-            managerScript.enemyAttack(2,"player2");
+            statusScript.enemyAttack(2,"player2");
             //ใส่take damage ตรงนี้
         }
         if(isAttacking30)
         {
-            managerScript.enemyAttack(2,"player3");
+            statusScript.enemyAttack(2,"player3");
             //ใส่take damage ตรงนี้
         }
         if(isAttacking11)
         {
-            managerScript.enemyAttack(5,"player1");
+            statusScript.enemyAttack(5,"player1");
             //ใส่take damage ตรงนี้
         }
         if(isAttacking21)
         {
-            managerScript.enemyAttack(5,"player2");
+            statusScript.enemyAttack(5,"player2");
             //ใส่take damage ตรงนี้
         }
         if(isAttacking31)
         {
-            managerScript.enemyAttack(5,"player3");
+            statusScript.enemyAttack(5,"player3");
             //ใส่take damage ตรงนี้
         }
 

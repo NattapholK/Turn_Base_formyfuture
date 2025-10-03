@@ -1888,6 +1888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1428851251}
   - component: {fileID: 1428851250}
+  - component: {fileID: 1428851252}
   m_Layer: 0
   m_Name: AttackSceneManager
   m_TagString: Untagged
@@ -1907,10 +1908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc0c970974bc8364a8908803200a89a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpEnemy: 16
-  hpPlayer1: 20
-  hpPlayer2: 20
-  hpPlayer3: 20
   pokemonUIList:
   - {fileID: 635392716}
   - {fileID: 1504084206}
@@ -1928,7 +1925,6 @@ MonoBehaviour:
   enemy: {fileID: 1981289457}
   cameraObj: {fileID: 1539008387}
   moveTime: 1.5
-  height: 5
   skillCount: 2
 --- !u!4 &1428851251
 Transform:
@@ -1945,6 +1941,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1428851252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428851249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1364f7f812310e4aa80a29e143822b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpEnemy: 16
+  hpPlayer1: 20
+  hpPlayer2: 20
+  hpPlayer3: 20
+  mana1: 100
+  mana2: 100
+  mana3: 100
 --- !u!1 &1473577582
 GameObject:
   m_ObjectHideFlags: 0

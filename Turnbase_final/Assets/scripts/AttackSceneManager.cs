@@ -6,36 +6,38 @@ using TMPro;
 using UnityEngine.Rendering;
 public class AttackSceneManager : MonoBehaviour
 {
-    public int hpEnemy = 16;
-    public int hpPlayer1 = 20;
-    public int hpPlayer2 = 20;
-    public int hpPlayer3 = 20;
-
+    [Header("ตั้งค่า UI โปเกม่อน")]
     public List<GameObject> pokemonUIList;  // UI ของโปเกม่อนแต่ละตัว
+
+    [Header("ตั้งค่าโปเกม่อน")]
     public List<GameObject> pokemonList;    // ตัวโปเกม่อนแต่ละตัว
+
+    [Header("ตั้งค่ากล้องแต่ละจุดเรียงตามตัวโปเกม่อน")]
     public List<Transform> targetList;    // จุดที่กล้องจะมองแต่ละตัว
+
+    [Header("ตั้งค่ากล้องจุดบอสและจุดจบ")]
     public Transform targetBoss;
     public Transform targetEnd;
 
+    [Header("ตั้งค่าบอส")]
     public GameObject enemy;
+    public int skillCount = 1;   // จำนวนสกิลของบอส (ลากใส่ Inspector)
     private Animator enemy_anim;
 
+    [Header("ตั้งค่ากล้อง")]
     public GameObject cameraObj;
-          
     public float moveTime = 1.5f; // เวลาในการเคลื่อน
 
-    private Coroutine moveCoroutine;
-
-
-    private List<Animator> pokemonAnimList = new List<Animator>();
 
     private int currentTurnIndex = 0;
-
-    [Header("ตั้งค่าบอส")]
-    public int skillCount = 1;   // จำนวนสกิลของบอส (ลากใส่ Inspector)
     private bool isEnding = false;
+    private Coroutine moveCoroutine;
+    private StatusSysyemScript statusScript;
+    private List<Animator> pokemonAnimList = new List<Animator>();
+
     void Start()
     {
+        statusScript = GetComponent<StatusSysyemScript>();
         enemy_anim = enemy.GetComponent<Animator>();
 
         //ขยับจอไปที่โปเกม่อนตัวแรก
@@ -50,10 +52,10 @@ public class AttackSceneManager : MonoBehaviour
 
     void Update()
     {
-        if (!isEnding && (hpEnemy <= 0 || hpPlayer1 <= 0))
+        if (statusScript.checkEndGame() && !isEnding)
         {
             isEnding = true;
-            endFight();
+            statusScript.endFight();
         }
     }
 
@@ -168,54 +170,6 @@ public class AttackSceneManager : MonoBehaviour
             pokemonUIList[currentTurnIndex].SetActive(true);
             MoveToPosition(targetList[currentTurnIndex].position);
         }
-    }
-
-
-
-    //ระบบโจมตี จบเกม
-    public void playerAttack(int atk)
-    {
-        hpEnemy -= atk;
-        Debug.Log("enemy เหลือ hp " + hpEnemy);
-    }
-
-    public void enemyAttack(int atk, string target)
-    {
-        switch (target)
-        {
-            case "player1":
-                hpPlayer1 -= atk;
-                Debug.Log("player1 เหลือ hp " + hpPlayer1);
-                break;
-            case "player2":
-                hpPlayer2 -= atk;
-                Debug.Log("player2 เหลือ hp " + hpPlayer2);
-                break;
-            case "player3":
-                hpPlayer3 -= atk;
-                Debug.Log("player3 เหลือ hp " + hpPlayer3);
-                break;
-            default:
-                Debug.Log("เป้าหมายไม่ถูกต้อง");
-                break;
-        }
-    }
-
-    public void endFight()
-    {
-        if (hpEnemy <= 0)
-        {
-            Debug.Log("Enemy defeated!");
-        }
-        else
-        {
-            Debug.Log("Player defeated!");
-        }
-    }
-
-    public void resignGame()
-    {
-        hpPlayer1 = 0;
     }
 
 
