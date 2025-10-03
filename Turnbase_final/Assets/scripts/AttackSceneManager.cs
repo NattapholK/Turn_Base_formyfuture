@@ -7,10 +7,15 @@ using UnityEngine.Rendering;
 public class AttackSceneManager : MonoBehaviour
 {
     public int hpEnemy = 16;
-    public int hpPlayer = 20;
+    public int hpPlayer1 = 20;
+    public int hpPlayer2 = 20;
+    public int hpPlayer3 = 20;
+
     public List<GameObject> pokemonUIList;  // UI ของโปเกม่อนแต่ละตัว
     public List<GameObject> pokemonList;    // ตัวโปเกม่อนแต่ละตัว
     public List<Transform> targetList;    // จุดที่กล้องจะมองแต่ละตัว
+    public Transform targetBoss;
+    public Transform targetEnd;
 
     public GameObject enemy;
     private Animator enemy_anim;
@@ -18,7 +23,6 @@ public class AttackSceneManager : MonoBehaviour
     public GameObject cameraObj;
           
     public float moveTime = 1.5f; // เวลาในการเคลื่อน
-    public float height = 5f;     // ความสูงคงที่ของกล้อง
 
     private Coroutine moveCoroutine;
 
@@ -29,12 +33,12 @@ public class AttackSceneManager : MonoBehaviour
 
     [Header("ตั้งค่าบอส")]
     public int skillCount = 1;   // จำนวนสกิลของบอส (ลากใส่ Inspector)
-    private int bossTurnCounter = 0; // ใช้สำหรับนับเทิร์นบอส
-
     private bool isEnding = false;
     void Start()
     {
         enemy_anim = enemy.GetComponent<Animator>();
+
+        //ขยับจอไปที่โปเกม่อนตัวแรก
         MoveToPosition(targetList[0].position);
 
         // ดึง Animator ของแต่ละโปเกม่อนมาเก็บไว้
@@ -46,7 +50,7 @@ public class AttackSceneManager : MonoBehaviour
 
     void Update()
     {
-        if (!isEnding && (hpEnemy <= 0 || hpPlayer <= 0))
+        if (!isEnding && (hpEnemy <= 0 || hpPlayer1 <= 0))
         {
             isEnding = true;
             endFight();
@@ -86,6 +90,13 @@ public class AttackSceneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
+
+        if (isEnding)
+        {
+            MoveToPosition(targetEnd.position);
+            yield break;
+        }
+
         currentTurnIndex++;
 
         if (currentTurnIndex < pokemonList.Count)
@@ -96,37 +107,66 @@ public class AttackSceneManager : MonoBehaviour
         }
         else
         {
-            if (!isEnding)
+            //ขยับจอไปที่บอส
+            MoveToPosition(targetBoss.position);
+            yield return new WaitForSeconds(2f);
+            // ถึงเทิร์นของศัตรู
+            int bossSkillTarget = 0;
+            int bossSkillToUse = 1;
+
+            float Probability = Random.Range(0f, 100f);
+            bossSkillTarget = Random.Range(1, 4);
+
+            switch (skillCount)
             {
-                // ถึงเทิร์นของศัตรู
-                int bossSkillToUse = 1;
-                if (skillCount <= 1)
-                {
-                    // ถ้ามีแค่ 1 สกิล
-                    bossSkillToUse = 1;
-                }
-                else
-                {
-                    //รอดูโลจิกเทิร์น
-
-                    // // เพิ่มเทิร์น ถ้าเกิน 3 ให้วนใหม่
-                    // bossTurnCounter = (bossTurnCounter + 1) % 4;
-                }
-
-                string bossTrigger = "isAttack" + bossSkillToUse;
-                enemy_anim.SetBool(bossTrigger, true);
-
-                Debug.Log("บอสใช้สกิล: " + bossSkillToUse);
-
-                // รีเซ็ตกลับเทิร์นแรกของผู้เล่น
-                currentTurnIndex = 0;
-
-                yield return new WaitForSeconds(3f);
-
-                // เริ่มรอบใหม่
-                pokemonUIList[currentTurnIndex].SetActive(true);
-                MoveToPosition(targetList[currentTurnIndex].position);
+                case 1:
+                    break;
+                case 2:
+                    if (Probability < 30f)   // โอกาศออก30%
+                    {
+                        bossSkillToUse = 1;
+                    }
+                    else              // โอกาศออก70%
+                    {
+                        bossSkillToUse = 0;
+                    }
+                    break;
+                case 3:
+                    if (Probability < 70f)   // โอกาศออก50%
+                    {
+                        bossSkillToUse = 0;
+                    }
+                    else if (Probability < 90f)     // โอกาศออก20%
+                    {
+                        bossSkillToUse = 1;
+                    }
+                    else  // โอกาศออก10%
+                    {
+                        bossSkillToUse = 2;
+                    }
+                    break;
+                default:
+                    Debug.Log("จำนวนสกิลบอสไม่ถูกต้อง");
+                    break;
             }
+
+            //ขยับจอไปที่เป้าหมาย
+            MoveToPosition(targetList[bossSkillTarget-1].position);
+            yield return new WaitForSeconds(2f);
+
+            string bossTrigger = "isAttack" + bossSkillTarget + bossSkillToUse;
+            enemy_anim.SetBool(bossTrigger, true);
+
+            Debug.Log("บอสใช้สกิล: " + bossSkillToUse + "กับ player " + bossSkillTarget);
+
+            // รีเซ็ตกลับเทิร์นแรกของผู้เล่น
+            currentTurnIndex = 0;
+
+            yield return new WaitForSeconds(3f);
+
+            // เริ่มรอบใหม่
+            pokemonUIList[currentTurnIndex].SetActive(true);
+            MoveToPosition(targetList[currentTurnIndex].position);
         }
     }
 
@@ -139,10 +179,26 @@ public class AttackSceneManager : MonoBehaviour
         Debug.Log("enemy เหลือ hp " + hpEnemy);
     }
 
-    public void enemyAttack(int atk)
+    public void enemyAttack(int atk, string target)
     {
-        hpPlayer -= atk;
-        Debug.Log("player เหลือ hp " + hpPlayer);
+        switch (target)
+        {
+            case "player1":
+                hpPlayer1 -= atk;
+                Debug.Log("player1 เหลือ hp " + hpPlayer1);
+                break;
+            case "player2":
+                hpPlayer2 -= atk;
+                Debug.Log("player2 เหลือ hp " + hpPlayer2);
+                break;
+            case "player3":
+                hpPlayer3 -= atk;
+                Debug.Log("player3 เหลือ hp " + hpPlayer3);
+                break;
+            default:
+                Debug.Log("เป้าหมายไม่ถูกต้อง");
+                break;
+        }
     }
 
     public void endFight()
@@ -159,7 +215,7 @@ public class AttackSceneManager : MonoBehaviour
 
     public void resignGame()
     {
-        hpPlayer = 0;
+        hpPlayer1 = 0;
     }
 
 
