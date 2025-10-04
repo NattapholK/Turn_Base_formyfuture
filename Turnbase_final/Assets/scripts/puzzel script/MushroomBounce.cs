@@ -83,12 +83,12 @@ public class MushroomBounce : MonoBehaviour
         if (playerRb != null)
         {
             // ต้องเป็นการตกลงมา (ความเร็วแนวดิ่งติดลบ)
-            if (playerRb.velocity.y < minFallSpeedToBounce)
+            if (playerRb.linearVelocity.y < minFallSpeedToBounce)
             {
                 // reset Y ก่อนเด้ง เพื่อให้ความสูงคงที่
-                Vector3 v = playerRb.velocity;
+                Vector3 v = playerRb.linearVelocity;
                 v.y = 0f;
-                playerRb.velocity = v;
+                playerRb.linearVelocity = v;
 
                 // เด้งขึ้น
                 playerRb.AddForce(Vector3.up * bounceForce, ForceMode.VelocityChange);

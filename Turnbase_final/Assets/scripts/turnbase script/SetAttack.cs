@@ -91,32 +91,32 @@ public class setattack : MonoBehaviour
 
         if(isAttacking10)
         {
-            statusScript.enemyAttack(2,"player1");
+            statusScript.enemyAttack(2,1);
             //ใส่take damage ตรงนี้
         }
         if(isAttacking20)
         {
-            statusScript.enemyAttack(2,"player2");
+            statusScript.enemyAttack(2,2);
             //ใส่take damage ตรงนี้
         }
         if(isAttacking30)
         {
-            statusScript.enemyAttack(2,"player3");
+            statusScript.enemyAttack(2,3);
             //ใส่take damage ตรงนี้
         }
         if(isAttacking11)
         {
-            statusScript.enemyAttack(5,"player1");
+            statusScript.enemyAttack(5,1);
             //ใส่take damage ตรงนี้
         }
         if(isAttacking21)
         {
-            statusScript.enemyAttack(5,"player2");
+            statusScript.enemyAttack(5,2);
             //ใส่take damage ตรงนี้
         }
         if(isAttacking31)
         {
-            statusScript.enemyAttack(5,"player3");
+            statusScript.enemyAttack(5,3);
             //ใส่take damage ตรงนี้
         }
 

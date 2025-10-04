@@ -690,7 +690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &635392717
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1923,9 +1923,9 @@ MonoBehaviour:
   targetBoss: {fileID: 61259633}
   targetEnd: {fileID: 850822195}
   enemy: {fileID: 1981289457}
+  skillCount: 2
   cameraObj: {fileID: 1539008387}
   moveTime: 1.5
-  skillCount: 2
 --- !u!4 &1428851251
 Transform:
   m_ObjectHideFlags: 0
@@ -1953,13 +1953,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1364f7f812310e4aa80a29e143822b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpEnemy: 16
-  hpPlayer1: 20
-  hpPlayer2: 20
-  hpPlayer3: 20
-  mana1: 100
-  mana2: 100
-  mana3: 100
+  hpEnemy: 100
+  hpPlayerList: 140000001400000014000000
+  manaPlayerList: 640000006400000064000000
+  speedPlayerList: 020000000300000004000000
+  speedBoss: 1
 --- !u!1 &1473577582
 GameObject:
   m_ObjectHideFlags: 0
