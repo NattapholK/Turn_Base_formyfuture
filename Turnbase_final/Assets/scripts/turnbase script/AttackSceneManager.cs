@@ -36,10 +36,12 @@ public class AttackSceneManager : MonoBehaviour
     private bool isEnding = false;
     private Coroutine moveCoroutine;
     private StatusSysyemScript statusScript;
+    private UIManager uiScript;
     private List<Animator> pokemonAnimList = new List<Animator>();
 
     void Start()
     {
+        uiScript = GetComponent<UIManager>();
         statusScript = GetComponent<StatusSysyemScript>();
         // enemy_anim = enemy.GetComponent<Animator>(); เก็บไว้เผื่อใช้
 
@@ -123,11 +125,30 @@ public class AttackSceneManager : MonoBehaviour
     public void PlayCurrentTurn(int skillID)
     {
         BattleUnit unit = allUnits[currentTurnIndex];
+        if (skillID == 2)
+        {
+            int mana = 0;
+            for (int i = 0; i < statusScript.speedPlayerList.Count; i++)
+            {
+                if (unit.speed == statusScript.speedPlayerList[i])
+                {
+                    mana = statusScript.manaPlayerList[i];
+                    break;
+                }
+            }
+            if (mana < statusScript.maxManaData())
+            {
+                Debug.Log("Player มานาไม่พอ");
+                return;
+            }
+        }
+
 
         // รัน animation
         string skillTrigger = "isAttack" + skillID;
         unit.animator.SetBool(skillTrigger, true);
         unit.uiObj.SetActive(false);
+        uiScript.DeleteTurnIcon();
 
         StartCoroutine(EndTurn());
     }
@@ -184,6 +205,7 @@ public class AttackSceneManager : MonoBehaviour
         unit.animator.SetBool(bossTrigger, true);
 
         Debug.Log("บอสใช้สกิล: " + bossSkillToUse + "กับ player " + bossSkillTarget);
+        uiScript.DeleteTurnIcon();
 
         yield return new WaitForSeconds(2f);
         StartCoroutine(EndTurn());
@@ -220,5 +242,4 @@ public class AttackSceneManager : MonoBehaviour
 
         cameraObj.transform.position = targetPos;
     }
-
 }

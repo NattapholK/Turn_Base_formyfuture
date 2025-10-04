@@ -1,19 +1,103 @@
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
     public GameObject backgroundUI;
+    public Transform parentPanel;
+    public List<GameObject> turnPlayerUIPrefabList;
+    public GameObject turnEnemyUIPrefab;
+
+    private int LastTurn;
+    private float LastOffset;
+    private StatusSysyemScript statusScript;
+    private List<UIUnit> uiUnits = new List<UIUnit>();
+    private List<GameObject> uiInScene = new List<GameObject>();
     private float bgUIHight;
-    private RectTransform bgUItranform;
+    private RectTransform bgUIRecttranform;
     void Start()
     {
-        bgUItranform = backgroundUI.GetComponent<RectTransform>();
-        bgUIHight = bgUItranform.sizeDelta.y;
+        statusScript = GetComponent<StatusSysyemScript>();
+
+        for (int i = 0; i < turnPlayerUIPrefabList.Count; i++)
+        {
+            uiUnits.Add(new UIUnit
+            {
+                speed = statusScript.speedPlayerList[i],
+                UI = turnPlayerUIPrefabList[i]
+            });
+        }
+        uiUnits.Add(new UIUnit
+        {
+            speed = statusScript.speedBoss,
+            UI = turnEnemyUIPrefab
+        });
+
+        uiUnits = uiUnits.OrderByDescending(u => u.speed).ToList();
+
+        bgUIRecttranform = backgroundUI.GetComponent<RectTransform>();
+        bgUIHight = bgUIRecttranform.rect.height;
+        CreateTurnIcons();
+    }
+    public void CreateTurnIcons()
+    {
+        float offsetY = 0f;
+
+        for (int i = 0; offsetY < bgUIHight; i++)
+        {
+            if (i >= uiUnits.Count)
+            {
+                i = 0;
+            }
+            LastTurn = i + 1;
+
+            GameObject icon = Instantiate(uiUnits[i].UI, parentPanel);
+            RectTransform rt = icon.GetComponent<RectTransform>();
+
+            float height = rt.rect.height * rt.localScale.y;
+
+            // จัดเรียงแบบ top-down
+            rt.anchoredPosition = new Vector2(0, -offsetY);
+
+            LastOffset = offsetY;
+            offsetY += height;
+
+            uiInScene.Add(icon);
+
+            if (offsetY + height > bgUIHight)
+            {
+                break;
+            }
+        }
+    }
+    public void DeleteTurnIcon()
+    {
+        RectTransform firstUI = uiInScene[0].GetComponent<RectTransform>();
+        float height = firstUI.rect.height * firstUI.localScale.y;
+
+        Destroy(uiInScene[0]);
+        uiInScene.Remove(uiInScene[0]);
+
+        foreach (GameObject UI in uiInScene)
+        {
+            RectTransform rectUI = UI.GetComponent<RectTransform>();
+            rectUI.anchoredPosition = new Vector2(0, rectUI.anchoredPosition.y + height);
+        }
+        AddTurnIcon();
     }
 
-    // Update is called once per frame
-    void Update()
+    void AddTurnIcon()
     {
-        
+        if (LastTurn >= uiUnits.Count)
+        {
+            LastTurn = 0;
+        }
+        GameObject icon = Instantiate(uiUnits[LastTurn].UI, parentPanel);
+        RectTransform rt = icon.GetComponent<RectTransform>();
+        rt.anchoredPosition = new Vector2(0, -LastOffset);
+
+        uiInScene.Add(icon);
+        LastTurn++;
     }
 }

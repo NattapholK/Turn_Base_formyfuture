@@ -12,21 +12,11 @@ public class StatusSysyemScript : MonoBehaviour
 
     [Header("มานาผู้เล่น")]
     public List<int> manaPlayerList;
+    const int maxMana = 100;
 
     [Header("ตั้งค่าความเร็ว")]
     public List<int> speedPlayerList;
     public int speedBoss = 4;
-
-    void Start()
-    {
-
-    }
-
-
-    void Update()
-    {
-
-    }
 
     //ระบบโจมตี จบเกม
     public void playerAttack(int atk)
@@ -69,33 +59,32 @@ public class StatusSysyemScript : MonoBehaviour
 
     public void useMana(int playerIndex, int skillID)
     {
-        int manaCost = 0;
-        switch (skillID)
-        {
-            case 1:
-                break;
-            case 2:
-                manaCost = 30;
-                break;
-            default:
-                Debug.Log("สกิลไม่ถูกต้อง");
-                break;
-        }
-
         if (playerIndex < 1 || playerIndex > manaPlayerList.Count)
         {
             Debug.Log("playerIndex ไม่ถูกต้อง");
             return;
         }
 
-        if (manaPlayerList[playerIndex - 1] >= manaCost)
+        int manaCost = 0;
+        
+        switch (skillID)
         {
-            manaPlayerList[playerIndex - 1] -= manaCost;
-            Debug.Log("Player " + playerIndex + " เหลือ mana " + manaPlayerList[playerIndex - 1]);
-        }
-        else
-        {
-            Debug.Log("Player" + playerIndex + "มานาไม่พอ");
+            case 1:
+                manaCost = maxMana / 2;
+                if (manaPlayerList[playerIndex - 1] != maxMana)
+                {
+                    manaPlayerList[playerIndex - 1] += manaCost;
+                }
+                Debug.Log("Player " + playerIndex + " เหลือ mana " + manaPlayerList[playerIndex - 1]);
+                break;
+            case 2:
+                manaCost = maxMana;
+                manaPlayerList[playerIndex - 1] -= manaCost;
+                Debug.Log("Player " + playerIndex + " เหลือ mana " + manaPlayerList[playerIndex - 1]);
+                break;
+            default:
+                Debug.Log("สกิลไม่ถูกต้อง");
+                break;
         }
     }
 
@@ -111,5 +100,10 @@ public class StatusSysyemScript : MonoBehaviour
             }
         }
         return allDied;
+    }
+
+    public int maxManaData()
+    {
+        return maxMana;
     }
 }

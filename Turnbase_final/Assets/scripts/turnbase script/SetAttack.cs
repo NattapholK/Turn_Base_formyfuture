@@ -52,6 +52,21 @@ public class setattack : MonoBehaviour
 
         if(isAttacking1)
         {
+            switch (gameObject.name)
+            {
+                case "player1":
+                    statusScript.useMana(1,1);
+                    break;
+                case "player2":
+                    statusScript.useMana(2,1);
+                    break;
+                case "player3":
+                    statusScript.useMana(3,1);
+                    break;
+                default:
+                    Debug.Log("เป้าหมายไม่ถูกต้อง");
+                    break;
+            }
             statusScript.playerAttack(3);
             //ใส่take damage ตรงนี้
         }
