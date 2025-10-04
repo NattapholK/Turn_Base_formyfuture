@@ -75,16 +75,6 @@ public class AttackSceneManager : MonoBehaviour
         allUnits = allUnits.OrderByDescending(u => u.speed).ToList();
         StartTurn(allUnits[currentTurnIndex]);// เริ่มเทิร์นแรก
 
-        // foreach (BattleUnit unit in allUnits)
-        // {
-        //     Debug.Log("############################");
-        //     Debug.Log("speed = " + unit.speed);
-        //     Debug.Log("animator = " + unit.animator);
-        //     Debug.Log("uiObj = " + unit.uiObj);
-        //     Debug.Log("targetPos = " + unit.targetPos);
-        //     Debug.Log("isBoss = " + unit.isBoss);
-        //     Debug.Log("############################");
-        // }เอาไว้เทส
     }
 
     void Update()
