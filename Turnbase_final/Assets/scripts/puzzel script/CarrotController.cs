@@ -13,7 +13,7 @@ public class CarrotController : MonoBehaviour
     [Header("Jump/Gravity")]
     public float jumpHeight = 2f;
     public float gravity    = -9.81f;
-    private bool isGrounded;          // เช็คว่าติดพื้น
+    private bool isGrounded = true;          // เช็คว่าติดพื้น
 
     [Header("Rotation Settings")]
     public float turnSmoothTime = 0.1f;
@@ -28,10 +28,21 @@ public class CarrotController : MonoBehaviour
     public float bounceCooldown = 0.05f;
     Vector3 velocity;
 
+    private Animator animator;
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        // ซ่อนเมาส์
+        Cursor.visible = false;
+
+        // ล็อคเมาส์ให้อยู่กลางจอ
+        Cursor.lockState = CursorLockMode.Locked;
+    }
     void Update()
     {
         // --- เช็คว่าติดพื้นมั้ย ---
         isGrounded = controller.isGrounded;
+        animator.SetBool("isJumping", !isGrounded);
         if (bounceQueued) { velocity.y = queuedBounceSpeed; bounceQueued = false; }
         else if (isGrounded && velocity.y < 0f) velocity.y = -2f;
 
@@ -47,6 +58,11 @@ public class CarrotController : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
 
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+
+        // ถ้าไม่ได้กดอะไรเลย = (0,0,0)
+        bool isWalking = direction.magnitude > 0f;
+
+        animator.SetBool("isWalking", isWalking);
 
         if (direction.magnitude >= 0.1f)
         {
