@@ -8,9 +8,14 @@ public class setattack : MonoBehaviour
     public bool isPlayer = true;
 
     [Header("สำหรับ player")]
+    public bool isCabbage = false;
+    private bool isReduceDmg = false;
+    public int playerAtk = 3;
     public GameObject enemy;
 
     [Header("สำหรับ  boss")]
+    public bool isBird = false;
+    public int bossAtk = 2;
     public GameObject poke1;
     public GameObject poke2;
     public GameObject poke3;
@@ -27,6 +32,8 @@ public class setattack : MonoBehaviour
     private Animator poke1anim;
     private Animator poke2anim;
     private Animator poke3anim;
+
+    //อื่นๆ
     private StatusSysyemScript statusScript;
     public void Start()
     {
@@ -50,45 +57,53 @@ public class setattack : MonoBehaviour
         bool isAttacking1 = anim.GetBool("isAttack1");
         bool isAttacking2 = anim.GetBool("isAttack2");
 
-        if(isAttacking1)
+        if (isAttacking1)
         {
             switch (gameObject.name)
             {
                 case "player1":
-                    statusScript.useMana(1,1);
+                    statusScript.useMana(1, 1);
                     break;
                 case "player2":
-                    statusScript.useMana(2,1);
+                    statusScript.useMana(2, 1);
                     break;
                 case "player3":
-                    statusScript.useMana(3,1);
+                    statusScript.useMana(3, 1);
                     break;
                 default:
                     Debug.Log("เป้าหมายไม่ถูกต้อง");
                     break;
             }
-            statusScript.playerAttack(3);
+            statusScript.playerAttack(playerAtk);
             //ใส่take damage ตรงนี้
         }
-        if(isAttacking2)
+        if (isAttacking2)
         {
             switch (gameObject.name)
             {
                 case "player1":
-                    statusScript.useMana(1,2);
+                    statusScript.useMana(1, 2);
+                    //ใส่take damage ตรงนี้
                     break;
                 case "player2":
-                    statusScript.useMana(2,2);
+                    statusScript.useMana(2, 2);
                     break;
                 case "player3":
-                    statusScript.useMana(3,2);
+                    statusScript.useMana(3, 2);
+                    //ใส่take damage ตรงนี้
                     break;
                 default:
                     Debug.Log("เป้าหมายไม่ถูกต้อง");
                     break;
             }
-            statusScript.playerAttack(5);
-            //ใส่take damage ตรงนี้
+            if (!isCabbage)
+            {
+                statusScript.playerAttack(Mathf.RoundToInt(playerAtk * 1.5f));
+            }
+            else
+            {
+                Debug.Log(gameObject.name + " ล่อศัตรู 2 เทิร์น");
+            }
         }
 
         anim.SetBool("isAttack1", false);
@@ -97,42 +112,64 @@ public class setattack : MonoBehaviour
 
     public void OnBossAttackFinished()
     {
+        int atk = bossAtk;
+        if (isReduceDmg)
+        {
+            atk = Mathf.RoundToInt(atk * 0.3f);
+        }
+
         bool isAttacking10 = anim.GetBool("isAttack10");
         bool isAttacking20 = anim.GetBool("isAttack20");
         bool isAttacking30 = anim.GetBool("isAttack30");
         bool isAttacking11 = anim.GetBool("isAttack11");
         bool isAttacking21 = anim.GetBool("isAttack21");
         bool isAttacking31 = anim.GetBool("isAttack31");
-
-        if(isAttacking10)
+        
+        if (isAttacking11 || isAttacking21 || isAttacking31)
         {
-            statusScript.enemyAttack(2,1);
-            //ใส่take damage ตรงนี้
+            if (!isBird)
+            {
+                if (isAttacking11)
+                {
+                    statusScript.enemyAttack(atk * 3, 1);
+                    //ใส่take damage ตรงนี้
+                }
+                if (isAttacking21)
+                {
+                    statusScript.enemyAttack(atk * 3, 2);
+                    //ใส่take damage ตรงนี้
+                }
+                if (isAttacking31)
+                {
+                    statusScript.enemyAttack(atk * 3, 3);
+                    //ใส่take damage ตรงนี้
+                }
+            }
+            else
+            {
+                statusScript.enemyAttack(atk * 3, 1);
+                statusScript.enemyAttack(atk * 3, 2);
+                statusScript.enemyAttack(atk * 3, 3);
+                //ใส่take damage ตรงนี้
+            }
         }
-        if(isAttacking20)
+        else
         {
-            statusScript.enemyAttack(2,2);
-            //ใส่take damage ตรงนี้
-        }
-        if(isAttacking30)
-        {
-            statusScript.enemyAttack(2,3);
-            //ใส่take damage ตรงนี้
-        }
-        if(isAttacking11)
-        {
-            statusScript.enemyAttack(5,1);
-            //ใส่take damage ตรงนี้
-        }
-        if(isAttacking21)
-        {
-            statusScript.enemyAttack(5,2);
-            //ใส่take damage ตรงนี้
-        }
-        if(isAttacking31)
-        {
-            statusScript.enemyAttack(5,3);
-            //ใส่take damage ตรงนี้
+            if (isAttacking10)
+            {
+                statusScript.enemyAttack(atk, 1);
+                //ใส่take damage ตรงนี้
+            }
+            if (isAttacking20)
+            {
+                statusScript.enemyAttack(atk, 2);
+                //ใส่take damage ตรงนี้
+            }
+            if (isAttacking30)
+            {
+                statusScript.enemyAttack(atk, 3);
+                //ใส่take damage ตรงนี้
+            }
         }
 
         anim.SetBool("isAttack10", false);
@@ -147,4 +184,9 @@ public class setattack : MonoBehaviour
     {
         anim.SetBool("isTakeDamage", false);
     }
+
+    public void ChangeStateReduceDmg(bool state)
+    {
+        isReduceDmg = state;
+    } 
 }
