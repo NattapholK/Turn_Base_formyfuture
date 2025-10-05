@@ -6,5 +6,6 @@ public class BattleUnit
     public Animator animator;
     public GameObject uiObj;
     public Transform targetPos;
+    public RectTransform proFileUI;
     public bool isBoss; // true = Boss, false = Player
 }

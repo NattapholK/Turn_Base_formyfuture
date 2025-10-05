@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,14 +12,14 @@ public class UIManager : MonoBehaviour
 
     private int LastTurn;
     private float LastOffset;
-    private StatusSysyemScript statusScript;
+    private StatusSystemScript statusScript;
     private List<UIUnit> uiUnits = new List<UIUnit>();
     private List<GameObject> uiInScene = new List<GameObject>();
     private float bgUIHight;
     private RectTransform bgUIRecttranform;
     void Start()
     {
-        statusScript = GetComponent<StatusSysyemScript>();
+        statusScript = GetComponent<StatusSystemScript>();
 
         for (int i = 0; i < turnPlayerUIPrefabList.Count; i++)
         {
@@ -99,5 +100,34 @@ public class UIManager : MonoBehaviour
 
         uiInScene.Add(icon);
         LastTurn++;
+    }
+
+    public IEnumerator ScaleUI(RectTransform UI, string scaleType)
+    {
+        float duration = 1f;
+        Vector3 startScale = UI.localScale;
+        float multipleScale = 1;
+        switch (scaleType)
+        {
+            case "up":
+                multipleScale *= 1.2f;
+                break;
+            case "down":
+                multipleScale /= 1.2f;
+                break;
+            default:
+                break;
+        }
+
+        Vector3 endScale = startScale * multipleScale;
+
+        float t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration; // ค่อย ๆ เพิ่มค่า t (0 → 1)
+            UI.localScale = Vector3.Lerp(startScale, endScale, t); // ค่อย ๆ ขยาย
+            yield return null;
+        }
     }
 }

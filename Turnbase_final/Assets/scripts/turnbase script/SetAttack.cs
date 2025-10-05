@@ -34,10 +34,10 @@ public class setattack : MonoBehaviour
     private Animator poke3anim;
 
     //อื่นๆ
-    private StatusSysyemScript statusScript;
+    private StatusSystemScript statusScript;
     public void Start()
     {
-        statusScript = attackManager.GetComponent<StatusSysyemScript>();
+        statusScript = attackManager.GetComponent<StatusSystemScript>();
         anim = GetComponent<Animator>();
         if (isPlayer)
         {
@@ -113,10 +113,6 @@ public class setattack : MonoBehaviour
     public void OnBossAttackFinished()
     {
         int atk = bossAtk;
-        if (isReduceDmg)
-        {
-            atk = Mathf.RoundToInt(atk * 0.3f);
-        }
 
         bool isAttacking10 = anim.GetBool("isAttack10");
         bool isAttacking20 = anim.GetBool("isAttack20");
@@ -124,32 +120,32 @@ public class setattack : MonoBehaviour
         bool isAttacking11 = anim.GetBool("isAttack11");
         bool isAttacking21 = anim.GetBool("isAttack21");
         bool isAttacking31 = anim.GetBool("isAttack31");
-        
+
         if (isAttacking11 || isAttacking21 || isAttacking31)
         {
             if (!isBird)
             {
                 if (isAttacking11)
                 {
-                    statusScript.enemyAttack(atk * 3, 1);
+                    statusScript.enemyAttack(atk * 3, 1, isReduceDmg);
                     //ใส่take damage ตรงนี้
                 }
                 if (isAttacking21)
                 {
-                    statusScript.enemyAttack(atk * 3, 2);
+                    statusScript.enemyAttack(atk * 3, 2, isReduceDmg);
                     //ใส่take damage ตรงนี้
                 }
                 if (isAttacking31)
                 {
-                    statusScript.enemyAttack(atk * 3, 3);
+                    statusScript.enemyAttack(atk * 3, 3, isReduceDmg);
                     //ใส่take damage ตรงนี้
                 }
             }
             else
             {
-                statusScript.enemyAttack(atk * 3, 1);
-                statusScript.enemyAttack(atk * 3, 2);
-                statusScript.enemyAttack(atk * 3, 3);
+                statusScript.enemyAttack(atk * 3, 1, isReduceDmg);
+                statusScript.enemyAttack(atk * 3, 2, isReduceDmg);
+                statusScript.enemyAttack(atk * 3, 3, isReduceDmg);
                 //ใส่take damage ตรงนี้
             }
         }
@@ -157,17 +153,17 @@ public class setattack : MonoBehaviour
         {
             if (isAttacking10)
             {
-                statusScript.enemyAttack(atk, 1);
+                statusScript.enemyAttack(atk, 1, isReduceDmg);
                 //ใส่take damage ตรงนี้
             }
             if (isAttacking20)
             {
-                statusScript.enemyAttack(atk, 2);
+                statusScript.enemyAttack(atk, 2, isReduceDmg);
                 //ใส่take damage ตรงนี้
             }
             if (isAttacking30)
             {
-                statusScript.enemyAttack(atk, 3);
+                statusScript.enemyAttack(atk, 3, isReduceDmg);
                 //ใส่take damage ตรงนี้
             }
         }

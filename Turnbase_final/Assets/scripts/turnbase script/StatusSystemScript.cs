@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class StatusSysyemScript : MonoBehaviour
+public class StatusSystemScript : MonoBehaviour
 {
     [Header("เลือดบอส")]
     public int hpEnemy = 16;
 
     [Header("เลือดผู้เล่น")]
-    public List<int> hpPlayerList;
+    public List<int> hpPlayerList = new List<int>();
+    private List<int> CurrenthpPlayerList = new List<int>();
 
     [Header("มานาผู้เล่น")]
     public List<int> manaPlayerList;
@@ -18,7 +20,13 @@ public class StatusSysyemScript : MonoBehaviour
     public List<int> speedPlayerList;
     public int speedBoss = 4;
 
-    
+    private int CabbageIndex;
+    private List<Slider> HPUIList = new List<Slider>();
+
+    void Awake()
+    {
+        CurrenthpPlayerList = new List<int>(hpPlayerList);
+    }
 
     //ระบบโจมตี จบเกม
     public void playerAttack(int atk)
@@ -27,15 +35,24 @@ public class StatusSysyemScript : MonoBehaviour
         Debug.Log("enemy เหลือ hp " + hpEnemy);
     }
 
-    public void enemyAttack(int atk, int playerIndex)
+    public void enemyAttack(int atk, int playerIndex, bool isReduceDmg)
     {
+        int attack = atk;
         if (playerIndex < 1 || playerIndex > hpPlayerList.Count)
         {
             Debug.Log("playerIndex ไม่ถูกต้อง");
             return;
         }
-        hpPlayerList[playerIndex - 1] -= atk;
-        Debug.Log("player " + playerIndex + " เหลือ hp " + hpPlayerList[playerIndex - 1]);
+        if (isReduceDmg && (CabbageIndex+1) == playerIndex)
+        {
+            attack = Mathf.RoundToInt(attack * 0.3f);
+            Debug.Log("ลดเหลือ dmg" + attack);
+        }
+        CurrenthpPlayerList[playerIndex - 1] -= attack;
+        HPUIList[playerIndex - 1].value = (float)CurrenthpPlayerList[playerIndex - 1] / hpPlayerList[playerIndex - 1];
+        Debug.Log("player " + playerIndex + " เหลือ hp " + CurrenthpPlayerList[playerIndex - 1]);
+        Debug.Log("hpPlayerList = " + hpPlayerList[playerIndex - 1]);
+        Debug.Log("HPUIList[playerIndex - 1].value = " + HPUIList[playerIndex - 1].value);
     }
 
     public bool checkEndGame()
@@ -68,7 +85,7 @@ public class StatusSysyemScript : MonoBehaviour
         }
 
         int manaCost = 0;
-        
+
         switch (skillID)
         {
             case 1:
@@ -93,7 +110,7 @@ public class StatusSysyemScript : MonoBehaviour
     bool isAllPlayerDied()
     {
         bool allDied = true;
-        foreach (int hp in hpPlayerList)
+        foreach (int hp in CurrenthpPlayerList)
         {
             if (hp > 0)
             {
@@ -107,5 +124,16 @@ public class StatusSysyemScript : MonoBehaviour
     public int maxManaData()
     {
         return maxMana;
+    }
+
+    public void AddHpUI(GameObject hpUI, int playerIndex)
+    {
+        Slider UI = hpUI.GetComponent<Slider>();
+        UI.value = (float)CurrenthpPlayerList[playerIndex] / hpPlayerList[playerIndex];
+        HPUIList.Add(UI);
+    }
+    public void setCabbageIndex(int Index)
+    {
+        CabbageIndex = Index;
     }
 }

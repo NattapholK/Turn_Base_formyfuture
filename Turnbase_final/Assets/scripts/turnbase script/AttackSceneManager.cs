@@ -9,6 +9,7 @@ public class AttackSceneManager : MonoBehaviour
 {
     [Header("ตั้งค่า UI โปเกม่อน")]
     public List<GameObject> pokemonUIList;  // UI ของโปเกม่อนแต่ละตัว
+    public List<GameObject> pokemonProfileUIList;
 
     [Header("ตั้งค่าโปเกม่อน")]
     public List<GameObject> pokemonList;    // ตัวโปเกม่อนแต่ละตัว
@@ -40,7 +41,7 @@ public class AttackSceneManager : MonoBehaviour
     private Coroutine moveCoroutine;
     private setattack setAttackBoss;
     private List<setattack> setAtkScriptList = new List<setattack>();
-    private StatusSysyemScript statusScript;
+    private StatusSystemScript statusScript;
     private UIManager uiScript;
     private List<Animator> pokemonAnimList = new List<Animator>();
 
@@ -48,7 +49,7 @@ public class AttackSceneManager : MonoBehaviour
     {
         setAttackBoss = enemy.GetComponent<setattack>();
         uiScript = GetComponent<UIManager>();
-        statusScript = GetComponent<StatusSysyemScript>();
+        statusScript = GetComponent<StatusSystemScript>();
         // enemy_anim = enemy.GetComponent<Animator>(); เก็บไว้เผื่อใช้
 
         //ขยับจอไปที่โปเกม่อนตัวแรก
@@ -63,12 +64,14 @@ public class AttackSceneManager : MonoBehaviour
 
         for (int i = 0; i < pokemonList.Count; i++)
         {
+            statusScript.AddHpUI(pokemonProfileUIList[i].transform.GetChild(1).gameObject, i);
             allUnits.Add(new BattleUnit
             {
                 speed = statusScript.speedPlayerList[i],
                 animator = pokemonList[i].GetComponent<Animator>(),
                 uiObj = pokemonUIList[i],
                 targetPos = targetList[i],
+                proFileUI = pokemonProfileUIList[i].GetComponent<RectTransform>(),
                 isBoss = false
             });
         }
@@ -78,6 +81,7 @@ public class AttackSceneManager : MonoBehaviour
             animator = enemy.GetComponent<Animator>(),
             uiObj = null,
             targetPos = targetBoss,
+            proFileUI = null,
             isBoss = true
         });
 
@@ -101,6 +105,7 @@ public class AttackSceneManager : MonoBehaviour
         {
             // เปิด UI ให้ Player เลือกสกิล
             unit.uiObj.SetActive(true);
+            StartCoroutine(uiScript.ScaleUI(unit.proFileUI, "up"));
         }
         else
         {
@@ -151,8 +156,9 @@ public class AttackSceneManager : MonoBehaviour
 
             if (setAtkScriptList[playerIndex].isCabbage)
             {
-                setAtkScriptList[playerIndex].ChangeStateReduceDmg(true);
+                setAttackBoss.ChangeStateReduceDmg(true);
                 numberOfCabbage = playerIndex;
+                statusScript.setCabbageIndex(numberOfCabbage);
                 isLure = true;
             }
         }
@@ -163,6 +169,7 @@ public class AttackSceneManager : MonoBehaviour
         unit.animator.SetBool(skillTrigger, true);
         unit.uiObj.SetActive(false);
         uiScript.DeleteTurnIcon();
+        StartCoroutine(uiScript.ScaleUI(unit.proFileUI, "down"));
 
         StartCoroutine(EndTurn());
     }
@@ -187,6 +194,7 @@ public class AttackSceneManager : MonoBehaviour
                 {
                     index.Add(i);
                 }
+                index.Remove(0);
                 index.Remove(numberOfCabbage + 1);
                 bossSkillTarget = index[Random.Range(0, index.Count)];
             }
@@ -199,7 +207,8 @@ public class AttackSceneManager : MonoBehaviour
             {
                 isLure = false;
                 turnCount = 0;
-                setAtkScriptList[numberOfCabbage].ChangeStateReduceDmg(false);
+                setAttackBoss.ChangeStateReduceDmg(false);
+                statusScript.setCabbageIndex(-2);
             }
         }
         else
