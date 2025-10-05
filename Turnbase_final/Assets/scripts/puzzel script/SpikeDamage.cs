@@ -31,6 +31,9 @@ public class SpikeDamage : MonoBehaviour
         {
             var hp = other.GetComponent<PlayerHealth>();
             if (hp) _nextHitTime.Remove(hp);
+
+            Animator animator = other.GetComponent<Animator>();
+            animator.SetBool("isTakingDamage", false);
         }
     }
 
@@ -40,6 +43,9 @@ public class SpikeDamage : MonoBehaviour
 
         var hp = other.GetComponent<PlayerHealth>();
         if (!hp) return;
+
+        Animator animator = other.GetComponent<Animator>();
+        animator.SetBool("isTakingDamage", true);
 
         float now = Time.time;
         if (!_nextHitTime.TryGetValue(hp, out float next) || now >= next)
