@@ -18,6 +18,8 @@ public class StatusSysyemScript : MonoBehaviour
     public List<int> speedPlayerList;
     public int speedBoss = 4;
 
+    
+
     //ระบบโจมตี จบเกม
     public void playerAttack(int atk)
     {

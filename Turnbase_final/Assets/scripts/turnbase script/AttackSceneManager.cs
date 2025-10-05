@@ -19,6 +19,7 @@ public class AttackSceneManager : MonoBehaviour
     [Header("ตั้งค่ากล้องจุดบอสและจุดจบ")]
     public Transform targetBoss;
     public Transform targetEnd;
+    public Transform targetAll;
 
     [Header("ตั้งค่าบอส")]
     public GameObject enemy;
@@ -30,17 +31,22 @@ public class AttackSceneManager : MonoBehaviour
     public float moveTime = 1.5f; // เวลาในการเคลื่อน
 
 
-
+    private bool isLure = false;
+    private int numberOfCabbage = 0;
+    private int turnCount = 0;
     private List<BattleUnit> allUnits = new List<BattleUnit>();
     private int currentTurnIndex = 0;
     private bool isEnding = false;
     private Coroutine moveCoroutine;
+    private setattack setAttackBoss;
+    private List<setattack> setAtkScriptList = new List<setattack>();
     private StatusSysyemScript statusScript;
     private UIManager uiScript;
     private List<Animator> pokemonAnimList = new List<Animator>();
 
     void Start()
     {
+        setAttackBoss = enemy.GetComponent<setattack>();
         uiScript = GetComponent<UIManager>();
         statusScript = GetComponent<StatusSysyemScript>();
         // enemy_anim = enemy.GetComponent<Animator>(); เก็บไว้เผื่อใช้
@@ -52,6 +58,7 @@ public class AttackSceneManager : MonoBehaviour
         foreach (GameObject poke in pokemonList)
         {
             pokemonAnimList.Add(poke.GetComponent<Animator>());
+            setAtkScriptList.Add(poke.GetComponent<setattack>());
         }
 
         for (int i = 0; i < pokemonList.Count; i++)
@@ -127,19 +134,26 @@ public class AttackSceneManager : MonoBehaviour
         BattleUnit unit = allUnits[currentTurnIndex];
         if (skillID == 2)
         {
-            int mana = 0;
+            int playerIndex = 0;
             for (int i = 0; i < statusScript.speedPlayerList.Count; i++)
             {
                 if (unit.speed == statusScript.speedPlayerList[i])
                 {
-                    mana = statusScript.manaPlayerList[i];
+                    playerIndex = i;
                     break;
                 }
             }
-            if (mana < statusScript.maxManaData())
+            if (statusScript.manaPlayerList[playerIndex] < statusScript.maxManaData())
             {
                 Debug.Log("Player มานาไม่พอ");
                 return;
+            }
+
+            if (setAtkScriptList[playerIndex].isCabbage)
+            {
+                setAtkScriptList[playerIndex].ChangeStateReduceDmg(true);
+                numberOfCabbage = playerIndex;
+                isLure = true;
             }
         }
 
@@ -158,18 +172,47 @@ public class AttackSceneManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         // ถึงเทิร์นของศัตรู
-        int bossSkillTarget = 0;
+        int bossSkillTarget;
         int bossSkillToUse = 1;
 
-        float Probability = Random.Range(0f, 100f);
-        bossSkillTarget = Random.Range(1, 4);
+        float ProbabilitySkill = Random.Range(0f, 100f);
+        float ProbabilityTarget = Random.Range(0f, 100f);
+
+        if (isLure && turnCount < 2)
+        {
+            if (ProbabilityTarget < 30f)   // โอกาศออก30%
+            {
+                List<int> index = new List<int>();
+                for (int i = 0; i <= pokemonList.Count; i++)
+                {
+                    index.Add(i);
+                }
+                index.Remove(numberOfCabbage + 1);
+                bossSkillTarget = index[Random.Range(0, index.Count)];
+            }
+            else              // โอกาศออก70%
+            {
+                bossSkillTarget = numberOfCabbage + 1;
+            }
+            turnCount++;
+            if (turnCount == 2)
+            {
+                isLure = false;
+                turnCount = 0;
+                setAtkScriptList[numberOfCabbage].ChangeStateReduceDmg(false);
+            }
+        }
+        else
+        {
+            bossSkillTarget = Random.Range(1, pokemonList.Count + 1);
+        }
 
         switch (skillCount)
         {
             case 1:
                 break;
             case 2:
-                if (Probability < 30f)   // โอกาศออก30%
+                if (ProbabilitySkill < 30f)   // โอกาศออก30%
                 {
                     bossSkillToUse = 1;
                 }
@@ -179,11 +222,11 @@ public class AttackSceneManager : MonoBehaviour
                 }
                 break;
             case 3:
-                if (Probability < 70f)   // โอกาศออก70%
+                if (ProbabilitySkill < 70f)   // โอกาศออก70%
                 {
                     bossSkillToUse = 0;
                 }
-                else if (Probability < 90f)     // โอกาศออก20%
+                else if (ProbabilitySkill < 90f)     // โอกาศออก20%
                 {
                     bossSkillToUse = 1;
                 }
@@ -198,7 +241,15 @@ public class AttackSceneManager : MonoBehaviour
         }
 
         //ขยับจอไปที่เป้าหมาย
-        MoveToPosition(targetList[bossSkillTarget - 1].position);
+        if (setAttackBoss.isBird && bossSkillToUse == 1)
+        {
+            MoveToPosition(targetAll.position);
+        }
+        else
+        {
+            MoveToPosition(targetList[bossSkillTarget - 1].position);
+        }
+
         yield return new WaitForSeconds(2f);
 
         string bossTrigger = "isAttack" + bossSkillTarget + bossSkillToUse;
