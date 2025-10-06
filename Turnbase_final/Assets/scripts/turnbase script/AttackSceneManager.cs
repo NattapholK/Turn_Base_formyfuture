@@ -24,8 +24,7 @@ public class AttackSceneManager : MonoBehaviour
 
     [Header("ตั้งค่าบอส")]
     public GameObject enemy;
-    public int skillCount = 1;   // จำนวนสกิลของบอส (ลากใส่ Inspector)
-    private Animator enemy_anim; // เก็บไว้เผื่อใช้
+    public int skillCount = 1;   // จำนวนสกิลของบอส
 
     [Header("ตั้งค่ากล้อง")]
     public GameObject cameraObj;
@@ -35,7 +34,7 @@ public class AttackSceneManager : MonoBehaviour
     private bool isLure = false;
     private int numberOfCabbage = 0;
     private int turnCount = 0;
-    private List<BattleUnit> allUnits = new List<BattleUnit>();
+    [HideInInspector] public List<BattleUnit> allUnits = new List<BattleUnit>();
     private int currentTurnIndex = 0;
     private bool isEnding = false;
     private Coroutine moveCoroutine;
@@ -70,7 +69,9 @@ public class AttackSceneManager : MonoBehaviour
                 uiObj = pokemonUIList[i],
                 targetPos = targetList[i],
                 proFileUI = pokemonProfileUIList[i].GetComponent<RectTransform>(),
-                isBoss = false
+                isBoss = false,
+                index = i,
+                isdied = false
             });
         }
         allUnits.Add(new BattleUnit
@@ -80,7 +81,9 @@ public class AttackSceneManager : MonoBehaviour
             uiObj = null,
             targetPos = targetBoss,
             proFileUI = null,
-            isBoss = true
+            isBoss = true,
+            index = allUnits.Count,
+            isdied = false
         });
 
         allUnits = allUnits.OrderByDescending(u => u.speed).ToList(); //เรียงเทิร์นตาม speed
@@ -116,7 +119,7 @@ public class AttackSceneManager : MonoBehaviour
 
     IEnumerator EndTurn()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
         if (isEnding)
         {
@@ -127,6 +130,15 @@ public class AttackSceneManager : MonoBehaviour
         currentTurnIndex++;
         if (currentTurnIndex >= allUnits.Count)
             currentTurnIndex = 0; // วนกลับรอบใหม่
+
+        while (allUnits[currentTurnIndex].isdied && !allUnits[currentTurnIndex].isBoss)
+        {
+            currentTurnIndex++;
+            if (currentTurnIndex >= allUnits.Count)
+            {
+                currentTurnIndex = 0; // วนกลับรอบใหม่
+            }
+        }
 
         StartTurn(allUnits[currentTurnIndex]);
     }
@@ -177,41 +189,54 @@ public class AttackSceneManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         // ถึงเทิร์นของศัตรู
-        int bossSkillTarget;
+        int bossSkillTarget = 0;
         int bossSkillToUse = 1;
+        bool StatusChecked = true;
 
         float ProbabilitySkill = Random.Range(0f, 100f);
         float ProbabilityTarget = Random.Range(0f, 100f);
 
-        if (isLure && turnCount < 2)
+        while (StatusChecked)
         {
-            if (ProbabilityTarget < 30f)   // โอกาศออก30%
+            if (isLure && turnCount < 2)
             {
-                List<int> index = new List<int>();
-                for (int i = 0; i <= pokemonList.Count; i++)
+                if (ProbabilityTarget < 30f)   // โอกาศออก30%
                 {
-                    index.Add(i);
+                    List<int> index = new List<int>();
+                    for (int i = 0; i <= pokemonList.Count; i++)
+                    {
+                        index.Add(i);
+                    }
+                    index.Remove(0);
+                    index.Remove(numberOfCabbage + 1);
+                    bossSkillTarget = index[Random.Range(0, index.Count)];
                 }
-                index.Remove(0);
-                index.Remove(numberOfCabbage + 1);
-                bossSkillTarget = index[Random.Range(0, index.Count)];
+                else              // โอกาศออก70%
+                {
+                    bossSkillTarget = numberOfCabbage + 1;
+                }
+                turnCount++;
+                if (turnCount == 2)
+                {
+                    isLure = false;
+                    turnCount = 0;
+                    setAttackBoss.ChangeStateReduceDmg(false);
+                    statusScript.setCabbageIndex(-2);
+                }
             }
-            else              // โอกาศออก70%
+            else
             {
-                bossSkillTarget = numberOfCabbage + 1;
+                bossSkillTarget = Random.Range(1, pokemonList.Count + 1);
             }
-            turnCount++;
-            if (turnCount == 2)
+
+            foreach (BattleUnit player in allUnits)
             {
-                isLure = false;
-                turnCount = 0;
-                setAttackBoss.ChangeStateReduceDmg(false);
-                statusScript.setCabbageIndex(-2);
+                if (player.index == bossSkillTarget - 1 && !player.isdied)
+                {
+                    StatusChecked = false;
+                    break;
+                }
             }
-        }
-        else
-        {
-            bossSkillTarget = Random.Range(1, pokemonList.Count + 1);
         }
 
         switch (skillCount)
@@ -254,6 +279,7 @@ public class AttackSceneManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("bossSkillTarget = " + bossSkillTarget);
             MoveToPosition(targetList[bossSkillTarget - 1].position);
         }
 

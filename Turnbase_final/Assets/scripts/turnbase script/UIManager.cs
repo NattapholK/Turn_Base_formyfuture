@@ -14,25 +14,32 @@ public class UIManager : MonoBehaviour
     private float LastOffset;
     private StatusSystemScript statusScript;
     private List<UIUnit> uiUnits = new List<UIUnit>();
-    private List<GameObject> uiInScene = new List<GameObject>();
+    private List<UIUnit> uiInScene = new List<UIUnit>();
     private float bgUIHight;
     private RectTransform bgUIRecttranform;
+    private AttackSceneManager attackSceneManager;
+    void Awake()
+    {
+        attackSceneManager = GetComponent<AttackSceneManager>();
+        statusScript = GetComponent<StatusSystemScript>();
+    }
     void Start()
     {
-        statusScript = GetComponent<StatusSystemScript>();
 
         for (int i = 0; i < turnPlayerUIPrefabList.Count; i++)
         {
             uiUnits.Add(new UIUnit
             {
                 speed = statusScript.speedPlayerList[i],
-                UI = turnPlayerUIPrefabList[i]
+                UI = turnPlayerUIPrefabList[i],
+                index = i
             });
         }
         uiUnits.Add(new UIUnit
         {
             speed = statusScript.speedBoss,
-            UI = turnEnemyUIPrefab
+            UI = turnEnemyUIPrefab,
+            index = uiUnits.Count
         });
 
         uiUnits = uiUnits.OrderByDescending(u => u.speed).ToList();
@@ -64,7 +71,12 @@ public class UIManager : MonoBehaviour
             LastOffset = offsetY;
             offsetY += height;
 
-            uiInScene.Add(icon);
+            uiInScene.Add(new UIUnit
+            {
+                speed = uiUnits[i].speed,
+                UI = icon,
+                index = i
+            });
 
             if (offsetY + height > bgUIHight)
             {
@@ -74,15 +86,15 @@ public class UIManager : MonoBehaviour
     }
     public void DeleteTurnIcon()
     {
-        RectTransform firstUI = uiInScene[0].GetComponent<RectTransform>();
+        RectTransform firstUI = uiInScene[0].UI.GetComponent<RectTransform>();
         float height = firstUI.rect.height * firstUI.localScale.y;
 
-        Destroy(uiInScene[0]);
+        Destroy(uiInScene[0].UI);
         uiInScene.Remove(uiInScene[0]);
 
-        foreach (GameObject UI in uiInScene)
+        foreach (UIUnit UI in uiInScene)
         {
-            RectTransform rectUI = UI.GetComponent<RectTransform>();
+            RectTransform rectUI = UI.UI.GetComponent<RectTransform>();
             rectUI.anchoredPosition = new Vector2(0, rectUI.anchoredPosition.y + height);
         }
         AddTurnIcon();
@@ -94,11 +106,24 @@ public class UIManager : MonoBehaviour
         {
             LastTurn = 0;
         }
+        while (attackSceneManager.allUnits[LastTurn].isdied)
+        {
+            LastTurn++;
+            if (LastTurn >= uiUnits.Count)
+            {
+                LastTurn = 0;
+            }
+        }
         GameObject icon = Instantiate(uiUnits[LastTurn].UI, parentPanel);
         RectTransform rt = icon.GetComponent<RectTransform>();
         rt.anchoredPosition = new Vector2(0, -LastOffset);
 
-        uiInScene.Add(icon);
+        uiInScene.Add(new UIUnit
+            {
+                speed = uiUnits[LastTurn].speed,
+                UI = icon,
+                index = LastTurn
+            });
         LastTurn++;
     }
 
@@ -131,5 +156,49 @@ public class UIManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
+    }
+
+    public void CheckDiedPlayerIcon(int index)
+    {
+        int dieIndex = -1;
+        foreach (BattleUnit unit in attackSceneManager.allUnits)
+        {
+            if (unit.index == index)
+            {
+                dieIndex = attackSceneManager.allUnits.IndexOf(unit);
+                break;
+            }
+        }
+
+        if (dieIndex < 0) return;
+
+        if (attackSceneManager.allUnits[dieIndex].isdied)
+        {
+            for (int i=0; i < uiInScene.Count; i++)
+            {
+                if (uiInScene[i].index == dieIndex)
+                {
+                    RectTransform rUI = uiInScene[i].UI.GetComponent<RectTransform>();
+                    float height = rUI.rect.height * rUI.localScale.y;
+
+                    Destroy(uiInScene[i].UI);
+                    int indexNow = uiInScene.IndexOf(uiInScene[i]);
+                    uiInScene.Remove(uiInScene[i]);
+
+                    for (int j=indexNow; j < uiInScene.Count; j++)
+                    {
+                        RectTransform rectUI = uiInScene[j].UI.GetComponent<RectTransform>();
+                        rectUI.anchoredPosition = new Vector2(0, rectUI.anchoredPosition.y + height);
+                    }
+                    AddTurnIcon();
+                }
+            }
+        }
+        else
+        {
+            return;
+        }
+
+
     }
 }

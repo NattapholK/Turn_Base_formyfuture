@@ -41,13 +41,13 @@ public class setattack : MonoBehaviour
         anim = GetComponent<Animator>();
         if (isPlayer)
         {
-            enemyanim = enemy.GetComponent<Animator>();
+            enemyanim = enemy?.GetComponent<Animator>();
         }
         else
         {
-            poke1anim = poke1.GetComponent<Animator>();
-            poke2anim = poke2.GetComponent<Animator>();
-            poke3anim = poke3.GetComponent<Animator>();
+            poke1anim = poke1?.GetComponent<Animator>();
+            poke2anim = poke2?.GetComponent<Animator>();
+            poke3anim = poke3?.GetComponent<Animator>();
 
         }
     }
@@ -105,9 +105,6 @@ public class setattack : MonoBehaviour
                 Debug.Log(gameObject.name + " ล่อศัตรู 2 เทิร์น");
             }
         }
-
-        anim.SetBool("isAttack1", false);
-        anim.SetBool("isAttack2", false);
     }
 
     public void OnBossAttackFinished()
@@ -128,7 +125,7 @@ public class setattack : MonoBehaviour
                 if (isAttacking11)
                 {
                     statusScript.enemyAttack(atk * 3, 1, isReduceDmg);
-                    //ใส่take damage ตรงนี้
+                    poke1anim.SetBool("isTakingDamage", true);
                 }
                 if (isAttacking21)
                 {
@@ -154,7 +151,7 @@ public class setattack : MonoBehaviour
             if (isAttacking10)
             {
                 statusScript.enemyAttack(atk, 1, isReduceDmg);
-                //ใส่take damage ตรงนี้
+                poke1anim.SetBool("isTakingDamage", true);
             }
             if (isAttacking20)
             {
@@ -167,18 +164,27 @@ public class setattack : MonoBehaviour
                 //ใส่take damage ตรงนี้
             }
         }
+    }
 
+    public void OnTakeDamgeFinished()
+    {
+        anim.SetBool("isTakingDamage", false);
+    }
+
+    public void OnPlayerAnimFinished()
+    {
+        anim.SetBool("isAttack1", false);
+        anim.SetBool("isAttack2", false);
+    }
+
+    public void OnBossAnimFinished()
+    {
         anim.SetBool("isAttack10", false);
         anim.SetBool("isAttack20", false);
         anim.SetBool("isAttack30", false);
         anim.SetBool("isAttack11", false);
         anim.SetBool("isAttack21", false);
         anim.SetBool("isAttack31", false);
-    }
-
-    public void OnTakeDamgeFinished()
-    {
-        anim.SetBool("isTakeDamage", false);
     }
 
     public void ChangeStateReduceDmg(bool state)

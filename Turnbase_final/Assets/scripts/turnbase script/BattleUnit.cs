@@ -8,4 +8,6 @@ public class BattleUnit
     public Transform targetPos;
     public RectTransform proFileUI;
     public bool isBoss; // true = Boss, false = Player
+    public int index;
+    public bool isdied;
 }

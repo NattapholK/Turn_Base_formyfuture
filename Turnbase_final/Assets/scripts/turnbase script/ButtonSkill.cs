@@ -37,11 +37,11 @@ public class ButtonSkill : MonoBehaviour
             else
             {
                 isUsingSkill1UI = true;
-                StartCoroutine(manager.ScaleUI(skill1.GetComponent<RectTransform>(), "up"));
+                skill1.GetComponent<RectTransform>().localScale = Vector3.one * 2 * 1.2f;
                 if (isUsingSkill2UI)
                 {
                     isUsingSkill2UI = false;
-                    StartCoroutine(manager.ScaleUI(skill2.GetComponent<RectTransform>(), "down"));
+                    skill2.GetComponent<RectTransform>().localScale = Vector3.one * 2;
                 }
             }
         }
@@ -57,11 +57,11 @@ public class ButtonSkill : MonoBehaviour
             else
             {
                 isUsingSkill2UI = true;
-                StartCoroutine(manager.ScaleUI(skill2.GetComponent<RectTransform>(), "up"));
+                skill2.GetComponent<RectTransform>().localScale = Vector3.one * 2 * 1.2f;
                 if (isUsingSkill1UI)
                 {
                     isUsingSkill1UI = false;
-                    StartCoroutine(manager.ScaleUI(skill1.GetComponent<RectTransform>(), "down"));
+                    skill1.GetComponent<RectTransform>().localScale = Vector3.one * 2;
                 }
             }
         }

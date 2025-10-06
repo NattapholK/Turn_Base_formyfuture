@@ -11,7 +11,7 @@ public class StatusSystemScript : MonoBehaviour
 
     [Header("เลือดผู้เล่น")]
     public List<int> hpPlayerList = new List<int>();
-    private List<int> CurrenthpPlayerList = new List<int>();
+    [HideInInspector] public List<int> CurrenthpPlayerList = new List<int>();
 
     [Header("มานาผู้เล่น")]
     public List<int> manaPlayerList;
@@ -23,11 +23,13 @@ public class StatusSystemScript : MonoBehaviour
 
     private int CurrenthpEnemy;
     private int CabbageIndex;
+    private UIManager uiManager;
     private AttackSceneManager attackSceneManager;
     private List<Slider> HPUIList = new List<Slider>();
 
     void Awake()
     {
+        uiManager = GetComponent<UIManager>();
         attackSceneManager = GetComponent<AttackSceneManager>();
         CurrenthpPlayerList = new List<int>(hpPlayerList);
     }
@@ -66,6 +68,21 @@ public class StatusSystemScript : MonoBehaviour
             Debug.Log("ลดเหลือ dmg" + attack);
         }
         CurrenthpPlayerList[playerIndex - 1] -= attack;
+
+        if (CurrenthpPlayerList[playerIndex - 1] <= 0)
+        {
+            int gameIndex = 0;
+            foreach (BattleUnit unit in attackSceneManager.allUnits)
+            {
+                if (unit.index == playerIndex - 1)
+                {
+                    gameIndex = attackSceneManager.allUnits.IndexOf(unit);
+                }
+            }
+            attackSceneManager.allUnits[gameIndex].isdied = true;
+        }
+
+        uiManager.CheckDiedPlayerIcon(playerIndex - 1);
         HPUIList[playerIndex - 1].value = (float)CurrenthpPlayerList[playerIndex - 1] / hpPlayerList[playerIndex - 1];
         Debug.Log("player " + playerIndex + " เหลือ hp " + CurrenthpPlayerList[playerIndex - 1]);
         Debug.Log("hpPlayerList = " + hpPlayerList[playerIndex - 1]);
