@@ -50,19 +50,17 @@ public class AttackSceneManager : MonoBehaviour
         setAttackBoss = enemy.GetComponent<setattack>();
         uiScript = GetComponent<UIManager>();
         statusScript = GetComponent<StatusSystemScript>();
-        // enemy_anim = enemy.GetComponent<Animator>(); เก็บไว้เผื่อใช้
 
         //ขยับจอไปที่โปเกม่อนตัวแรก
         MoveToPosition(targetList[0].position);
 
-        // ดึง Animator ของแต่ละโปเกม่อนมาเก็บไว้
         foreach (GameObject poke in pokemonList)
         {
             pokemonAnimList.Add(poke.GetComponent<Animator>());
             setAtkScriptList.Add(poke.GetComponent<setattack>());
         }
 
-        for (int i = 0; i < pokemonList.Count; i++)
+        for (int i = 0; i < pokemonList.Count; i++) //allUnit คือ list หลักที่จะเอาไว้เรียงเทิร์น
         {
             statusScript.AddHpUI(pokemonProfileUIList[i].transform.GetChild(1).gameObject, i);
             allUnits.Add(new BattleUnit
@@ -85,7 +83,7 @@ public class AttackSceneManager : MonoBehaviour
             isBoss = true
         });
 
-        allUnits = allUnits.OrderByDescending(u => u.speed).ToList();
+        allUnits = allUnits.OrderByDescending(u => u.speed).ToList(); //เรียงเทิร์นตาม speed
         StartTurn(allUnits[currentTurnIndex]);// เริ่มเทิร์นแรก
 
     }

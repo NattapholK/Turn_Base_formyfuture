@@ -104,7 +104,7 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ScaleUI(RectTransform UI, string scaleType)
     {
-        float duration = 1f;
+        float duration = 0.1f;
         Vector3 startScale = UI.localScale;
         float multipleScale = 1;
         switch (scaleType)
@@ -129,5 +129,7 @@ public class UIManager : MonoBehaviour
             UI.localScale = Vector3.Lerp(startScale, endScale, t); // ค่อย ๆ ขยาย
             yield return null;
         }
+
+        yield return new WaitForSeconds(1f);
     }
 }
