@@ -46,6 +46,9 @@ public class AttackSceneManager : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false; // ซ่อนเมาส์
+        Cursor.lockState = CursorLockMode.Locked; // ล็อคเมาส์ให้อยู่กลางจอ
+
         setAttackBoss = enemy.GetComponent<setattack>();
         uiScript = GetComponent<UIManager>();
         statusScript = GetComponent<StatusSystemScript>();
@@ -119,7 +122,8 @@ public class AttackSceneManager : MonoBehaviour
 
     IEnumerator EndTurn()
     {
-        yield return new WaitForSeconds(3f);
+        StartCoroutine(uiScript.CheckDiedPlayerIcon());
+        yield return new WaitForSeconds(2f);
 
         if (isEnding)
         {
@@ -178,7 +182,7 @@ public class AttackSceneManager : MonoBehaviour
         string skillTrigger = "isAttack" + skillID;
         unit.animator.SetBool(skillTrigger, true);
         unit.uiObj.SetActive(false);
-        uiScript.DeleteTurnIcon();
+        StartCoroutine(uiScript.DeleteTurnIcon());
         StartCoroutine(uiScript.ScaleUI(unit.proFileUI, "down"));
 
         StartCoroutine(EndTurn());
@@ -289,9 +293,9 @@ public class AttackSceneManager : MonoBehaviour
         unit.animator.SetBool(bossTrigger, true);
 
         Debug.Log("บอสใช้สกิล: " + bossSkillToUse + "กับ player " + bossSkillTarget);
-        uiScript.DeleteTurnIcon();
+        StartCoroutine(uiScript.DeleteTurnIcon());
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         StartCoroutine(EndTurn());
     }
 

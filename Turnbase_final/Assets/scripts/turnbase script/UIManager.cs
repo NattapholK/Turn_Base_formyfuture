@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -84,18 +85,18 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    public void DeleteTurnIcon()
+    public IEnumerator DeleteTurnIcon()
     {
         RectTransform firstUI = uiInScene[0].UI.GetComponent<RectTransform>();
         float height = firstUI.rect.height * firstUI.localScale.y;
+        yield return StartCoroutine(SlideAndFade(uiInScene[0].UI));
 
         Destroy(uiInScene[0].UI);
         uiInScene.Remove(uiInScene[0]);
 
         foreach (UIUnit UI in uiInScene)
         {
-            RectTransform rectUI = UI.UI.GetComponent<RectTransform>();
-            rectUI.anchoredPosition = new Vector2(0, rectUI.anchoredPosition.y + height);
+            StartCoroutine(goUpUI(UI.UI, height));
         }
         AddTurnIcon();
     }
@@ -119,11 +120,11 @@ public class UIManager : MonoBehaviour
         rt.anchoredPosition = new Vector2(0, -LastOffset);
 
         uiInScene.Add(new UIUnit
-            {
-                speed = uiUnits[LastTurn].speed,
-                UI = icon,
-                index = LastTurn
-            });
+        {
+            speed = uiUnits[LastTurn].speed,
+            UI = icon,
+            index = LastTurn
+        });
         LastTurn++;
     }
 
@@ -158,47 +159,98 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
     }
 
-    public void CheckDiedPlayerIcon(int index)
+    public IEnumerator CheckDiedPlayerIcon()
     {
-        int dieIndex = -1;
+
+        List<int> PlayerDieIndex = new List<int>();
+
         foreach (BattleUnit unit in attackSceneManager.allUnits)
         {
-            if (unit.index == index)
+            if (unit.isdied)
             {
-                dieIndex = attackSceneManager.allUnits.IndexOf(unit);
-                break;
+                PlayerDieIndex.Add(attackSceneManager.allUnits.IndexOf(unit));
+                Debug.Log("attackSceneManager.allUnits.IndexOf(unit) = " + attackSceneManager.allUnits.IndexOf(unit));
             }
         }
 
-        if (dieIndex < 0) return;
-
-        if (attackSceneManager.allUnits[dieIndex].isdied)
+        for (int i = 0; i < uiInScene.Count; i++)
         {
-            for (int i=0; i < uiInScene.Count; i++)
+            if (PlayerDieIndex.Contains(uiInScene[i].index))
             {
-                if (uiInScene[i].index == dieIndex)
+                Debug.Log("uiInScene[i].UI = " + uiInScene[i].UI);
+                Debug.Log("uiInScene[i].index = " + uiInScene[i].index);
+
+                RectTransform rUI = uiInScene[i].UI.GetComponent<RectTransform>();
+                float height = rUI.rect.height * rUI.localScale.y;
+                yield return StartCoroutine(SlideAndFade(uiInScene[i].UI));
+
+                Destroy(uiInScene[i].UI);
+                int indexNow = uiInScene.IndexOf(uiInScene[i]);
+                uiInScene.Remove(uiInScene[i]);
+
+                for (int j = indexNow; j < uiInScene.Count; j++)
                 {
-                    RectTransform rUI = uiInScene[i].UI.GetComponent<RectTransform>();
-                    float height = rUI.rect.height * rUI.localScale.y;
-
-                    Destroy(uiInScene[i].UI);
-                    int indexNow = uiInScene.IndexOf(uiInScene[i]);
-                    uiInScene.Remove(uiInScene[i]);
-
-                    for (int j=indexNow; j < uiInScene.Count; j++)
-                    {
-                        RectTransform rectUI = uiInScene[j].UI.GetComponent<RectTransform>();
-                        rectUI.anchoredPosition = new Vector2(0, rectUI.anchoredPosition.y + height);
-                    }
-                    AddTurnIcon();
+                    StartCoroutine(goUpUI(uiInScene[j].UI, height));
                 }
+                AddTurnIcon();
+                i--;
             }
         }
-        else
+    }
+
+    private IEnumerator SlideAndFade(GameObject ui)
+    {
+        RectTransform rectUI = ui.GetComponent<RectTransform>();
+        CanvasGroup canvas = ui.GetComponent<CanvasGroup>();
+
+        float duration = 0.3f; // เวลา 0.5 วิ
+        float elapsed = 0f;
+
+        Vector2 startPos = rectUI.anchoredPosition;
+        Vector2 targetPos = startPos + new Vector2(rectUI.rect.width * rectUI.localScale.x, 0);
+
+        float startAlpha = canvas.alpha;
+        float targetAlpha = 0f;
+
+        while (elapsed < duration)
         {
-            return;
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            // เลื่อนตำแหน่ง
+            rectUI.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
+            // ค่อยๆจาง
+            canvas.alpha = Mathf.Lerp(startAlpha, targetAlpha, t);
+
+            yield return null;
         }
 
+        // ให้ค่าลงล็อคสุดท้าย
+        rectUI.anchoredPosition = targetPos;
+        canvas.alpha = targetAlpha;
+    }
 
+    private IEnumerator goUpUI(GameObject ui, float height)
+    {
+        RectTransform rectUI = ui.GetComponent<RectTransform>();
+
+        float duration = 0.3f; // เวลาที่ใช้ในการเลื่อน (วินาที)
+        float elapsed = 0f;
+
+        Vector2 startPos = rectUI.anchoredPosition;
+        Vector2 targetPos = new Vector2(0, rectUI.anchoredPosition.y + height);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            rectUI.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
+
+            yield return null;
+        }
+
+        // ล็อคตำแหน่งสุดท้าย
+        rectUI.anchoredPosition = targetPos;
     }
 }

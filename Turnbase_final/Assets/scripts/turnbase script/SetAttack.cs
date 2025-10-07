@@ -1,24 +1,22 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 
 public class setattack : MonoBehaviour
 {
     [Header("type")]
     public bool isPlayer = true;
 
-    [Header("สำหรับ player")]
+    [Header("for player")]
     public bool isCabbage = false;
     private bool isReduceDmg = false;
     public int playerAtk = 3;
-    public GameObject enemy;
 
-    [Header("สำหรับ  boss")]
+    [Header("for  boss")]
     public bool isBird = false;
     public int bossAtk = 2;
-    public GameObject poke1;
-    public GameObject poke2;
-    public GameObject poke3;
 
     [Header("setting")]
     public GameObject attackManager;
@@ -29,140 +27,125 @@ public class setattack : MonoBehaviour
     private Animator enemyanim;
 
     //ใช้กับ boss
-    private Animator poke1anim;
-    private Animator poke2anim;
-    private Animator poke3anim;
+    private List<Animator> pokeAnim = new List<Animator>();
 
     //อื่นๆ
+    private AttackSceneManager attackSceneManager;
     private StatusSystemScript statusScript;
     public void Start()
     {
+        attackSceneManager = attackManager.GetComponent<AttackSceneManager>();
         statusScript = attackManager.GetComponent<StatusSystemScript>();
         anim = GetComponent<Animator>();
+
         if (isPlayer)
         {
-            enemyanim = enemy?.GetComponent<Animator>();
+            enemyanim = attackSceneManager.enemy.GetComponent<Animator>();
         }
         else
         {
-            poke1anim = poke1?.GetComponent<Animator>();
-            poke2anim = poke2?.GetComponent<Animator>();
-            poke3anim = poke3?.GetComponent<Animator>();
-
+            foreach (GameObject pokemon in attackSceneManager.pokemonList)
+            {
+                pokeAnim.Add(pokemon.GetComponent<Animator>());
+            }
         }
     }
 
     public void OnPlayerAttackFinished()
     {
-        bool isAttacking1 = anim.GetBool("isAttack1");
-        bool isAttacking2 = anim.GetBool("isAttack2");
 
-        if (isAttacking1)
+        int atk = playerAtk;
+        char lastName = gameObject.name[gameObject.name.Length - 1];
+        int PlayerIndex = int.Parse(lastName.ToString());
+        int targetSkill = -1;
+
+        foreach (AnimatorControllerParameter param in anim.parameters)
         {
-            switch (gameObject.name)
+            if (anim.GetBool(param.name))
             {
-                case "player1":
-                    statusScript.useMana(1, 1);
-                    break;
-                case "player2":
-                    statusScript.useMana(2, 1);
-                    break;
-                case "player3":
-                    statusScript.useMana(3, 1);
-                    break;
-                default:
-                    Debug.Log("เป้าหมายไม่ถูกต้อง");
-                    break;
-            }
-            statusScript.playerAttack(playerAtk);
-            //ใส่take damage ตรงนี้
-        }
-        if (isAttacking2)
-        {
-            switch (gameObject.name)
-            {
-                case "player1":
-                    statusScript.useMana(1, 2);
-                    //ใส่take damage ตรงนี้
-                    break;
-                case "player2":
-                    statusScript.useMana(2, 2);
-                    break;
-                case "player3":
-                    statusScript.useMana(3, 2);
-                    //ใส่take damage ตรงนี้
-                    break;
-                default:
-                    Debug.Log("เป้าหมายไม่ถูกต้อง");
-                    break;
-            }
-            if (!isCabbage)
-            {
-                statusScript.playerAttack(Mathf.RoundToInt(playerAtk * 1.5f));
-            }
-            else
-            {
-                Debug.Log(gameObject.name + " ล่อศัตรู 2 เทิร์น");
+                char lastChar = param.name[param.name.Length - 1];
+
+                targetSkill = int.Parse(lastChar.ToString());
+                Debug.Log("param.name = " + param.name);
+                break;
             }
         }
+
+        switch (targetSkill)
+        {
+            case 1:
+                break;
+            case 2:
+                if (!isCabbage)
+                {
+                    atk = Mathf.RoundToInt(atk * 1.5f);
+                }
+                else
+                {
+                    Debug.Log(gameObject.name + " ล่อศัตรู 2 เทิร์น");
+                }
+                break;
+        }
+        
+        statusScript.playerAttack(atk);
+        statusScript.useMana(PlayerIndex, targetSkill);
+        //ใส่ take damage ตรงนี้
     }
 
     public void OnBossAttackFinished()
     {
         int atk = bossAtk;
+        int targetPlayer = -1;
+        int targetSkill = -1;
 
-        bool isAttacking10 = anim.GetBool("isAttack10");
-        bool isAttacking20 = anim.GetBool("isAttack20");
-        bool isAttacking30 = anim.GetBool("isAttack30");
-        bool isAttacking11 = anim.GetBool("isAttack11");
-        bool isAttacking21 = anim.GetBool("isAttack21");
-        bool isAttacking31 = anim.GetBool("isAttack31");
-
-        if (isAttacking11 || isAttacking21 || isAttacking31)
+        foreach (AnimatorControllerParameter param in anim.parameters)
         {
-            if (!isBird)
+            if (anim.GetBool(param.name))
             {
-                if (isAttacking11)
-                {
-                    statusScript.enemyAttack(atk * 3, 1, isReduceDmg);
-                    poke1anim.SetBool("isTakingDamage", true);
-                }
-                if (isAttacking21)
-                {
-                    statusScript.enemyAttack(atk * 3, 2, isReduceDmg);
-                    //ใส่take damage ตรงนี้
-                }
-                if (isAttacking31)
-                {
-                    statusScript.enemyAttack(atk * 3, 3, isReduceDmg);
-                    //ใส่take damage ตรงนี้
-                }
+                char lastChar = param.name[param.name.Length - 1];
+                char secondlastChar = param.name[param.name.Length - 2];
+
+                targetPlayer = int.Parse(secondlastChar.ToString());
+                targetSkill = int.Parse(lastChar.ToString());
+                Debug.Log("param.name = " + param.name);
+                break;
             }
-            else
+        }
+
+        Debug.Log("targetPlayer = " + targetPlayer);
+        Debug.Log("targetSkill = " + targetSkill);
+
+        switch (targetSkill)
+        {
+            case 0:
+                break;
+            case 1:
+                atk *= 2;
+                break;
+            default:
+                Debug.Log("มาเช็คตรงนี้ setattack");
+                break;
+        }
+
+        if (isBird && targetSkill == 1)
+        {
+            for (int i = 0; i < attackSceneManager.pokemonList.Count; i++)
             {
-                statusScript.enemyAttack(atk * 3, 1, isReduceDmg);
-                statusScript.enemyAttack(atk * 3, 2, isReduceDmg);
-                statusScript.enemyAttack(atk * 3, 3, isReduceDmg);
-                //ใส่take damage ตรงนี้
+                statusScript.enemyAttack(atk, i + 1, isReduceDmg);
             }
         }
         else
         {
-            if (isAttacking10)
-            {
-                statusScript.enemyAttack(atk, 1, isReduceDmg);
-                poke1anim.SetBool("isTakingDamage", true);
-            }
-            if (isAttacking20)
-            {
-                statusScript.enemyAttack(atk, 2, isReduceDmg);
-                //ใส่take damage ตรงนี้
-            }
-            if (isAttacking30)
-            {
-                statusScript.enemyAttack(atk, 3, isReduceDmg);
-                //ใส่take damage ตรงนี้
-            }
+            statusScript.enemyAttack(atk, targetPlayer, isReduceDmg);
+        }
+
+        if (statusScript.CurrenthpPlayerList[targetPlayer - 1] <= 0)
+        {
+            pokeAnim[targetPlayer - 1].SetBool("isDie", true);
+        }
+        else
+        {
+            pokeAnim[targetPlayer - 1].SetBool("isTakingDamage", true);
         }
     }
 
@@ -171,24 +154,22 @@ public class setattack : MonoBehaviour
         anim.SetBool("isTakingDamage", false);
     }
 
-    public void OnPlayerAnimFinished()
+    public void OnAnimFinished()
     {
-        anim.SetBool("isAttack1", false);
-        anim.SetBool("isAttack2", false);
-    }
-
-    public void OnBossAnimFinished()
-    {
-        anim.SetBool("isAttack10", false);
-        anim.SetBool("isAttack20", false);
-        anim.SetBool("isAttack30", false);
-        anim.SetBool("isAttack11", false);
-        anim.SetBool("isAttack21", false);
-        anim.SetBool("isAttack31", false);
+        foreach (AnimatorControllerParameter param in anim.parameters)
+        {
+            anim.SetBool(param.name, false);
+        }
     }
 
     public void ChangeStateReduceDmg(bool state)
     {
         isReduceDmg = state;
-    } 
+    }
+
+    public void OnPlayerDied()
+    {
+        anim.SetBool("isDie", false);
+        gameObject.SetActive(false);
+    }
 }

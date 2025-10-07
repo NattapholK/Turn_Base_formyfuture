@@ -38,7 +38,7 @@ public class StatusSystemScript : MonoBehaviour
         for (int i = 0; i < manaPlayerList.Count; i++)
         {
             float manaCount = (float)manaPlayerList[i] / maxMana;
-            attackSceneManager.pokemonUIList[i].transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<RectTransform>().localScale = Vector3.one * manaCount;
+            attackSceneManager.pokemonUIList[i].transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
         }
         CurrenthpEnemy = hpEnemy;
         BossUI.value = (float)CurrenthpEnemy / hpEnemy;
@@ -80,9 +80,14 @@ public class StatusSystemScript : MonoBehaviour
                 }
             }
             attackSceneManager.allUnits[gameIndex].isdied = true;
+            Image uiImage  = attackSceneManager.pokemonProfileUIList[attackSceneManager.allUnits[gameIndex].index].transform.GetChild(0).gameObject.GetComponent<Image>();
+            Color c = uiImage.color;
+            c.a = 0.4f;
+            uiImage.color = c;
+
+            //เกี่ยวกับตายตรงนี้มั้ง
         }
 
-        uiManager.CheckDiedPlayerIcon(playerIndex - 1);
         HPUIList[playerIndex - 1].value = (float)CurrenthpPlayerList[playerIndex - 1] / hpPlayerList[playerIndex - 1];
         Debug.Log("player " + playerIndex + " เหลือ hp " + CurrenthpPlayerList[playerIndex - 1]);
         Debug.Log("hpPlayerList = " + hpPlayerList[playerIndex - 1]);
@@ -140,7 +145,7 @@ public class StatusSystemScript : MonoBehaviour
                 break;
         }
         float manaCount = (float)manaPlayerList[playerIndex - 1] / maxMana;
-        attackSceneManager.pokemonUIList[playerIndex - 1].transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<RectTransform>().localScale = Vector3.one * manaCount;
+        attackSceneManager.pokemonUIList[playerIndex - 1].transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
     }
 
     bool isAllPlayerDied()
