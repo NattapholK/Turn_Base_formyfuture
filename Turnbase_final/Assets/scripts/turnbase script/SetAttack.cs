@@ -86,7 +86,7 @@ public class setattack : MonoBehaviour
                 }
                 break;
         }
-        
+
         statusScript.playerAttack(atk);
         statusScript.useMana(PlayerIndex, targetSkill);
         //ใส่ take damage ตรงนี้
@@ -132,20 +132,27 @@ public class setattack : MonoBehaviour
             for (int i = 0; i < attackSceneManager.pokemonList.Count; i++)
             {
                 statusScript.enemyAttack(atk, i + 1, isReduceDmg);
+                if (statusScript.CurrenthpPlayerList[i] <= 0)
+                {
+                    pokeAnim[i].SetBool("isDie", true);
+                }
+                else
+                {
+                    pokeAnim[i].SetBool("isTakingDamage", true);
+                }
             }
         }
         else
         {
             statusScript.enemyAttack(atk, targetPlayer, isReduceDmg);
-        }
-
-        if (statusScript.CurrenthpPlayerList[targetPlayer - 1] <= 0)
-        {
-            pokeAnim[targetPlayer - 1].SetBool("isDie", true);
-        }
-        else
-        {
-            pokeAnim[targetPlayer - 1].SetBool("isTakingDamage", true);
+            if (statusScript.CurrenthpPlayerList[targetPlayer - 1] <= 0)
+            {
+                pokeAnim[targetPlayer - 1].SetBool("isDie", true);
+            }
+            else
+            {
+                pokeAnim[targetPlayer - 1].SetBool("isTakingDamage", true);
+            }
         }
     }
 

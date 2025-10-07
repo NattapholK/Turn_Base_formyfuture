@@ -161,7 +161,7 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator CheckDiedPlayerIcon()
     {
-
+        Debug.Log("ตรงนี้CheckDiedPlayerIconทำงาน");
         List<int> PlayerDieIndex = new List<int>();
 
         foreach (BattleUnit unit in attackSceneManager.allUnits)
@@ -170,6 +170,14 @@ public class UIManager : MonoBehaviour
             {
                 PlayerDieIndex.Add(attackSceneManager.allUnits.IndexOf(unit));
                 Debug.Log("attackSceneManager.allUnits.IndexOf(unit) = " + attackSceneManager.allUnits.IndexOf(unit));
+                if (unit.isBoss)
+                {
+                    Debug.Log("บอสก็ตาย");
+                }
+            }
+            if (unit.isBoss)
+            {
+                Debug.Log("มีเช็คบอส");
             }
         }
 

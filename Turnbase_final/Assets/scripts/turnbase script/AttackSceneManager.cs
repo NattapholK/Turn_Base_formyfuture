@@ -122,10 +122,10 @@ public class AttackSceneManager : MonoBehaviour
 
     IEnumerator EndTurn()
     {
-        StartCoroutine(uiScript.CheckDiedPlayerIcon());
         yield return new WaitForSeconds(2f);
+        StartCoroutine(uiScript.CheckDiedPlayerIcon());
 
-        if (isEnding)
+        if (isEnding) //จบแล้วเอากล้องไปตรงนี้
         {
             MoveToPosition(targetEnd.position);
             yield break;
@@ -135,7 +135,7 @@ public class AttackSceneManager : MonoBehaviour
         if (currentTurnIndex >= allUnits.Count)
             currentTurnIndex = 0; // วนกลับรอบใหม่
 
-        while (allUnits[currentTurnIndex].isdied && !allUnits[currentTurnIndex].isBoss)
+        while (allUnits[currentTurnIndex].isdied)
         {
             currentTurnIndex++;
             if (currentTurnIndex >= allUnits.Count)

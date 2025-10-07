@@ -48,6 +48,24 @@ public class StatusSystemScript : MonoBehaviour
     public void playerAttack(int atk)
     {
         CurrenthpEnemy -= atk;
+
+        if (CurrenthpEnemy <= 0)
+        {
+            int gameIndex = 0;
+            foreach (BattleUnit unit in attackSceneManager.allUnits)
+            {
+                if (unit.isBoss)
+                {
+                    gameIndex = attackSceneManager.allUnits.IndexOf(unit);
+                    Debug.Log("unit = " + attackSceneManager.allUnits.IndexOf(unit));
+                    break;
+                }
+            }
+            attackSceneManager.allUnits[gameIndex].isdied = true;
+            Debug.Log("ทำงาน");
+
+        }
+
         BossUI.value = (float)CurrenthpEnemy / hpEnemy;
         Debug.Log("hpEnemy = " + hpEnemy);
         Debug.Log("BossUI.value = " + BossUI.value);
@@ -77,6 +95,7 @@ public class StatusSystemScript : MonoBehaviour
                 if (unit.index == playerIndex - 1)
                 {
                     gameIndex = attackSceneManager.allUnits.IndexOf(unit);
+                    break;
                 }
             }
             attackSceneManager.allUnits[gameIndex].isdied = true;
@@ -96,7 +115,7 @@ public class StatusSystemScript : MonoBehaviour
 
     public bool checkEndGame()
     {
-        if (hpEnemy <= 0 || isAllPlayerDied())
+        if (CurrenthpEnemy <= 0 || isAllPlayerDied())
         {
             return true; // เกมจบ
         }
@@ -105,7 +124,7 @@ public class StatusSystemScript : MonoBehaviour
 
     public void endFight()
     {
-        if (hpEnemy <= 0)
+        if (CurrenthpEnemy <= 0)
         {
             Debug.Log("Enemy defeated!");
         }

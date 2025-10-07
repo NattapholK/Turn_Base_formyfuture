@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1774,7 +1774,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayer: 1
   isCabbage: 1
-  playerAtk: 3
+  playerAtk: 2
   isBird: 0
   bossAtk: 2
   attackManager: {fileID: 1428851249}
@@ -5121,7 +5121,7 @@ MonoBehaviour:
   isCabbage: 0
   playerAtk: 3
   isBird: 1
-  bossAtk: 3
+  bossAtk: 20
   attackManager: {fileID: 1428851249}
 --- !u!1 &1996842017
 GameObject:
