@@ -18,6 +18,10 @@ public class PlayerSpawnOnE : MonoBehaviour
     public float raycastUpStart = 2f;        // เริ่มยิง Ray ลงจากสูงเท่านี้
     public float raycastDownDist = 6f;       // ระยะยิง Ray ลงหา "พื้น"
     public LayerMask groundMask = ~0;        // เลเยอร์ที่นับเป็นพื้น
+    private Vector3 yspawn = new Vector3 (0f, 2f, 0f);
+
+
+    private Animator animator;
 
     [Header("Safety")]
     public float minClearFromPlayer = 0.3f;  // กันวางทับตัวผู้เล่น
@@ -27,6 +31,7 @@ public class PlayerSpawnOnE : MonoBehaviour
 
     void Awake()
     {
+        animator = GetComponent<Animator>();
         _cc = GetComponent<CharacterController>();
         if (!prefab)
             Debug.LogWarning($"[{nameof(PlayerSpawnOnE)}] ยังไม่ได้เซ็ต Prefab");
@@ -35,7 +40,16 @@ public class PlayerSpawnOnE : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(spawnKey))
-            TrySpawn();
+        {
+            animator.SetBool("isTakingDamage", true);
+            Invoke(nameof(TrySpawn), 0.1f); // Delay before resetting
+            Invoke(nameof(ResetDamageAnim), 0.1f); // Delay before resetting
+        }
+
+    }
+    void ResetDamageAnim()
+    {
+        animator.SetBool("isTakingDamage", false);
     }
 
     void TrySpawn()
@@ -71,9 +85,8 @@ public class PlayerSpawnOnE : MonoBehaviour
                 }
             }
         }
-
         // 2) สปอว์น
-        Instantiate(prefab, pos, rot);
+        Instantiate(prefab, pos + yspawn, rot);
         _lastSpawn = Time.time;
     }
 
