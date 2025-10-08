@@ -6,27 +6,23 @@ using TMPro;
 using UnityEngine.Rendering;
 using System.Linq;
 
-// [System.Serializable]
-// public struct Data
-// {
-//     public GameObject UI1;
-//     public GameObject UI2;
-//     public GameObject UI3;
-// }
+[System.Serializable]
+public struct Data
+{
+    public GameObject playerObject;
+    public GameObject playerUI;
+    public GameObject playerProfileUI;
+    public GameObject turnPlayerUIPrefab;
+    public Transform targetPlayerCamera;
+    public int hpPlayer;
+    public int atkPlayer;
+    public int speedPlayer;
+}
 
 public class AttackSceneManager : MonoBehaviour
 {
 
-    // public List<Data> superData = new List<Data>();
-    [Header("ตั้งค่า UI โปเกม่อน")]
-    public List<GameObject> pokemonUIList;  // UI ของโปเกม่อนแต่ละตัว
-    public List<GameObject> pokemonProfileUIList;
-
-    [Header("ตั้งค่าโปเกม่อน")]
-    public List<GameObject> pokemonList;    // ตัวโปเกม่อนแต่ละตัว
-
-    [Header("ตั้งค่ากล้องแต่ละจุดเรียงตามตัวโปเกม่อน")]
-    public List<Transform> targetList;    // จุดที่กล้องจะมองแต่ละตัว
+    public List<Data> playerData = new List<Data>();
 
     [Header("ตั้งค่ากล้องจุดบอสและจุดจบ")]
     public Transform targetBoss;
@@ -35,6 +31,10 @@ public class AttackSceneManager : MonoBehaviour
 
     [Header("ตั้งค่าบอส")]
     public GameObject enemy;
+    public GameObject turnEnemyUIPrefab;
+    public int hpEnemy = 100;
+    public int atkBoss = 0;
+    public int speedBoss = 0;
     public int skillCount = 1;   // จำนวนสกิลของบอส
 
     [Header("ตั้งค่ากล้อง")]
@@ -57,7 +57,6 @@ public class AttackSceneManager : MonoBehaviour
     private setattack setAttackBoss;
     private StatusSystemScript statusScript;
     private List<setattack> setAtkScriptList = new List<setattack>();
-    private List<Animator> pokemonAnimList = new List<Animator>();
     [HideInInspector] public List<BattleUnit> allUnits = new List<BattleUnit>();
 
     void Start()
@@ -73,26 +72,20 @@ public class AttackSceneManager : MonoBehaviour
         statusScript = GetComponent<StatusSystemScript>();
 
         //ขยับจอไปที่โปเกม่อนตัวแรก
-        if(useOldCameraMode) MoveToPosition(targetList[0].position);
+        if(useOldCameraMode) MoveToPosition(playerData[0].targetPlayerCamera.position);
         else CameraManager.Instance.CameraChangeTurnTransition(currentTurnIndex);
 
-
-        foreach (GameObject poke in pokemonList)
+        for (int i = 0; i < playerData.Count; i++) //allUnit คือ list หลักที่จะเอาไว้เรียงเทิร์น
         {
-            pokemonAnimList.Add(poke.GetComponent<Animator>());
-            setAtkScriptList.Add(poke.GetComponent<setattack>());
-        }
-
-        for (int i = 0; i < pokemonList.Count; i++) //allUnit คือ list หลักที่จะเอาไว้เรียงเทิร์น
-        {
-            statusScript.AddHpUI(pokemonProfileUIList[i].transform.GetChild(1).gameObject, i);
+            statusScript.AddHpUI(playerData[i].playerProfileUI.transform.GetChild(1).gameObject, i);
+            setAtkScriptList.Add(playerData[i].playerObject.GetComponent<setattack>());
             allUnits.Add(new BattleUnit
             {
-                speed = statusScript.speedPlayerList[i],
-                animator = pokemonList[i].GetComponent<Animator>(),
-                uiObj = pokemonUIList[i],
-                targetPos = targetList[i],
-                proFileUI = pokemonProfileUIList[i].GetComponent<RectTransform>(),
+                speed = playerData[i].speedPlayer,
+                animator = playerData[i].playerObject.GetComponent<Animator>(),
+                uiObj = playerData[i].playerUI,
+                targetPos = playerData[i].targetPlayerCamera,
+                proFileUI = playerData[i].playerProfileUI.GetComponent<RectTransform>(),
                 isBoss = false,
                 index = i,
                 isdied = false,
@@ -101,7 +94,7 @@ public class AttackSceneManager : MonoBehaviour
         }
         allUnits.Add(new BattleUnit
         {
-            speed = statusScript.speedBoss,
+            speed = speedBoss,
             animator = enemy.GetComponent<Animator>(),
             uiObj = null,
             targetPos = targetBoss,
@@ -183,9 +176,9 @@ public class AttackSceneManager : MonoBehaviour
         if (skillID == 2)
         {
             int playerIndex = 0;
-            for (int i = 0; i < statusScript.speedPlayerList.Count; i++)
+            for (int i = 0; i < playerData.Count; i++)
             {
-                if (unit.speed == statusScript.speedPlayerList[i])
+                if (unit.speed == playerData[i].speedPlayer)
                 {
                     playerIndex = i;
                     break;
@@ -236,7 +229,7 @@ public class AttackSceneManager : MonoBehaviour
                 if (ProbabilityTarget < 30f)   // โอกาศออก30%
                 {
                     List<int> index = new List<int>();
-                    for (int i = 0; i <= pokemonList.Count; i++)
+                    for (int i = 0; i <= playerData.Count; i++)
                     {
                         index.Add(i);
                     }
@@ -259,7 +252,7 @@ public class AttackSceneManager : MonoBehaviour
             }
             else
             {
-                bossSkillTarget = Random.Range(1, pokemonList.Count + 1);
+                bossSkillTarget = Random.Range(1, playerData.Count + 1);
             }
 
             foreach (BattleUnit player in allUnits)
@@ -313,7 +306,7 @@ public class AttackSceneManager : MonoBehaviour
         else
         {
             Debug.Log("bossSkillTarget = " + bossSkillTarget);
-            MoveToPosition(targetList[bossSkillTarget - 1].position);
+            MoveToPosition(playerData[bossSkillTarget - 1].targetPlayerCamera.position);
         }
 
         yield return new WaitForSeconds(2f);

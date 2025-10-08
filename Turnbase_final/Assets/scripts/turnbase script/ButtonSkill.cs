@@ -7,13 +7,13 @@ public class ButtonSkill : MonoBehaviour
     private GameObject skill1;
     private GameObject skill2; 
     private AttackSceneManager attackSceneManager;
-    private UIManager manager;
+    // private UIManager manager;
     private bool isUsingSkill1UI = false;
     private bool isUsingSkill2UI = false;
     void Awake()
     {
         attackSceneManager = attackSceneObject.GetComponent<AttackSceneManager>();
-        manager = attackSceneObject.GetComponent<UIManager>();
+        // manager = attackSceneObject.GetComponent<UIManager>();
         skill1 = transform.GetChild(0).gameObject;
         skill2 = transform.GetChild(1).gameObject;
     }

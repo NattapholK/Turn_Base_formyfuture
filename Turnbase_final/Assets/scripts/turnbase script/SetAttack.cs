@@ -38,9 +38,9 @@ public class setattack : MonoBehaviour
         }
         else
         {
-            foreach (GameObject pokemon in attackSceneManager.pokemonList)
+            for (int i = 0; i < attackSceneManager.playerData.Count; i++)
             {
-                pokeAnim.Add(pokemon.GetComponent<Animator>());
+                pokeAnim.Add(attackSceneManager.playerData[i].playerObject.GetComponent<Animator>());
             }
         }
     }
@@ -124,7 +124,7 @@ public class setattack : MonoBehaviour
 
         if (isBird && targetSkill == 1)
         {
-            for (int i = 0; i < attackSceneManager.pokemonList.Count; i++)
+            for (int i = 0; i < attackSceneManager.playerData.Count; i++)
             {
                 statusScript.enemyAttack(atk, i + 1, isReduceDmg);
                 if (statusScript.CurrenthpPlayerList[i] <= 0)

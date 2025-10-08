@@ -4151,26 +4151,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc0c970974bc8364a8908803200a89a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pokemonUIList:
-  - {fileID: 565751116}
-  - {fileID: 1761553525}
-  - {fileID: 587838980}
-  pokemonProfileUIList:
-  - {fileID: 946878591}
-  - {fileID: 2108576449}
-  - {fileID: 2113216630}
-  pokemonList:
-  - {fileID: 919132148567409055}
-  - {fileID: 819640943}
-  - {fileID: 435163706}
-  targetList:
-  - {fileID: 879411611}
-  - {fileID: 572072784}
-  - {fileID: 1855717488}
+  playerData:
+  - playerObject: {fileID: 919132148567409055}
+    playerUI: {fileID: 565751116}
+    playerProfileUI: {fileID: 946878591}
+    turnPlayerUIPrefab: {fileID: 5528045061237470518, guid: cafb43715156303489b46fadb505ced5, type: 3}
+    targetPlayerCamera: {fileID: 879411611}
+    hpPlayer: 20
+    atkPlayer: 2
+    speedPlayer: 4
+  - playerObject: {fileID: 819640943}
+    playerUI: {fileID: 1761553525}
+    playerProfileUI: {fileID: 2108576449}
+    turnPlayerUIPrefab: {fileID: 1335906344856383703, guid: 4fe2a393f450c954481da44204d69895, type: 3}
+    targetPlayerCamera: {fileID: 572072784}
+    hpPlayer: 20
+    atkPlayer: 3
+    speedPlayer: 2
+  - playerObject: {fileID: 435163706}
+    playerUI: {fileID: 587838980}
+    playerProfileUI: {fileID: 2113216630}
+    turnPlayerUIPrefab: {fileID: 5765318525973947741, guid: 347a3c178248e8544a8f268745687313, type: 3}
+    targetPlayerCamera: {fileID: 1855717488}
+    hpPlayer: 20
+    atkPlayer: 3
+    speedPlayer: 1
   targetBoss: {fileID: 61259633}
   targetEnd: {fileID: 850822195}
   targetAll: {fileID: 292424612}
   enemy: {fileID: 1981289457}
+  turnEnemyUIPrefab: {fileID: 2882875929932077318, guid: 80743176735f17a4aaa73730b1c3a2cb, type: 3}
+  hpEnemy: 100
+  atkBoss: 1
+  speedBoss: 3
   skillCount: 2
   cameraObj: {fileID: 1539008387}
   moveTime: 1.5
@@ -4204,13 +4217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1364f7f812310e4aa80a29e143822b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpEnemy: 100
   BossUI: {fileID: 181528359}
-  hpPlayerList: 140000001400000014000000
-  atkPlayerList: 020000000300000003000000
-  atkBoss: 1
-  speedPlayerList: 040000000200000001000000
-  speedBoss: 3
   FloatingTextPrefab: {fileID: 6853069413658923936, guid: d630c8bcb3adb9b4aa1d07d61c3aa8cf, type: 3}
   DamageUI: {fileID: 706470038}
   CurrenthpPlayerList: 
@@ -4230,11 +4237,6 @@ MonoBehaviour:
   space: 10
   backgroundUI: {fileID: 98382383}
   parentPanel: {fileID: 1328816892}
-  turnPlayerUIPrefabList:
-  - {fileID: 5528045061237470518, guid: cafb43715156303489b46fadb505ced5, type: 3}
-  - {fileID: 1335906344856383703, guid: 4fe2a393f450c954481da44204d69895, type: 3}
-  - {fileID: 5765318525973947741, guid: 347a3c178248e8544a8f268745687313, type: 3}
-  turnEnemyUIPrefab: {fileID: 2882875929932077318, guid: 80743176735f17a4aaa73730b1c3a2cb, type: 3}
 --- !u!1 &1428959483
 GameObject:
   m_ObjectHideFlags: 0

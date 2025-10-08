@@ -9,12 +9,9 @@ public class UIManager : MonoBehaviour
     public float space = 0f;
     public GameObject backgroundUI;
     public Transform parentPanel;
-    public List<GameObject> turnPlayerUIPrefabList;
-    public GameObject turnEnemyUIPrefab;
 
     private int LastTurn;
     private float LastOffset;
-    private StatusSystemScript statusScript;
     private List<UIUnit> uiUnits = new List<UIUnit>();
     private List<UIUnit> uiInScene = new List<UIUnit>();
     private float bgUIHight;
@@ -23,24 +20,23 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         attackSceneManager = GetComponent<AttackSceneManager>();
-        statusScript = GetComponent<StatusSystemScript>();
     }
     void Start()
     {
 
-        for (int i = 0; i < turnPlayerUIPrefabList.Count; i++)
+        for (int i = 0; i < attackSceneManager.playerData.Count; i++)
         {
             uiUnits.Add(new UIUnit
             {
-                speed = statusScript.speedPlayerList[i],
-                UI = turnPlayerUIPrefabList[i],
+                speed = attackSceneManager.playerData[i].speedPlayer,//statusScript.speedPlayerList[i],
+                UI = attackSceneManager.playerData[i].turnPlayerUIPrefab,
                 index = i
             });
         }
         uiUnits.Add(new UIUnit
         {
-            speed = statusScript.speedBoss,
-            UI = turnEnemyUIPrefab,
+            speed = attackSceneManager.speedBoss,//statusScript.speedBoss,
+            UI = attackSceneManager.turnEnemyUIPrefab,
             index = uiUnits.Count
         });
 
@@ -89,7 +85,7 @@ public class UIManager : MonoBehaviour
     public IEnumerator DeleteTurnIcon()
     {
         RectTransform firstUI = uiInScene[0].UI.GetComponent<RectTransform>();
-        float height = firstUI.rect.height * firstUI.localScale.y ;
+        float height = firstUI.rect.height * firstUI.localScale.y;
         yield return StartCoroutine(SlideAndFade(uiInScene[0].UI));
 
         Destroy(uiInScene[0].UI);
@@ -261,5 +257,66 @@ public class UIManager : MonoBehaviour
 
         // ล็อคตำแหน่งสุดท้าย
         rectUI.anchoredPosition = targetPos;
+    }
+
+    public void StartScaleUp()
+    {
+        StartCoroutine(firstUIUpScale());
+    }
+
+    private IEnumerator firstUIUpScale()
+    {
+        RectTransform ui = uiInScene[0].UI.GetComponent<RectTransform>();
+        float deltaHeight = ui.rect.height * ui.localScale.y;
+
+        Vector2 startPos = ui.anchoredPosition;
+        Vector2 targetPos = new Vector2(ui.anchoredPosition.x, ui.anchoredPosition.y + deltaHeight / 2);
+
+        Vector3 startScale = ui.localScale;
+        Vector3 targetScale = startScale * 2f;
+        float duration = 0.2f; // เวลา 0.5 วินาที
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            ui.localScale = Vector3.Lerp(startScale, targetScale, t);
+            ui.anchoredPosition = Vector3.Lerp(startPos, targetPos, t);
+
+            yield return null;
+        }
+
+        ui.localScale = targetScale; // เผื่อหลุด
+    }
+    
+    private IEnumerator firstUIDownScale()
+    {
+        RectTransform ui = uiInScene[0].UI.GetComponent<RectTransform>();
+        float deltaHeight = -ui.rect.height * ui.localScale.y;
+
+        Vector2 startPos = ui.anchoredPosition;
+        Vector2 targetPos = new Vector2(ui.anchoredPosition.x, ui.anchoredPosition.y + deltaHeight/2);
+
+        ui.localScale = targetPos;
+
+        Vector3 startScale = ui.localScale;
+        Vector3 targetScale = startScale * 2f;
+        float duration = 0.2f; // เวลา 0.5 วินาที
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            ui.localScale = Vector3.Lerp(startScale, targetScale, t);
+            ui.anchoredPosition = Vector3.Lerp(startPos, targetPos, t);
+
+            yield return null;
+        }
+
+        ui.localScale = targetScale; // เผื่อหลุด
     }
 }

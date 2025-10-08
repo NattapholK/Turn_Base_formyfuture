@@ -7,26 +7,11 @@ using UnityEngine;
 using UnityEngine.UI;
 public class StatusSystemScript : MonoBehaviour
 {
-    [Header("เลือดบอส")]
-    public int hpEnemy = 16;
-    public Slider BossUI;
-
-    [Header("Health Player")]
-    public List<int> hpPlayerList = new List<int>();
-
-    [Header("Atk Player")]
-    public List<int> atkPlayerList = new List<int>();
-
-    public int atkBoss = 0;
-
-
-    [Header("Speed Player")]
-    public List<int> speedPlayerList;
-    public int speedBoss = 4;
-
     [Header("Other Setting")]
+    public Slider BossUI;
     public GameObject FloatingTextPrefab;
     public GameObject DamageUI;
+
 
     [HideInInspector] public List<int> CurrenthpPlayerList = new List<int>();
     [HideInInspector] public List<int> manaPlayerList;
@@ -42,21 +27,24 @@ public class StatusSystemScript : MonoBehaviour
     {
         uiManager = GetComponent<UIManager>();
         attackSceneManager = GetComponent<AttackSceneManager>();
-        CurrenthpPlayerList = new List<int>(hpPlayerList);
-        CurrenthpEnemy = hpEnemy;
-        BossUI.value = (float)CurrenthpEnemy / hpEnemy;
-        for (int i = 0; i < attackSceneManager.pokemonList.Count; i++)
+
+        CurrenthpEnemy = attackSceneManager.hpEnemy;
+        BossUI.value = (float)CurrenthpEnemy / attackSceneManager.hpEnemy;
+
+        for (int i = 0; i < attackSceneManager.playerData.Count; i++)
         {
             manaPlayerList.Add(0);
             float manaCount = (float)manaPlayerList[i] / maxMana;
-            attackSceneManager.pokemonList[i].GetComponent<setattack>().isPlayer = true;
-            attackSceneManager.pokemonList[i].GetComponent<setattack>().NamePlayer = "player" + (i + 1).ToString();
-            attackSceneManager.pokemonList[i].GetComponent<setattack>().attackManager = gameObject;
-            attackSceneManager.pokemonList[i].GetComponent<setattack>().playerAtk = atkPlayerList[i];
-            attackSceneManager.pokemonUIList[i].transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
+            CurrenthpPlayerList.Add(attackSceneManager.playerData[i].hpPlayer);
+            setattack setPlayer = attackSceneManager.playerData[i].playerObject.GetComponent<setattack>();
+            setPlayer.isPlayer = true;
+            setPlayer.NamePlayer = "player" + (i + 1).ToString();
+            setPlayer.attackManager = gameObject;
+            setPlayer.playerAtk = attackSceneManager.playerData[i].atkPlayer;
+            attackSceneManager.playerData[i].playerUI.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
         }
         attackSceneManager.enemy.GetComponent<setattack>().isPlayer = false;
-        attackSceneManager.enemy.GetComponent<setattack>().bossAtk = atkBoss;
+        attackSceneManager.enemy.GetComponent<setattack>().bossAtk = attackSceneManager.atkBoss;
         attackSceneManager.enemy.GetComponent<setattack>().attackManager = gameObject;
     }
 
@@ -91,9 +79,9 @@ public class StatusSystemScript : MonoBehaviour
 
         }
 
-        BossUI.value = (float)CurrenthpEnemy / hpEnemy;
+        BossUI.value = (float)CurrenthpEnemy / attackSceneManager.hpEnemy;
         StartCoroutine(setDmgTextUI(atk));
-        Debug.Log("hpEnemy = " + hpEnemy);
+        Debug.Log("hpEnemy = " + attackSceneManager.hpEnemy);
         Debug.Log("BossUI.value = " + BossUI.value);
         Debug.Log("enemy เหลือ hp " + CurrenthpEnemy);
     }
@@ -101,7 +89,7 @@ public class StatusSystemScript : MonoBehaviour
     public void enemyAttack(int atk, int playerIndex, bool isReduceDmg)
     {
         int attack = atk;
-        if (playerIndex < 1 || playerIndex > hpPlayerList.Count)
+        if (playerIndex < 1 || playerIndex > attackSceneManager.playerData.Count)
         {
             Debug.Log("playerIndex ไม่ถูกต้อง");
             return;
@@ -114,7 +102,7 @@ public class StatusSystemScript : MonoBehaviour
         CurrenthpPlayerList[playerIndex - 1] -= attack;
         if (FloatingTextPrefab != null)
         {
-            ShowFloatingText(attackSceneManager.pokemonList[playerIndex - 1], atk, 1f);
+            ShowFloatingText(attackSceneManager.playerData[playerIndex - 1].playerObject, atk, 1f);
         }
 
         if (CurrenthpPlayerList[playerIndex - 1] <= 0)
@@ -129,7 +117,7 @@ public class StatusSystemScript : MonoBehaviour
                 }
             }
             attackSceneManager.allUnits[gameIndex].isdied = true;
-            Image uiImage = attackSceneManager.pokemonProfileUIList[attackSceneManager.allUnits[gameIndex].index].transform.GetChild(0).gameObject.GetComponent<Image>();
+            Image uiImage = attackSceneManager.playerData[attackSceneManager.allUnits[gameIndex].index].playerProfileUI.transform.GetChild(0).gameObject.GetComponent<Image>();
             Color c = uiImage.color;
             c.a = 0.4f;
             uiImage.color = c;
@@ -137,10 +125,7 @@ public class StatusSystemScript : MonoBehaviour
             //เกี่ยวกับตายตรงนี้มั้ง
         }
 
-        HPUIList[playerIndex - 1].value = (float)CurrenthpPlayerList[playerIndex - 1] / hpPlayerList[playerIndex - 1];
-        Debug.Log("player " + playerIndex + " เหลือ hp " + CurrenthpPlayerList[playerIndex - 1]);
-        Debug.Log("hpPlayerList = " + hpPlayerList[playerIndex - 1]);
-        Debug.Log("HPUIList[playerIndex - 1].value = " + HPUIList[playerIndex - 1].value);
+        HPUIList[playerIndex - 1].value = (float)CurrenthpPlayerList[playerIndex - 1] / attackSceneManager.playerData[playerIndex - 1].hpPlayer;
     }
 
     public bool checkEndGame()
@@ -194,7 +179,7 @@ public class StatusSystemScript : MonoBehaviour
                 break;
         }
         float manaCount = (float)manaPlayerList[playerIndex - 1] / maxMana;
-        attackSceneManager.pokemonUIList[playerIndex - 1].transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
+        attackSceneManager.playerData[playerIndex - 1].playerUI.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
     }
 
     bool isAllPlayerDied()
@@ -219,7 +204,7 @@ public class StatusSystemScript : MonoBehaviour
     public void AddHpUI(GameObject hpUI, int playerIndex)
     {
         Slider UI = hpUI.GetComponent<Slider>();
-        UI.value = (float)CurrenthpPlayerList[playerIndex] / hpPlayerList[playerIndex];
+        UI.value = (float)CurrenthpPlayerList[playerIndex] / attackSceneManager.playerData[playerIndex].hpPlayer;
         HPUIList.Add(UI);
     }
     public void setCabbageIndex(int Index)
@@ -245,7 +230,7 @@ public class StatusSystemScript : MonoBehaviour
     void ShowFloatingText(GameObject player, int dmg, float radius)
     {
         Debug.Log("ShowFloatingText ทำงานแล้ว");
-        
+
         Vector3 randomOffset = new Vector3(
             Random.Range(-radius, radius),
             Random.Range(0.5f, 1.5f), // ยกขึ้นจากพื้นเล็กน้อย
