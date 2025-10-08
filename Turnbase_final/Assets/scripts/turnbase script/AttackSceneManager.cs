@@ -41,12 +41,16 @@ public class AttackSceneManager : MonoBehaviour
     public GameObject cameraObj;
     public float moveTime = 1.5f; // เวลาในการเคลื่อน
 
+    [Header("Debug Setting")]
+    public bool useOldCameraMode = false;
+    public bool lockPlayerCursorOnStart = true;
+
 
 
     private bool isLure = false;
     private int turnCount = 0;
     private int numberOfCabbage = 0;
-    private int currentTurnIndex = 0;
+    public int currentTurnIndex = 0; //ทำเป็น public เพราะจะดูค่า
     private bool isEnding = false;
     private UIManager uiScript;
     private Coroutine moveCoroutine;
@@ -58,15 +62,20 @@ public class AttackSceneManager : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false; // ซ่อนเมาส์
-        Cursor.lockState = CursorLockMode.Locked; // ล็อคเมาส์ให้อยู่กลางจอ
+        if (lockPlayerCursorOnStart)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
         setAttackBoss = enemy.GetComponent<setattack>();
         uiScript = GetComponent<UIManager>();
         statusScript = GetComponent<StatusSystemScript>();
 
         //ขยับจอไปที่โปเกม่อนตัวแรก
-        MoveToPosition(targetList[0].position);
+        if(useOldCameraMode) MoveToPosition(targetList[0].position);
+        else CameraManager.Instance.CameraChangeTurnTransition(currentTurnIndex);
+
 
         foreach (GameObject poke in pokemonList)
         {
@@ -86,7 +95,8 @@ public class AttackSceneManager : MonoBehaviour
                 proFileUI = pokemonProfileUIList[i].GetComponent<RectTransform>(),
                 isBoss = false,
                 index = i,
-                isdied = false
+                isdied = false,
+                unitIndex = i //ชั่วคราว
             });
         }
         allUnits.Add(new BattleUnit
@@ -122,14 +132,21 @@ public class AttackSceneManager : MonoBehaviour
             // เปิด UI ให้ Player เลือกสกิล
             unit.uiObj.SetActive(true);
             StartCoroutine(uiScript.ScaleUI(unit.proFileUI, "up"));
+            
+            CameraManager.Instance.CameraChangeTurnTransition(unit.unitIndex); //ชั่วคราว
         }
         else
         {
             // บอส auto ใช้สกิล
             StartCoroutine(BossTurn(unit));
+            MoveToPosition(unit.targetPos.position);
         }
 
-        MoveToPosition(unit.targetPos.position);
+        // ใช้ระบบกล้องใหม่
+        //MoveToPosition(unit.targetPos.position);
+
+        /*if (useOldCameraMode) MoveToPosition(unit.targetPos.position);
+        else CameraManager.Instance.CameraChangeTurnTransition(currentTurnIndex);*/
     }
 
     IEnumerator EndTurn()
@@ -327,8 +344,11 @@ public class AttackSceneManager : MonoBehaviour
 
     IEnumerator SmoothMove(Vector3 targetPos)
     {
+        GameObject cameraObj = CameraManager.Instance.CodeMovementObj; //อยู่ในช่วงลองผิดลองถูก
+
         Vector3 startPos = cameraObj.transform.position;
         float elapsed = 0f;
+        
 
         while (elapsed < moveTime)
         {
