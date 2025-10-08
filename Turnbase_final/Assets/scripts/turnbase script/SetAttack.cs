@@ -6,29 +6,23 @@ using TMPro;
 
 public class setattack : MonoBehaviour
 {
-    [Header("type")]
-    public bool isPlayer = true;
-
     [Header("for player")]
     public bool isCabbage = false;
     private bool isReduceDmg = false;
-    public int playerAtk = 3;
 
     [Header("for  boss")]
     public bool isBird = false;
-    public int bossAtk = 2;
 
-    [Header("setting")]
-    public GameObject attackManager;
+
+    [HideInInspector] public string NamePlayer;
+    [HideInInspector] public bool isPlayer = true;
+    [HideInInspector]public int playerAtk = 0;
+    [HideInInspector] public int bossAtk = 0;
+    [HideInInspector]public GameObject attackManager;
 
     private Animator anim;//เรียก animator ของตัวเอง
-
-    //ใช้กับ player
-    private Animator enemyanim;
-
-    //ใช้กับ boss
-    private List<Animator> pokeAnim = new List<Animator>();
-
+    private Animator enemyanim; //ใช้กับ player
+    private List<Animator> pokeAnim = new List<Animator>(); //ใช้กับ boss
     //อื่นๆ
     private AttackSceneManager attackSceneManager;
     private StatusSystemScript statusScript;
@@ -55,7 +49,7 @@ public class setattack : MonoBehaviour
     {
 
         int atk = playerAtk;
-        char lastName = gameObject.name[gameObject.name.Length - 1];
+        char lastName = NamePlayer[NamePlayer.Length - 1];
         int PlayerIndex = int.Parse(lastName.ToString());
         int targetSkill = -1;
 
@@ -82,6 +76,7 @@ public class setattack : MonoBehaviour
                 }
                 else
                 {
+                    atk = 0;
                     Debug.Log(gameObject.name + " ล่อศัตรู 2 เทิร์น");
                 }
                 break;

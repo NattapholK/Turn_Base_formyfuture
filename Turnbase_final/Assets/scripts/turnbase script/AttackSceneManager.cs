@@ -5,8 +5,19 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.Rendering;
 using System.Linq;
+
+// [System.Serializable]
+// public struct Data
+// {
+//     public GameObject UI1;
+//     public GameObject UI2;
+//     public GameObject UI3;
+// }
+
 public class AttackSceneManager : MonoBehaviour
 {
+
+    // public List<Data> superData = new List<Data>();
     [Header("ตั้งค่า UI โปเกม่อน")]
     public List<GameObject> pokemonUIList;  // UI ของโปเกม่อนแต่ละตัว
     public List<GameObject> pokemonProfileUIList;
@@ -31,18 +42,19 @@ public class AttackSceneManager : MonoBehaviour
     public float moveTime = 1.5f; // เวลาในการเคลื่อน
 
 
+
     private bool isLure = false;
-    private int numberOfCabbage = 0;
     private int turnCount = 0;
-    [HideInInspector] public List<BattleUnit> allUnits = new List<BattleUnit>();
+    private int numberOfCabbage = 0;
     private int currentTurnIndex = 0;
     private bool isEnding = false;
+    private UIManager uiScript;
     private Coroutine moveCoroutine;
     private setattack setAttackBoss;
-    private List<setattack> setAtkScriptList = new List<setattack>();
     private StatusSystemScript statusScript;
-    private UIManager uiScript;
+    private List<setattack> setAtkScriptList = new List<setattack>();
     private List<Animator> pokemonAnimList = new List<Animator>();
+    [HideInInspector] public List<BattleUnit> allUnits = new List<BattleUnit>();
 
     void Start()
     {

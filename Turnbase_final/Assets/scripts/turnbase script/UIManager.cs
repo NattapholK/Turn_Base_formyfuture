@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
+    public float space = 0f;
     public GameObject backgroundUI;
     public Transform parentPanel;
     public List<GameObject> turnPlayerUIPrefabList;
@@ -64,7 +65,7 @@ public class UIManager : MonoBehaviour
             GameObject icon = Instantiate(uiUnits[i].UI, parentPanel);
             RectTransform rt = icon.GetComponent<RectTransform>();
 
-            float height = rt.rect.height * rt.localScale.y;
+            float height = rt.rect.height * rt.localScale.y + space;
 
             // จัดเรียงแบบ top-down
             rt.anchoredPosition = new Vector2(0, -offsetY);
@@ -88,7 +89,7 @@ public class UIManager : MonoBehaviour
     public IEnumerator DeleteTurnIcon()
     {
         RectTransform firstUI = uiInScene[0].UI.GetComponent<RectTransform>();
-        float height = firstUI.rect.height * firstUI.localScale.y;
+        float height = firstUI.rect.height * firstUI.localScale.y ;
         yield return StartCoroutine(SlideAndFade(uiInScene[0].UI));
 
         Destroy(uiInScene[0].UI);
@@ -96,7 +97,7 @@ public class UIManager : MonoBehaviour
 
         foreach (UIUnit UI in uiInScene)
         {
-            StartCoroutine(goUpUI(UI.UI, height));
+            StartCoroutine(goUpUI(UI.UI, height + space));
         }
         AddTurnIcon();
     }
@@ -130,7 +131,7 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ScaleUI(RectTransform UI, string scaleType)
     {
-        float duration = 0.1f;
+        float duration = 0.05f;
         Vector3 startScale = UI.localScale;
         float multipleScale = 1;
         switch (scaleType)
@@ -198,7 +199,7 @@ public class UIManager : MonoBehaviour
 
                 for (int j = indexNow; j < uiInScene.Count; j++)
                 {
-                    StartCoroutine(goUpUI(uiInScene[j].UI, height));
+                    StartCoroutine(goUpUI(uiInScene[j].UI, height + space));
                 }
                 AddTurnIcon();
                 i--;
@@ -206,7 +207,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SlideAndFade(GameObject ui)
+    public IEnumerator SlideAndFade(GameObject ui)
     {
         RectTransform rectUI = ui.GetComponent<RectTransform>();
         CanvasGroup canvas = ui.GetComponent<CanvasGroup>();
@@ -242,7 +243,7 @@ public class UIManager : MonoBehaviour
     {
         RectTransform rectUI = ui.GetComponent<RectTransform>();
 
-        float duration = 0.3f; // เวลาที่ใช้ในการเลื่อน (วินาที)
+        float duration = 0.17f; // เวลาที่ใช้ในการเลื่อน (วินาที)
         float elapsed = 0f;
 
         Vector2 startPos = rectUI.anchoredPosition;
