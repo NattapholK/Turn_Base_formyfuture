@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public GameObject backgroundUI;
     public Transform parentPanel;
 
+    private int dieCount;
     private int LastTurn;
     private float LastOffset;
     private List<UIUnit> uiUnits = new List<UIUnit>();
@@ -81,22 +82,39 @@ public class UIManager : MonoBehaviour
                 break;
             }
         }
+        if (uiInScene.Count > 0)
+        {
+            StartCoroutine(firstUIUpScale());
+        }
     }
     public IEnumerator DeleteTurnIcon()
     {
+        yield return StartCoroutine(firstUIDownScale());
+
         RectTransform firstUI = uiInScene[0].UI.GetComponent<RectTransform>();
         float height = firstUI.rect.height * firstUI.localScale.y;
-        yield return StartCoroutine(SlideAndFade(uiInScene[0].UI));
 
         Destroy(uiInScene[0].UI);
-        uiInScene.Remove(uiInScene[0]);
+        uiInScene.RemoveAt(0);
 
+        List<Coroutine> coroutines = new List<Coroutine>();
         foreach (UIUnit UI in uiInScene)
         {
-            StartCoroutine(goUpUI(UI.UI, height + space));
+            coroutines.Add(StartCoroutine(goUpUI(UI.UI, height + space)));
+        }
+        foreach (Coroutine c in coroutines)
+        {
+            yield return c;
+        }
+
+        if (uiInScene.Count > 0)
+        {
+            yield return StartCoroutine(firstUIUpScale());
         }
         AddTurnIcon();
     }
+
+
 
     void AddTurnIcon()
     {
@@ -178,9 +196,31 @@ public class UIManager : MonoBehaviour
             }
         }
 
+        if (dieCount != PlayerDieIndex.Count)
+        {
+            yield return StartCoroutine(firstUIDownScale());
+        }
+        else
+        {
+            yield break;
+        }
+
+        yield return StartCoroutine(DeleteAndCreateDieTurn(PlayerDieIndex));
+
+        if (uiInScene.Count > 0)
+        {
+            yield return StartCoroutine(firstUIUpScale());
+        }
+
+        dieCount++;
+        Debug.Log("dieCount = " + dieCount);
+    }
+
+    private IEnumerator DeleteAndCreateDieTurn(List<int> listdie)
+    {
         for (int i = 0; i < uiInScene.Count; i++)
         {
-            if (PlayerDieIndex.Contains(uiInScene[i].index))
+            if (listdie.Contains(uiInScene[i].index))
             {
                 Debug.Log("uiInScene[i].UI = " + uiInScene[i].UI);
                 Debug.Log("uiInScene[i].index = " + uiInScene[i].index);
@@ -201,6 +241,8 @@ public class UIManager : MonoBehaviour
                 i--;
             }
         }
+        
+        yield return new WaitForSeconds(0.5f);
     }
 
     public IEnumerator SlideAndFade(GameObject ui)
@@ -208,7 +250,7 @@ public class UIManager : MonoBehaviour
         RectTransform rectUI = ui.GetComponent<RectTransform>();
         CanvasGroup canvas = ui.GetComponent<CanvasGroup>();
 
-        float duration = 0.3f; // เวลา 0.5 วิ
+        float duration = 0.4f; // เวลา 0.4 วิ
         float elapsed = 0f;
 
         Vector2 startPos = rectUI.anchoredPosition;
@@ -259,64 +301,66 @@ public class UIManager : MonoBehaviour
         rectUI.anchoredPosition = targetPos;
     }
 
-    public void StartScaleUp()
-    {
-        StartCoroutine(firstUIUpScale());
-    }
-
     private IEnumerator firstUIUpScale()
     {
         RectTransform ui = uiInScene[0].UI.GetComponent<RectTransform>();
-        float deltaHeight = ui.rect.height * ui.localScale.y;
-
-        Vector2 startPos = ui.anchoredPosition;
-        Vector2 targetPos = new Vector2(ui.anchoredPosition.x, ui.anchoredPosition.y + deltaHeight / 2);
 
         Vector3 startScale = ui.localScale;
-        Vector3 targetScale = startScale * 2f;
-        float duration = 0.2f; // เวลา 0.5 วินาที
+        Vector3 targetScale = startScale * 1.2f;
+
+        Vector2 startPos = ui.anchoredPosition;
+        float addedHeight = ui.rect.height * (targetScale.y - startScale.y);
+        float addedWidth = ui.rect.width * (targetScale.x - startScale.x);
+        Vector2 targetPos = startPos + new Vector2(addedWidth / 2f, addedHeight / 2f);
+
+        float duration = 0.1f;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+            float t = Mathf.Clamp01(elapsed / duration);
 
             ui.localScale = Vector3.Lerp(startScale, targetScale, t);
-            ui.anchoredPosition = Vector3.Lerp(startPos, targetPos, t);
+            ui.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
 
             yield return null;
         }
 
-        ui.localScale = targetScale; // เผื่อหลุด
+        ui.localScale = targetScale;
+        ui.anchoredPosition = targetPos;
     }
+
     
     private IEnumerator firstUIDownScale()
     {
         RectTransform ui = uiInScene[0].UI.GetComponent<RectTransform>();
-        float deltaHeight = -ui.rect.height * ui.localScale.y;
-
-        Vector2 startPos = ui.anchoredPosition;
-        Vector2 targetPos = new Vector2(ui.anchoredPosition.x, ui.anchoredPosition.y + deltaHeight/2);
-
-        ui.localScale = targetPos;
 
         Vector3 startScale = ui.localScale;
-        Vector3 targetScale = startScale * 2f;
-        float duration = 0.2f; // เวลา 0.5 วินาที
+        Vector3 targetScale = startScale * (1f / 1.2f);
+
+        Vector2 startPos = ui.anchoredPosition;
+        float addedHeight = ui.rect.height * (targetScale.y - startScale.y);
+        float addedWidth = ui.rect.width * (targetScale.x - startScale.x);
+        Vector2 targetPos = startPos + new Vector2(addedWidth / 2f, addedHeight / 2f);
+
+        float duration = 0.1f;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+            float t = Mathf.Clamp01(elapsed / duration);
 
             ui.localScale = Vector3.Lerp(startScale, targetScale, t);
-            ui.anchoredPosition = Vector3.Lerp(startPos, targetPos, t);
+            ui.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
 
             yield return null;
         }
 
-        ui.localScale = targetScale; // เผื่อหลุด
+        ui.localScale = targetScale;
+        ui.anchoredPosition = targetPos;
     }
+
+
 }

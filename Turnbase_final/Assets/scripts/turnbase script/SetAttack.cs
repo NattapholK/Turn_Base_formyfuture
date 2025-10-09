@@ -47,7 +47,6 @@ public class setattack : MonoBehaviour
 
     public void OnPlayerAttackFinished()
     {
-
         int atk = playerAtk;
         char lastName = NamePlayer[NamePlayer.Length - 1];
         int PlayerIndex = int.Parse(lastName.ToString());
@@ -68,21 +67,21 @@ public class setattack : MonoBehaviour
         switch (targetSkill)
         {
             case 1:
+                statusScript.playerAttack(atk);
                 break;
             case 2:
                 if (!isCabbage)
                 {
                     atk = Mathf.RoundToInt(atk * 1.5f);
+                    statusScript.playerAttack(atk);
                 }
                 else
                 {
-                    atk = 0;
                     Debug.Log(gameObject.name + " ล่อศัตรู 2 เทิร์น");
                 }
                 break;
         }
 
-        statusScript.playerAttack(atk);
         statusScript.useMana(PlayerIndex, targetSkill);
         //ใส่ take damage ตรงนี้
     }
