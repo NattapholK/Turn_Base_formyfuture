@@ -10,6 +10,7 @@ public class StatusSystemScript : MonoBehaviour
     [Header("Other Setting")]
     public Slider BossUI;
     public GameObject FloatingTextPrefab;
+    public GameObject UICanvas;
     public GameObject DamageUI;
 
 
@@ -41,7 +42,7 @@ public class StatusSystemScript : MonoBehaviour
             setPlayer.NamePlayer = "player" + (i + 1).ToString();
             setPlayer.attackManager = gameObject;
             setPlayer.playerAtk = attackSceneManager.playerData[i].atkPlayer;
-            attackSceneManager.playerData[i].playerUI.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
+            attackSceneManager.playerData[i].playerSkillUI.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
         }
         attackSceneManager.enemy.GetComponent<setattack>().isPlayer = false;
         attackSceneManager.enemy.GetComponent<setattack>().bossAtk = attackSceneManager.atkBoss;
@@ -117,10 +118,14 @@ public class StatusSystemScript : MonoBehaviour
                 }
             }
             attackSceneManager.allUnits[gameIndex].isdied = true;
-            Image uiImage = attackSceneManager.playerData[attackSceneManager.allUnits[gameIndex].index].playerProfileUI.transform.GetChild(0).gameObject.GetComponent<Image>();
-            Color c = uiImage.color;
-            c.a = 0.4f;
-            uiImage.color = c;
+            CanvasGroup cg = attackSceneManager.playerData[attackSceneManager.allUnits[gameIndex].index]
+                    .playerProfileUI.transform.GetChild(0)
+                    .GetComponent<CanvasGroup>();
+
+            if(cg != null)
+            {
+                cg.alpha = 0.4f;
+            }
 
             //เกี่ยวกับตายตรงนี้มั้ง
         }
@@ -179,7 +184,7 @@ public class StatusSystemScript : MonoBehaviour
                 break;
         }
         float manaCount = (float)manaPlayerList[playerIndex - 1] / maxMana;
-        attackSceneManager.playerData[playerIndex - 1].playerUI.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
+        attackSceneManager.playerData[playerIndex - 1].playerSkillUI.transform.GetChild(1).gameObject.transform.GetChild(1).gameObject.GetComponent<Image>().fillAmount = 1 - manaCount;
     }
 
     bool isAllPlayerDied()
@@ -231,18 +236,26 @@ public class StatusSystemScript : MonoBehaviour
     {
         Debug.Log("ShowFloatingText ทำงานแล้ว");
 
+        // Random offset ใน world space
         Vector3 randomOffset = new Vector3(
             Random.Range(-radius, radius),
-            Random.Range(0.5f, 1.5f), // ยกขึ้นจากพื้นเล็กน้อย
-            -radius
+            Random.Range(0.5f, 1.5f),
+            0f
         );
 
-        Vector3 spawnPos = player.transform.position + randomOffset;
+        // World position ของ player + offset
+        Vector3 worldPos = player.transform.position + randomOffset;
 
-        // Instantiate
-        var go = Instantiate(FloatingTextPrefab, spawnPos, Quaternion.identity, transform);
-        var tmp = go.GetComponent<TextMeshPro>();
+        // แปลงไปเป็น screen position
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+        // Instantiate บน Canvas
+        var go = Instantiate(FloatingTextPrefab, UICanvas.transform); // uiCanvas = Canvas ของคุณ
+        go.transform.position = screenPos;
+
+        var tmp = go.GetComponent<TextMeshProUGUI>(); // สำหรับ UI Text
         tmp.text = dmg.ToString();
+
         Destroy(go, 2f);
     }
 }

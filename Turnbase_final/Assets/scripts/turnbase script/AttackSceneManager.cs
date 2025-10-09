@@ -10,7 +10,7 @@ using System.Linq;
 public struct Data
 {
     public GameObject playerObject;
-    public GameObject playerUI;
+    public GameObject playerSkillUI;
     public GameObject playerProfileUI;
     public GameObject turnPlayerUIPrefab;
     public Transform targetPlayerCamera;
@@ -83,7 +83,7 @@ public class AttackSceneManager : MonoBehaviour
             {
                 speed = playerData[i].speedPlayer,
                 animator = playerData[i].playerObject.GetComponent<Animator>(),
-                uiObj = playerData[i].playerUI,
+                uiObj = playerData[i].playerSkillUI,
                 targetPos = playerData[i].targetPlayerCamera,
                 proFileUI = playerData[i].playerProfileUI.GetComponent<RectTransform>(),
                 isBoss = false,
@@ -144,8 +144,10 @@ public class AttackSceneManager : MonoBehaviour
 
     IEnumerator EndTurn()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.3f);
         StartCoroutine(uiScript.CheckDiedPlayerIcon());
+        yield return new WaitForSeconds(0.5f);
+        yield return StartCoroutine(uiScript.DeleteTurnIcon());
 
         if (isEnding) //จบแล้วเอากล้องไปตรงนี้
         {
@@ -204,7 +206,6 @@ public class AttackSceneManager : MonoBehaviour
         string skillTrigger = "isAttack" + skillID;
         unit.animator.SetBool(skillTrigger, true);
         unit.uiObj.SetActive(false);
-        StartCoroutine(uiScript.DeleteTurnIcon());
         StartCoroutine(uiScript.ScaleUI(unit.proFileUI, "down"));
 
         StartCoroutine(EndTurn());
@@ -236,10 +237,12 @@ public class AttackSceneManager : MonoBehaviour
                     index.Remove(0);
                     index.Remove(numberOfCabbage + 1);
                     bossSkillTarget = index[Random.Range(0, index.Count)];
+                    Debug.Log("บอสบิด");
                 }
                 else              // โอกาศออก70%
                 {
                     bossSkillTarget = numberOfCabbage + 1;
+                    Debug.Log("บอสโดนล่อเรียบร้อย");
                 }
                 turnCount++;
                 if (turnCount == 2)
@@ -315,7 +318,6 @@ public class AttackSceneManager : MonoBehaviour
         unit.animator.SetBool(bossTrigger, true);
 
         Debug.Log("บอสใช้สกิล: " + bossSkillToUse + "กับ player " + bossSkillTarget);
-        StartCoroutine(uiScript.DeleteTurnIcon());
 
         yield return new WaitForSeconds(1f);
         StartCoroutine(EndTurn());

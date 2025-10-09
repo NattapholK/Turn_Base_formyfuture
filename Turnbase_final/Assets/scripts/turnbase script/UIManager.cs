@@ -303,6 +303,8 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator firstUIUpScale()
     {
+        uiInScene[0].UI.transform.GetChild(0).gameObject.SetActive(false);
+        uiInScene[0].UI.transform.GetChild(1).gameObject.SetActive(true);
         RectTransform ui = uiInScene[0].UI.GetComponent<RectTransform>();
 
         Vector3 startScale = ui.localScale;
