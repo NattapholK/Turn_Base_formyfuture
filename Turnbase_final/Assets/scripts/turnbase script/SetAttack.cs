@@ -32,10 +32,10 @@ public class setattack : MonoBehaviour
     public void Start()
     {
         attackSceneManager = attackManager.GetComponent<AttackSceneManager>();
-        statusScript = attackManager.GetComponent<StatusSystemScript>();
-        if (attackManager.audioSource != null)
+        statusScript = attackSceneManager.GetComponent<StatusSystemScript>();
+        if (attackSceneManager.audioSource != null)
         {
-            audioSource = attackManager.audioSource;
+            audioSource = attackSceneManager.audioSource;
         }
         anim = GetComponent<Animator>();
 
@@ -43,8 +43,8 @@ public class setattack : MonoBehaviour
         {
             lastName = NamePlayer[NamePlayer.Length - 1];
             PlayerIndex = int.Parse(lastName.ToString());
-            var skill1Sound = attackManager.playerData[PlayerIndex - 1].skill1;
-            var skill2Sound = attackManager.playerData[PlayerIndex - 1].skill2;
+            var skill1Sound = attackSceneManager.playerData[PlayerIndex - 1].skill1;
+            var skill2Sound = attackSceneManager.playerData[PlayerIndex - 1].skill2;
             if (skill1Sound != null)
             {
                 skillSound.Add(skill1Sound);
