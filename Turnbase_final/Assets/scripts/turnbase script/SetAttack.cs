@@ -13,7 +13,8 @@ public class setattack : MonoBehaviour
     [Header("for  boss")]
     public bool isBird = false;
 
-
+    [HideInInspector] public AudioSource audioSource; 
+    [HideInInspector] public List<AudioClip> skillSound = new List<AudioClip>();
     [HideInInspector] public string NamePlayer;
     [HideInInspector] public bool isPlayer = true;
     [HideInInspector]public int playerAtk = 0;
@@ -26,14 +27,32 @@ public class setattack : MonoBehaviour
     //อื่นๆ
     private AttackSceneManager attackSceneManager;
     private StatusSystemScript statusScript;
+    private char lastName;
+    private int PlayerIndex;
     public void Start()
     {
         attackSceneManager = attackManager.GetComponent<AttackSceneManager>();
         statusScript = attackManager.GetComponent<StatusSystemScript>();
+        if (attackManager.audioSource != null)
+        {
+            audioSource = attackManager.audioSource;
+        }
         anim = GetComponent<Animator>();
 
         if (isPlayer)
         {
+            lastName = NamePlayer[NamePlayer.Length - 1];
+            PlayerIndex = int.Parse(lastName.ToString());
+            var skill1Sound = attackManager.playerData[PlayerIndex - 1].skill1;
+            var skill2Sound = attackManager.playerData[PlayerIndex - 1].skill2;
+            if (skill1Sound != null)
+            {
+                skillSound.Add(skill1Sound);
+            }
+            if (skill2Sound != null)
+            {
+                skillSound.Add(skill2Sound);
+            }
             enemyanim = attackSceneManager.enemy.GetComponent<Animator>();
         }
         else
@@ -48,8 +67,6 @@ public class setattack : MonoBehaviour
     public void OnPlayerAttackFinished()
     {
         int atk = playerAtk;
-        char lastName = NamePlayer[NamePlayer.Length - 1];
-        int PlayerIndex = int.Parse(lastName.ToString());
         int targetSkill = -1;
 
         foreach (AnimatorControllerParameter param in anim.parameters)
@@ -172,5 +189,24 @@ public class setattack : MonoBehaviour
     {
         anim.SetBool("isDie", false);
         gameObject.SetActive(false);
+    }
+
+    public void SoundEffectSkill()
+    {
+        int targetSkill = -1;
+
+        foreach (AnimatorControllerParameter param in anim.parameters)
+        {
+            if (anim.GetBool(param.name))
+            {
+                char lastChar = param.name[param.name.Length - 1];
+
+                targetSkill = int.Parse(lastChar.ToString());
+                Debug.Log("param.name = " + param.name);
+                break;
+            }
+        }
+
+        audioSource.PlayOneShot(skillSound[targetSkill - 1]);
     }
 }

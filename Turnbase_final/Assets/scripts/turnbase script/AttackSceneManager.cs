@@ -14,6 +14,8 @@ public struct Data
     public GameObject playerProfileUI;
     public GameObject turnPlayerUIPrefab;
     public Transform targetPlayerCamera;
+    public AudioClip skill1;
+    public AudioClip skill2;
     public int hpPlayer;
     public int atkPlayer;
     public int speedPlayer;
@@ -44,6 +46,9 @@ public class AttackSceneManager : MonoBehaviour
     [Header("Debug Setting")]
     public bool useOldCameraMode = false;
     public bool lockPlayerCursorOnStart = true;
+
+    [Header("")]
+    public AudioSource audioSource; 
 
 
 
