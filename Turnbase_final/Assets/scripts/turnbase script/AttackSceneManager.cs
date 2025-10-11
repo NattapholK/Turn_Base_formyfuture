@@ -59,7 +59,7 @@ public class AttackSceneManager : MonoBehaviour
     private List<setattack> setAtkScriptList = new List<setattack>();
     [HideInInspector] public List<BattleUnit> allUnits = new List<BattleUnit>();
 
-    void Start()
+    void Awake()
     {
         if (lockPlayerCursorOnStart)
         {
@@ -70,11 +70,14 @@ public class AttackSceneManager : MonoBehaviour
         setAttackBoss = enemy.GetComponent<setattack>();
         uiScript = GetComponent<UIManager>();
         statusScript = GetComponent<StatusSystemScript>();
+    }
 
+    void Start()
+    {
         //ขยับจอไปที่โปเกม่อนตัวแรก
-        if(useOldCameraMode) MoveToPosition(playerData[0].targetPlayerCamera.position);
+        if (useOldCameraMode) MoveToPosition(playerData[0].targetPlayerCamera.position);
         else CameraManager.Instance.CameraChangeTurnTransition(currentTurnIndex);
-
+        
         for (int i = 0; i < playerData.Count; i++) //allUnit คือ list หลักที่จะเอาไว้เรียงเทิร์น
         {
             statusScript.AddHpUI(playerData[i].playerProfileUI.transform.GetChild(1).gameObject, i);
@@ -105,6 +108,7 @@ public class AttackSceneManager : MonoBehaviour
         });
 
         allUnits = allUnits.OrderByDescending(u => u.speed).ToList(); //เรียงเทิร์นตาม speed
+
         StartTurn(allUnits[currentTurnIndex]);// เริ่มเทิร์นแรก
 
     }

@@ -102,7 +102,7 @@ public class Carryable : MonoBehaviour
 
         if (!_rb.isKinematic)
         {
-            _rb.velocity = dropVelocity;
+            _rb.linearVelocity = dropVelocity;
             _rb.WakeUp();
         }
 

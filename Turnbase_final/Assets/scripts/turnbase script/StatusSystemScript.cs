@@ -19,6 +19,7 @@ public class StatusSystemScript : MonoBehaviour
     const int maxMana = 100;
     private int CurrenthpEnemy;
     private int CabbageIndex;
+    private Vector2 startDamgeUIPos;
     private TextMeshProUGUI DmgText;
     private UIManager uiManager;
     private AttackSceneManager attackSceneManager;
@@ -51,7 +52,12 @@ public class StatusSystemScript : MonoBehaviour
 
     void Start()
     {
+        BossUI.interactable = false;
+        CanvasGroup canvasUI = DamageUI.GetComponent<CanvasGroup>();
+        RectTransform rectUI = DamageUI.GetComponent<RectTransform>();
+        startDamgeUIPos = rectUI.anchoredPosition;
         DmgText = DamageUI.transform.GetChild(DamageUI.transform.childCount - 1).gameObject.GetComponent<TextMeshProUGUI>();
+        DmgText.text = "0";
     }
 
     //ระบบโจมตี จบเกม
@@ -209,6 +215,7 @@ public class StatusSystemScript : MonoBehaviour
     public void AddHpUI(GameObject hpUI, int playerIndex)
     {
         Slider UI = hpUI.GetComponent<Slider>();
+        UI.interactable = false;
         UI.value = (float)CurrenthpPlayerList[playerIndex] / attackSceneManager.playerData[playerIndex].hpPlayer;
         HPUIList.Add(UI);
     }
@@ -219,15 +226,27 @@ public class StatusSystemScript : MonoBehaviour
 
     private IEnumerator setDmgTextUI(int atk)
     {
-        // DamageUI
-        DmgText.text = atk.ToString();
-        DamageUI.SetActive(true);
         CanvasGroup canvasUI = DamageUI.GetComponent<CanvasGroup>();
         RectTransform rectUI = DamageUI.GetComponent<RectTransform>();
-        Vector2 startPos = rectUI.anchoredPosition;
+
+        // ถ้ามี coroutine นี้รันอยู่แล้ว ให้หยุดก่อน
+        StopCoroutine(nameof(setDmgTextUI));
+
+        DamageUI.SetActive(true);
+        canvasUI.alpha = 1f;
+        rectUI.anchoredPosition = startDamgeUIPos;
+
+        int oldDmg = 0;
+        int.TryParse(DmgText.text, out oldDmg);
+        DmgText.text = (oldDmg + atk).ToString();
+
         yield return new WaitForSeconds(1f);
+
         yield return StartCoroutine(uiManager.SlideAndFade(DamageUI));
-        rectUI.anchoredPosition = startPos;
+
+        // reset state
+        rectUI.anchoredPosition = startDamgeUIPos;
+        DmgText.text = "0";
         canvasUI.alpha = 1f;
         DamageUI.SetActive(false);
     }
@@ -250,10 +269,10 @@ public class StatusSystemScript : MonoBehaviour
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
 
         // Instantiate บน Canvas
-        var go = Instantiate(FloatingTextPrefab, UICanvas.transform); // uiCanvas = Canvas ของคุณ
+        var go = Instantiate(FloatingTextPrefab, UICanvas.transform);
         go.transform.position = screenPos;
 
-        var tmp = go.GetComponent<TextMeshProUGUI>(); // สำหรับ UI Text
+        var tmp = go.GetComponent<TextMeshProUGUI>();
         tmp.text = dmg.ToString();
 
         Destroy(go, 2f);
