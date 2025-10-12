@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0c5cb8ab035a94d9ea342b146ac5de, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  fpsCap: 60
+  fpsCap: 30
   textureQuality: 0
   vSyncCount: 0
   musicVolume: 0.8
