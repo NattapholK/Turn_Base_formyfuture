@@ -105,7 +105,7 @@ TextureImporter:
         width: 55
         height: 17
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -127,7 +127,7 @@ TextureImporter:
         width: 55
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -149,7 +149,7 @@ TextureImporter:
         width: 56
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -158,6 +158,28 @@ TextureImporter:
       bones: []
       spriteID: 35aa6962500d2ec4ba1498352b56a044
       internalID: 718825759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PastelUIFree_3
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 207
+        width: 93
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 072d5f3e7067d8a46bcaacd73e5b5df7
+      internalID: 1745608762
       vertices: []
       indices: 
       edges: []
@@ -179,6 +201,7 @@ TextureImporter:
       PastelUIFree_0: -1037468132
       PastelUIFree_1: 189708068
       PastelUIFree_2: 718825759
+      PastelUIFree_3: 1745608762
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
