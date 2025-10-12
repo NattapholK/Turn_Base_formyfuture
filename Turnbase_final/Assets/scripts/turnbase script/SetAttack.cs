@@ -13,7 +13,11 @@ public class setattack : MonoBehaviour
     [Header("for  boss")]
     public bool isBird = false;
 
-    [HideInInspector] public AudioSource audioSource; 
+    [Header("Other Sound (Optional)")]
+    public AudioClip otherSound1;
+
+
+    [HideInInspector] public AudioSource PlayerAudioSource; 
     [HideInInspector] public List<AudioClip> skillSound = new List<AudioClip>();
     [HideInInspector] public string NamePlayer;
     [HideInInspector] public bool isPlayer = true;
@@ -27,15 +31,16 @@ public class setattack : MonoBehaviour
     //อื่นๆ
     private AttackSceneManager attackSceneManager;
     private StatusSystemScript statusScript;
+    private AudioClip takeDamageSound;
     private char lastName;
     private int PlayerIndex;
     public void Start()
     {
         attackSceneManager = attackManager.GetComponent<AttackSceneManager>();
         statusScript = attackSceneManager.GetComponent<StatusSystemScript>();
-        if (attackSceneManager.audioSource != null)
+        if (attackSceneManager.PlayerAudioSource != null)
         {
-            audioSource = attackSceneManager.audioSource;
+            PlayerAudioSource = attackSceneManager.PlayerAudioSource;
         }
         anim = GetComponent<Animator>();
 
@@ -43,8 +48,9 @@ public class setattack : MonoBehaviour
         {
             lastName = NamePlayer[NamePlayer.Length - 1];
             PlayerIndex = int.Parse(lastName.ToString());
-            var skill1Sound = attackSceneManager.playerData[PlayerIndex - 1].skill1;
-            var skill2Sound = attackSceneManager.playerData[PlayerIndex - 1].skill2;
+            takeDamageSound = attackSceneManager.playerData[PlayerIndex - 1].takeDamageSound;
+            var skill1Sound = attackSceneManager.playerData[PlayerIndex - 1].skill1Sound;
+            var skill2Sound = attackSceneManager.playerData[PlayerIndex - 1].skill2Sound;
             if (skill1Sound != null)
             {
                 skillSound.Add(skill1Sound);
@@ -194,6 +200,7 @@ public class setattack : MonoBehaviour
     public void SoundEffectSkill()
     {
         int targetSkill = -1;
+        string parameterName = "Idle";
 
         foreach (AnimatorControllerParameter param in anim.parameters)
         {
@@ -201,12 +208,42 @@ public class setattack : MonoBehaviour
             {
                 char lastChar = param.name[param.name.Length - 1];
 
-                targetSkill = int.Parse(lastChar.ToString());
-                Debug.Log("param.name = " + param.name);
-                break;
+                if (int.TryParse(lastChar.ToString(), out int result))
+                {
+                    targetSkill = result;
+                    Debug.Log("param.name = " + param.name);
+                    break;
+                }
+                else
+                {
+                    Debug.LogWarning("ตัวอักษรสุดท้ายของ param.name ไม่ใช่ตัวเลข: " + param.name);
+                    parameterName = param.name;
+                }
             }
         }
 
-        audioSource.PlayOneShot(skillSound[targetSkill - 1]);
+        if (targetSkill == -1)
+        {
+            if (takeDamageSound != null)
+            {
+                PlayerAudioSource.PlayOneShot(takeDamageSound);
+            }
+
+        }
+        else
+        {
+            if (targetSkill > 0 && targetSkill - 1 < skillSound.Count)
+            {
+                PlayerAudioSource.PlayOneShot(skillSound[targetSkill - 1]);
+            }
+        }
+    }
+    
+    public void OtherSoundEffectSkill()
+    {
+        if(otherSound1 != null)
+        {
+            PlayerAudioSource.PlayOneShot(otherSound1);
+        } 
     }
 }

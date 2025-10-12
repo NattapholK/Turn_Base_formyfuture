@@ -14,8 +14,9 @@ public struct Data
     public GameObject playerProfileUI;
     public GameObject turnPlayerUIPrefab;
     public Transform targetPlayerCamera;
-    public AudioClip skill1;
-    public AudioClip skill2;
+    public AudioClip takeDamageSound;
+    public AudioClip skill1Sound;
+    public AudioClip skill2Sound;
     public int hpPlayer;
     public int atkPlayer;
     public int speedPlayer;
@@ -47,15 +48,15 @@ public class AttackSceneManager : MonoBehaviour
     public bool useOldCameraMode = false;
     public bool lockPlayerCursorOnStart = true;
 
-    [Header("")]
-    public AudioSource audioSource; 
-
+    [Header("Audio Source")]
+    public AudioSource PlayerAudioSource;
+    public AudioSource GameAudioSource;
 
 
     private bool isLure = false;
     private int turnCount = 0;
     private int numberOfCabbage = 0;
-    public int currentTurnIndex = 0; //ทำเป็น public เพราะจะดูค่า
+    private int currentTurnIndex = 0; //ทำเป็น public เพราะจะดูค่า
     private bool isEnding = false;
     private UIManager uiScript;
     private Coroutine moveCoroutine;
