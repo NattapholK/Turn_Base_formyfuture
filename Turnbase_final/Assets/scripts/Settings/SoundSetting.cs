@@ -1,47 +1,61 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SoundSetting : MonoBehaviour
 {
-    [Header("🎵 ตั้งค่าเสียง")]
-    [Tooltip("ลาก AudioSource ที่ต้องการปรับเสียงมาใส่")]
-    public AudioSource targetAudioSource;
+    [Header("🎵 AudioSource Object")]
+    public GameObject GameAudioObject;
+    public GameObject PlayerAudioObject;
 
-    [Header("🎚️ UI Slider สำหรับควบคุม Volume")]
-    [Tooltip("ลาก Slider จาก Canvas มาเชื่อมที่นี่")]
-    public Slider volumeSlider;
+    [Header("🎚️ UI Slider")]
+    [Tooltip("ลาก Slider มาเชื่อมที่นี่")]
+    public Slider GameAudioSlider;
+    [Tooltip("ลาก Slider มาเชื่อมที่นี่")]
+    public Slider PlayerAudioSlider;
 
-    private void Start()
+    [Header("Scriptable Object")]
+    [Tooltip("เอามาจาก scripts/Settings/ManagerValue.cs")]
+    public ManagerValue managerValue;
+
+    private AudioSource GameAudioSource;
+    private AudioSource PlayerAudioSource;
+
+    void Awake()
     {
-        if (targetAudioSource == null)
-        {
-            Debug.LogWarning("⚠️ ยังไม่ได้ใส่ AudioSource ใน SoundSetting!");
-        }
+        GameAudioSource = GameAudioObject.GetComponent<AudioSource>();
+        PlayerAudioSource = PlayerAudioObject.GetComponent<AudioSource>();
+    }
+    
+    void Start()
+    {
+        // set ให้ slider มี value เท่าใน managerValue
+        GameAudioSlider.value = managerValue.gameSound;
+        PlayerAudioSlider.value = managerValue.playerSound;
 
-        if (volumeSlider == null)
-        {
-            Debug.LogWarning("⚠️ ยังไม่ได้ใส่ Slider ใน SoundSetting!");
-            return;
-        }
+        // set ให้ AudioSource มี value เท่าใน managerValue
+        GameAudioSource.volume = managerValue.gameSound;
+        PlayerAudioSource.volume = managerValue.playerSound;
 
-        // โหลดค่าจาก PlayerPrefs ถ้ามี (จำค่าครั้งก่อน)
-        float savedVolume = PlayerPrefs.GetFloat("GameVolume", 1f);
-        targetAudioSource.volume = savedVolume;
-        volumeSlider.value = savedVolume;
-
-        // ตั้งให้ slider เรียกฟังก์ชันเมื่อมีการเปลี่ยนค่า
-        volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        GameAudioSlider.onValueChanged.AddListener(GameVolumeChanged);
+        PlayerAudioSlider.onValueChanged.AddListener(PlayerVolumeChanged);
     }
 
-    private void OnVolumeChanged(float value)
+    private void PlayerVolumeChanged(float value)
     {
-        if (targetAudioSource != null)
+        if (PlayerAudioSource != null)
         {
-            targetAudioSource.volume = value;
-            Debug.Log($"🎚️ Volume set to: {value:F2}");
+            PlayerAudioSource.volume = value; // เปลี่ยนค่า volume
+            managerValue.playerSound = value; // เปลี่ยนค่า managerValue
         }
+    }
 
-        // บันทึกค่าไว้เพื่อให้จำได้ตอนเปิดเกมใหม่
-        PlayerPrefs.SetFloat("GameVolume", value);
+    private void GameVolumeChanged(float value)
+    {
+        if (GameAudioSource != null)
+        {
+            GameAudioSource.volume = value;
+            managerValue.gameSound = value;
+        }
     }
 }
