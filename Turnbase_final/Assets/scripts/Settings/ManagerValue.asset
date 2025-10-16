@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 982ec46f043340d408d4af66f0554896, type: 3}
   m_Name: ManagerValue
   m_EditorClassIdentifier: 
-  gameSound: 0.53339505
-  playerSound: 0.3113152
+  gameSound: 0
+  playerSound: 1
+  sensitiveValue: 1.7101179
+  fpsIndex: 0
+  textureIndex: 2

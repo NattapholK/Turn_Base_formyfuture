@@ -170,10 +170,10 @@ Material:
     - _WindDensity: 0
     - _WindSpeed: 0.5
     - _WindSpeed2: 0
-    - _WindStrength: 0.5
+    - _WindStrength: 0
     - _Wind_Direction: 0
-    - _Wind_Speed: 0.323
-    - _Wind_Strength: 0.383
+    - _Wind_Speed: 0
+    - _Wind_Strength: 0.25
     - _Wind_Variation: 1
     - _WorkflowMode: 0
     - _ZTest: 4

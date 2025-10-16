@@ -5,4 +5,7 @@ public class ManagerValue : ScriptableObject
 {
     public float gameSound = 1f;
     public float playerSound = 1f;
+    public float sensitiveValue = 1f;
+    public int fpsIndex = 0;
+    public int textureIndex = 0;
 }

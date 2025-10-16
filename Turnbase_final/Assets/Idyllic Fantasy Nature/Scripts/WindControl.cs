@@ -25,9 +25,9 @@ namespace IdyllicFantasyNature
         {
             for (int i = 0; i < _material.Length; i++)
             {
-                _material[i].SetFloat("_Wind_Speed", _windSpeed);
+                _material[i].SetFloat("_Wind_Speed", 0.05f);
                 _material[i].SetFloat("_Wind_Variation", _windVariation);
-                _material[i].SetFloat("_Wind_Strength", _windStrength);
+                _material[i].SetFloat("_Wind_Strength", 0.25f);
                 _material[i].SetFloat("_Wave_Scale", _waveScale);
                 _material[i].SetVector("_Wind_Direction", _windDirection);
             }

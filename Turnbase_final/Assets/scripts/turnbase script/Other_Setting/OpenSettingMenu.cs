@@ -29,9 +29,8 @@ public class OpenSettingMenu : MonoBehaviour
         Time.timeScale = 1f;
         isOpen = false;
 
-        // Optional : ล็อกจอ
-        // Cursor.visible = false;
-        // Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
 
         settingPanel.SetActive(false);
     }
