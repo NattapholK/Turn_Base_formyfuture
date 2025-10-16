@@ -17,3 +17,5 @@ MonoBehaviour:
   sensitiveValue: 1.7101179
   fpsIndex: 0
   textureIndex: 2
+  qualityIndex: 0
+  LODIndex: 2

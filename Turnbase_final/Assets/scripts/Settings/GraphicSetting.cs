@@ -15,6 +15,8 @@ public class GraphicSetting : MonoBehaviour
     [Header("DropDown")]
     public TMP_Dropdown FPSDropdown;
     public TMP_Dropdown textureDropdown;
+    public TMP_Dropdown qualityDropdown;
+    public TMP_Dropdown LODDropdown;
 
     [Header("Scriptable Object")]
     [Tooltip("เอามาจาก scripts/Settings/ManagerValue.cs")]
@@ -23,7 +25,7 @@ public class GraphicSetting : MonoBehaviour
 
     private List<int> fpsList = new List<int> { 30, 60, 120, 144 };
     private List<int> textureDList = new List<int> { 100, 5, 0 };
-    private List<float> LODList = new List<float> { 2f, 1f, 0.3f };
+    private List<float> LODList = new List<float> { 2f, 1.5f, 1f };
     void Start()
     {
         // เก็บค่าเริ่มต้น
@@ -38,17 +40,35 @@ public class GraphicSetting : MonoBehaviour
 
             lodInfos.Add(new LODInfo { lodGroup = lodGroup, originalValues = originals });
         }
-        
+
         QualitySettings.vSyncCount = 0; // ปิด V-Sync
 
         FPSDropdown.value = managerValue.fpsIndex;
         textureDropdown.value = managerValue.textureIndex;
+        qualityDropdown.value = managerValue.qualityIndex;
+        LODDropdown.value = managerValue.LODIndex;
 
         OnFPSDropdownChanged(FPSDropdown.value);
         OnTextureDropdownChanged(textureDropdown.value);
+        OnQualityDropdownChanged(qualityDropdown.value);
+        OnLODDropdownChanged(LODDropdown.value);
 
         FPSDropdown.onValueChanged.AddListener(OnFPSDropdownChanged); //รับค่า index มา
         textureDropdown.onValueChanged.AddListener(OnTextureDropdownChanged);
+        qualityDropdown.onValueChanged.AddListener(OnQualityDropdownChanged);
+        LODDropdown.onValueChanged.AddListener(OnLODDropdownChanged);
+    }
+
+    private void OnQualityDropdownChanged(int index)
+    {
+        QualitySettings.SetQualityLevel(index);
+        managerValue.qualityIndex = index;
+    }
+    
+    private void OnLODDropdownChanged(int index)
+    {
+        AdjustAllLODs(LODList[index]);
+        managerValue.LODIndex = index;
     }
 
     private void OnFPSDropdownChanged(int index)
@@ -59,11 +79,8 @@ public class GraphicSetting : MonoBehaviour
 
     private void OnTextureDropdownChanged(int index)
     {
-        QualitySettings.SetQualityLevel(index);
         QualitySettings.globalTextureMipmapLimit = textureDList[index];
         managerValue.textureIndex = index;
-
-        AdjustAllLODs(LODList[index]);
     }
 
     public void AdjustAllLODs(float factor)

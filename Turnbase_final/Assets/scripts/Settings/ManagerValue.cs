@@ -8,4 +8,6 @@ public class ManagerValue : ScriptableObject
     public float sensitiveValue = 1f;
     public int fpsIndex = 0;
     public int textureIndex = 0;
+    public int qualityIndex = 0;
+    public int LODIndex = 0;
 }
