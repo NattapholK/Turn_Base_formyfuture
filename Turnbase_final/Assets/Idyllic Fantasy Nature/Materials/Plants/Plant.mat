@@ -101,6 +101,7 @@ Material:
     - _Alpha_Cutoff: 0.5
     - _BEND_WIND_OVERLAY: 0
     - _BOOLEAN_1: 0
+    - _BaseWindStrength: 0.25
     - _Bend_Range: 1
     - _Bend_Strength: 0.245
     - _Blend: 0
@@ -124,6 +125,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _MaxWindStrength: 0.05
     - _Metallic: 0
     - _NoiseScale: 0
     - _Noise_Scale: 0
@@ -149,6 +151,7 @@ Material:
     - _WIND_OVERLAY: 0
     - _Wave_Scale: 0.5
     - _WindDensity: 0
+    - _WindRadius: 20
     - _WindSpeed: 1
     - _WindSpeed2: 0
     - _WindStrength: 0
@@ -166,6 +169,7 @@ Material:
     - _Bottom_Color: {r: 0.34582132, g: 0.3882353, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _PlayerPosition: {r: 0, g: 0, b: 0, a: 0}
     - _Player_Position: {r: 169.991, g: 19.29449, b: 166.09459, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _TopColor: {r: 0.9866245, g: 1, b: 0, a: 0}

@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GraphicSetting : MonoBehaviour
 {
@@ -18,9 +19,16 @@ public class GraphicSetting : MonoBehaviour
     public TMP_Dropdown qualityDropdown;
     public TMP_Dropdown LODDropdown;
 
+    [Header("Slider")]
+    public Slider grassDistanceSlider;
+
+
     [Header("Scriptable Object")]
     [Tooltip("เอามาจาก scripts/Settings/ManagerValue.cs")]
     public ManagerValue managerValue;
+
+    [Header("Terrain")]
+    public Terrain terrain;
 
 
     private List<int> fpsList = new List<int> { 30, 60, 120, 144 };
@@ -47,16 +55,19 @@ public class GraphicSetting : MonoBehaviour
         textureDropdown.value = managerValue.textureIndex;
         qualityDropdown.value = managerValue.qualityIndex;
         LODDropdown.value = managerValue.LODIndex;
+        grassDistanceSlider.value = managerValue.grassDistance;
 
         OnFPSDropdownChanged(FPSDropdown.value);
         OnTextureDropdownChanged(textureDropdown.value);
         OnQualityDropdownChanged(qualityDropdown.value);
         OnLODDropdownChanged(LODDropdown.value);
+        OnGrassDistanceSliderChanged(grassDistanceSlider.value);
 
         FPSDropdown.onValueChanged.AddListener(OnFPSDropdownChanged); //รับค่า index มา
         textureDropdown.onValueChanged.AddListener(OnTextureDropdownChanged);
         qualityDropdown.onValueChanged.AddListener(OnQualityDropdownChanged);
         LODDropdown.onValueChanged.AddListener(OnLODDropdownChanged);
+        grassDistanceSlider.onValueChanged.AddListener(OnGrassDistanceSliderChanged);
     }
 
     private void OnQualityDropdownChanged(int index)
@@ -81,6 +92,14 @@ public class GraphicSetting : MonoBehaviour
     {
         QualitySettings.globalTextureMipmapLimit = textureDList[index];
         managerValue.textureIndex = index;
+    }
+
+    private void OnGrassDistanceSliderChanged(float value)
+    {
+        if (terrain != null){
+            terrain.detailObjectDistance = 1000f * value;
+        }
+        managerValue.grassDistance = value;
     }
 
     public void AdjustAllLODs(float factor)

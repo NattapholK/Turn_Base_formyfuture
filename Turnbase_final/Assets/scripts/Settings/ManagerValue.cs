@@ -10,4 +10,5 @@ public class ManagerValue : ScriptableObject
     public int textureIndex = 0;
     public int qualityIndex = 0;
     public int LODIndex = 0;
+    public float grassDistance = 0f;
 }
