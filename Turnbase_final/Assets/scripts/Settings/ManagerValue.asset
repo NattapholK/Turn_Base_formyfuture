@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: ManagerValue
   m_EditorClassIdentifier: 
   gameSound: 0
-  playerSound: 1
+  playerSound: 0
   sensitiveValue: 1.7101179
   fpsIndex: 0
   textureIndex: 2
-  qualityIndex: 0
+  qualityIndex: 2
   LODIndex: 2
+  grassDistance: 1
