@@ -156,8 +156,7 @@ public class AttackSceneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.3f);
         StartCoroutine(uiScript.CheckDiedPlayerIcon());
-        yield return new WaitForSeconds(0.5f);
-        yield return StartCoroutine(uiScript.DeleteTurnIcon());
+        yield return new WaitForSeconds(1f);
 
         if (isEnding) //จบแล้วเอากล้องไปตรงนี้
         {
@@ -227,7 +226,7 @@ public class AttackSceneManager : MonoBehaviour
 
         // ถึงเทิร์นของศัตรู
         int bossSkillTarget = 0;
-        int bossSkillToUse = 1;
+        int bossSkillToUse = 0;
         bool StatusChecked = true;
 
         float ProbabilitySkill = Random.Range(0f, 100f);

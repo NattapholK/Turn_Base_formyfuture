@@ -9,6 +9,7 @@ public class StatusSystemScript : MonoBehaviour
 {
     [Header("Other Setting")]
     public Slider BossUI;
+    public bool floattextset2 = false;
     public GameObject FloatingTextPrefab;
     public GameObject UICanvas;
     public GameObject DamageUI;
@@ -17,7 +18,7 @@ public class StatusSystemScript : MonoBehaviour
     [HideInInspector] public List<int> CurrenthpPlayerList = new List<int>();
     [HideInInspector] public List<int> manaPlayerList;
     const int maxMana = 100;
-    private int CurrenthpEnemy;
+    [HideInInspector] public int CurrenthpEnemy;
     private int CabbageIndex;
     private Vector2 startDamgeUIPos;
     private TextMeshProUGUI DmgText;
@@ -83,7 +84,6 @@ public class StatusSystemScript : MonoBehaviour
             }
             attackSceneManager.allUnits[gameIndex].isdied = true;
             Debug.Log("ทำงาน");
-
         }
 
         BossUI.value = (float)CurrenthpEnemy / attackSceneManager.hpEnemy;
@@ -262,8 +262,17 @@ public class StatusSystemScript : MonoBehaviour
             0f
         );
 
+        Vector3 worldPos = new Vector3();
+
         // World position ของ player + offset
-        Vector3 worldPos = player.transform.position + randomOffset;
+        if (floattextset2)
+        {
+            worldPos = player.transform.GetChild(0).gameObject.transform.position + randomOffset;
+        }
+        else
+        {
+            worldPos = player.transform.position + randomOffset;
+        }
 
         // แปลงไปเป็น screen position
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);

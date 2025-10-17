@@ -8,8 +8,10 @@ public class UIManager : MonoBehaviour
 {
     public float space = 0f;
     public GameObject backgroundUI;
-    public Transform parentPanel;
+    public GameObject parentPanel;
+    private Transform parentPanelTranform;
 
+    private float firstX;
     private int dieCount;
     private int LastTurn;
     private float LastOffset;
@@ -21,6 +23,9 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         attackSceneManager = GetComponent<AttackSceneManager>();
+        parentPanelTranform = parentPanel.GetComponent<Transform>();
+        RectTransform rfx = parentPanel.GetComponent<RectTransform>();
+        firstX = rfx.rect.width * rfx.localScale.y / 2;
     }
     void Start()
     {
@@ -59,13 +64,13 @@ public class UIManager : MonoBehaviour
             }
             LastTurn = i + 1;
 
-            GameObject icon = Instantiate(uiUnits[i].UI, parentPanel);
+            GameObject icon = Instantiate(uiUnits[i].UI, parentPanelTranform);
             RectTransform rt = icon.GetComponent<RectTransform>();
 
             float height = rt.rect.height * rt.localScale.y + space;
 
             // จัดเรียงแบบ top-down
-            rt.anchoredPosition = new Vector2(0, -offsetY);
+            rt.anchoredPosition = new Vector2(-firstX, -offsetY);
 
             LastOffset = offsetY;
             offsetY += height;
@@ -87,24 +92,17 @@ public class UIManager : MonoBehaviour
             StartCoroutine(firstUIUpScale());
         }
     }
-    public IEnumerator DeleteTurnIcon()
+    private IEnumerator DeleteTurnIcon()
     {
-        yield return StartCoroutine(firstUIDownScale());
-
         RectTransform firstUI = uiInScene[0].UI.GetComponent<RectTransform>();
         float height = firstUI.rect.height * firstUI.localScale.y;
 
         Destroy(uiInScene[0].UI);
         uiInScene.RemoveAt(0);
 
-        List<Coroutine> coroutines = new List<Coroutine>();
         foreach (UIUnit UI in uiInScene)
         {
-            coroutines.Add(StartCoroutine(goUpUI(UI.UI, height + space)));
-        }
-        foreach (Coroutine c in coroutines)
-        {
-            yield return c;
+            goUpUI(UI.UI, height + space);
         }
 
         if (uiInScene.Count > 0)
@@ -130,9 +128,9 @@ public class UIManager : MonoBehaviour
                 LastTurn = 0;
             }
         }
-        GameObject icon = Instantiate(uiUnits[LastTurn].UI, parentPanel);
+        GameObject icon = Instantiate(uiUnits[LastTurn].UI, parentPanelTranform);
         RectTransform rt = icon.GetComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(0, -LastOffset);
+        rt.anchoredPosition = new Vector2(-firstX, -LastOffset);
 
         uiInScene.Add(new UIUnit
         {
@@ -202,6 +200,9 @@ public class UIManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("asdasdasdas ทำงาน");
+            yield return StartCoroutine(firstUIDownScale());
+            StartCoroutine(DeleteTurnIcon());
             yield break;
         }
 
@@ -209,10 +210,10 @@ public class UIManager : MonoBehaviour
 
         if (uiInScene.Count > 0)
         {
-            yield return StartCoroutine(firstUIUpScale());
+            StartCoroutine(DeleteTurnIcon());
         }
 
-        dieCount++;
+        dieCount = PlayerDieIndex.Count;
         Debug.Log("dieCount = " + dieCount);
     }
 
@@ -233,10 +234,14 @@ public class UIManager : MonoBehaviour
                 int indexNow = uiInScene.IndexOf(uiInScene[i]);
                 uiInScene.Remove(uiInScene[i]);
 
+                Debug.Log("uiInScene.Count = " + uiInScene.Count);
                 for (int j = indexNow; j < uiInScene.Count; j++)
                 {
-                    StartCoroutine(goUpUI(uiInScene[j].UI, height + space));
+                    Debug.Log("j = " + j);
+                    Debug.Log("uiInScene[j].UI = " + uiInScene[j].UI);
+                    goUpUI(uiInScene[j].UI, height + space);
                 }
+                Debug.Log("Add ละ " + i);
                 AddTurnIcon();
                 i--;
             }
@@ -277,27 +282,12 @@ public class UIManager : MonoBehaviour
         canvas.alpha = targetAlpha;
     }
 
-    private IEnumerator goUpUI(GameObject ui, float height)
+    private void goUpUI(GameObject ui, float height)
     {
         RectTransform rectUI = ui.GetComponent<RectTransform>();
 
-        float duration = 0.17f; // เวลาที่ใช้ในการเลื่อน (วินาที)
-        float elapsed = 0f;
+        Vector2 targetPos = new Vector2(-firstX, rectUI.anchoredPosition.y + height);
 
-        Vector2 startPos = rectUI.anchoredPosition;
-        Vector2 targetPos = new Vector2(0, rectUI.anchoredPosition.y + height);
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-
-            rectUI.anchoredPosition = Vector2.Lerp(startPos, targetPos, t);
-
-            yield return null;
-        }
-
-        // ล็อคตำแหน่งสุดท้าย
         rectUI.anchoredPosition = targetPos;
     }
 
@@ -312,10 +302,9 @@ public class UIManager : MonoBehaviour
 
         Vector2 startPos = ui.anchoredPosition;
         float addedHeight = ui.rect.height * (targetScale.y - startScale.y);
-        float addedWidth = ui.rect.width * (targetScale.x - startScale.x);
-        Vector2 targetPos = startPos + new Vector2(addedWidth / 2f, addedHeight / 2f);
+        Vector2 targetPos = startPos + new Vector2(0, addedHeight / 2f);
 
-        float duration = 0.1f;
+        float duration = 0.2f;
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -346,7 +335,7 @@ public class UIManager : MonoBehaviour
         float addedWidth = ui.rect.width * (targetScale.x - startScale.x);
         Vector2 targetPos = startPos + new Vector2(addedWidth / 2f, addedHeight / 2f);
 
-        float duration = 0.1f;
+        float duration = 0.2f;
         float elapsed = 0f;
 
         while (elapsed < duration)

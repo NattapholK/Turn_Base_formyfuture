@@ -106,7 +106,15 @@ public class setattack : MonoBehaviour
         }
 
         statusScript.useMana(PlayerIndex, targetSkill);
-        //ใส่ take damage ตรงนี้
+
+        if (statusScript.CurrenthpEnemy <= 0)
+        {
+            enemyanim.SetBool("isDie", true);
+        }
+        else
+        {
+            enemyanim.SetBool("isTakingDamage", true);
+        }
     }
 
     public void OnBossAttackFinished()
@@ -216,13 +224,13 @@ public class setattack : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("ตัวอักษรสุดท้ายของ param.name ไม่ใช่ตัวเลข: " + param.name);
+                    Debug.LogWarning("ตัวอักษรสุดท้ายของ param.name ไม่ใช่ตัวเลข: " + param.name); // เอาไว้เผื่อใส่เอฟเฟตตอนตาย
                     parameterName = param.name;
                 }
             }
         }
 
-        if (targetSkill == -1)
+        if (targetSkill == -1) // sound ตอนตายใส่ตรงนี้
         {
             if (takeDamageSound != null)
             {
