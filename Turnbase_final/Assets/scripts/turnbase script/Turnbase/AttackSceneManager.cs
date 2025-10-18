@@ -44,6 +44,9 @@ public class AttackSceneManager : MonoBehaviour
     public GameObject cameraObj;
     public float moveTime = 1.5f; // เวลาในการเคลื่อน
 
+    [Header("ตั้งค่าเกม")]
+    public float gameSpeed = 1f; //เอาค่าไปหาร พวก WaitForSeconds ใน Coroutine || เอาไว้ตอนทดสอบ ขี้เกียจรอ
+
     [Header("Debug Setting")]
     public bool useOldCameraMode = false;
     public bool lockPlayerCursorOnStart = true;
@@ -83,7 +86,7 @@ public class AttackSceneManager : MonoBehaviour
         //ขยับจอไปที่โปเกม่อนตัวแรก
         if (useOldCameraMode) MoveToPosition(playerData[0].targetPlayerCamera.position);
         else CameraManager.Instance.CameraChangeTurnTransition(currentTurnIndex);
-        
+
         for (int i = 0; i < playerData.Count; i++) //allUnit คือ list หลักที่จะเอาไว้เรียงเทิร์น
         {
             statusScript.AddHpUI(playerData[i].playerProfileUI.transform.GetChild(1).gameObject, i);
@@ -135,7 +138,7 @@ public class AttackSceneManager : MonoBehaviour
             // เปิด UI ให้ Player เลือกสกิล
             unit.uiObj.SetActive(true);
             StartCoroutine(uiScript.ScaleUI(unit.proFileUI, "up"));
-            
+
             CameraManager.Instance.CameraChangeTurnTransition(unit.unitIndex); //ชั่วคราว
         }
         else
@@ -156,7 +159,7 @@ public class AttackSceneManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.3f);
         StartCoroutine(uiScript.CheckDiedPlayerIcon());
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f / gameSpeed);
 
         if (isEnding) //จบแล้วเอากล้องไปตรงนี้
         {
@@ -222,7 +225,7 @@ public class AttackSceneManager : MonoBehaviour
 
     IEnumerator BossTurn(BattleUnit unit)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2f / gameSpeed);
 
         // ถึงเทิร์นของศัตรู
         int bossSkillTarget = 0;
@@ -313,22 +316,59 @@ public class AttackSceneManager : MonoBehaviour
         //ขยับจอไปที่เป้าหมาย
         if (setAttackBoss.isBird && bossSkillToUse == 1)
         {
-            MoveToPosition(targetAll.position);
+            //MoveToPosition(targetAll.position);
         }
         else
         {
             Debug.Log("bossSkillTarget = " + bossSkillTarget);
-            MoveToPosition(playerData[bossSkillTarget - 1].targetPlayerCamera.position);
+            //MoveToPosition(playerData[bossSkillTarget - 1].targetPlayerCamera.position);
         }
 
-        yield return new WaitForSeconds(2f);
+        CameraManager.Instance.CameraChangeTurnTransition(bossSkillTarget - 1, false); //ชั่วคราว 
 
-        string bossTrigger = "isAttack" + bossSkillTarget + bossSkillToUse;
-        unit.animator.SetBool(bossTrigger, true);
+        yield return new WaitForSeconds(2f / gameSpeed);
+
+        
+
+        //โค้ดชั่วคราว ถ้าไม่ได้เปลี่ยนก็ใช้งี้ได้ | รัน animation ถ้าเจอบอส nuutor เวอร์ชั่นใหม่
+        GameObject bossRoot = GameObject.Find("Boss - Nuutor Rat");
+        if (bossRoot != null)
+        {
+            Transform turnAnimatorTransform = bossRoot.transform.Find("GameObject/GameObject/Turn Animator");
+            if (turnAnimatorTransform != null)
+            {
+                
+
+                if (bossSkillToUse == 0)
+                {
+                    //หันแล้วก็โดดไปตี
+                    Debug.Log("triggerName = " + "ratTurnAttack_" + bossSkillTarget);
+                    string triggerName = "ratTurnAttack_" + bossSkillTarget;
+                    turnAnimatorTransform.GetComponent<Animator>().SetTrigger(triggerName);
+                    //unit.animator.SetBool("isNormalAttack", true);
+                }
+                else if (bossSkillToUse == 1)
+                {
+                    //หันเฉยๆ (สกิลเสกหนู)
+                    Debug.Log("triggerName = " + "ratTurn_" + bossSkillTarget);
+                    string skillTriggerName = "ratTurn_" + bossSkillTarget;
+                    turnAnimatorTransform.GetComponent<Animator>().SetTrigger(skillTriggerName);
+                }
+                string bossTrigger = "isAttack" + bossSkillTarget + bossSkillToUse;
+                unit.animator.SetBool(bossTrigger, true);
+            }
+        } else
+        {
+            //รัน animation แบบเดิม ถ้าไม่ได้ตีกับ boss nuutor เวอร์ชั่นใหม่
+            string bossTrigger = "isAttack" + bossSkillTarget + bossSkillToUse;
+            unit.animator.SetBool(bossTrigger, true);
+        }
+
+
 
         Debug.Log("บอสใช้สกิล: " + bossSkillToUse + "กับ player " + bossSkillTarget);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f / gameSpeed);
         StartCoroutine(EndTurn());
     }
 
@@ -352,7 +392,7 @@ public class AttackSceneManager : MonoBehaviour
 
         Vector3 startPos = cameraObj.transform.position;
         float elapsed = 0f;
-        
+
 
         while (elapsed < moveTime)
         {

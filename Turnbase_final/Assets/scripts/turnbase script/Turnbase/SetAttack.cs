@@ -75,6 +75,8 @@ public class setattack : MonoBehaviour
         int atk = playerAtk;
         int targetSkill = -1;
 
+        CameraShake.Instance.ExecuteCameraShakeWithThisAnimation(anim);
+
         foreach (AnimatorControllerParameter param in anim.parameters)
         {
             if (anim.GetBool(param.name))
@@ -179,6 +181,7 @@ public class setattack : MonoBehaviour
                 pokeAnim[targetPlayer - 1].SetBool("isTakingDamage", true);
             }
         }
+        CameraShake.Instance.PresetShake_GeneralAttack();
     }
 
     public void OnTakeDamgeFinished()
