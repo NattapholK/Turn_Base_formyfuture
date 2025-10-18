@@ -19310,7 +19310,7 @@ MonoBehaviour:
     skill1Sound: {fileID: 8300000, guid: b866bc3df0d2dba4d9e6bde9f2700b64, type: 3}
     skill2Sound: {fileID: 8300000, guid: 03b27d9da6ca1d042a94c12fb3860a64, type: 3}
     hpPlayer: 20
-    atkPlayer: 50
+    atkPlayer: 10
     speedPlayer: 4
   targetBoss: {fileID: 61259633}
   targetEnd: {fileID: 850822195}
@@ -19318,12 +19318,13 @@ MonoBehaviour:
   enemy: {fileID: 5346775692859097398}
   turnEnemyUIPrefab: {fileID: 8652167983533702435, guid: 1e22e683f2ed81743942b03a8cbc3101, type: 3}
   hpEnemy: 100
-  atkBoss: 0
+  atkBoss: 3
   speedBoss: 3
   skillCount: 1
   cameraObj: {fileID: 0}
   moveTime: 1.5
   gameSpeed: 1
+  SceneIndex: 0
   useOldCameraMode: 0
   lockPlayerCursorOnStart: 1
   PlayerAudioSource: {fileID: 1746941936}
@@ -26363,6 +26364,7 @@ MonoBehaviour:
   CameraShakeObj: {fileID: 335326179}
   cameraAnimator: {fileID: 1167772685}
   attackSceneManager: {fileID: 1428851250}
+  bossRotateTowardsTarget: {fileID: 0}
 --- !u!4 &2100277582
 Transform:
   m_ObjectHideFlags: 0
