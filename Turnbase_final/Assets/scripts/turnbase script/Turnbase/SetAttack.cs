@@ -8,6 +8,7 @@ public class setattack : MonoBehaviour
 {
     [Header("for player")]
     public bool isCabbage = false;
+    public GameObject fieldCabbage;
     private bool isReduceDmg = false;
 
     [Header("for  boss")]
@@ -104,6 +105,10 @@ public class setattack : MonoBehaviour
                 else
                 {
                     Debug.Log(gameObject.name + " ล่อศัตรู 2 เทิร์น");
+                    if (fieldCabbage != null)
+                    {
+                        fieldCabbage.SetActive(true);
+                    }
                 }
                 break;
         }

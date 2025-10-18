@@ -2176,8 +2176,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 32.66}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 874, y: 244}
-  m_SizeDelta: {x: 97.8765, y: 64.2808}
+  m_AnchoredPosition: {x: 880.8271, y: 248.42247}
+  m_SizeDelta: {x: 145.5532, y: 64.2808}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183852884
 MonoBehaviour:
@@ -2233,7 +2233,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -8120,6 +8120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCabbage: 0
+  fieldCabbage: {fileID: 0}
   isBird: 0
   otherSound1: {fileID: 0}
   PlayerAudioSource: {fileID: 0}
@@ -9361,7 +9362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &706470039
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19309,16 +19310,16 @@ MonoBehaviour:
     takeDamageSound: {fileID: 8300000, guid: 74a3df4adcfbbab4ba92c6633781fd01, type: 3}
     skill1Sound: {fileID: 8300000, guid: b866bc3df0d2dba4d9e6bde9f2700b64, type: 3}
     skill2Sound: {fileID: 8300000, guid: 03b27d9da6ca1d042a94c12fb3860a64, type: 3}
-    hpPlayer: 20
-    atkPlayer: 10
+    hpPlayer: 5000
+    atkPlayer: 200
     speedPlayer: 4
   targetBoss: {fileID: 61259633}
   targetEnd: {fileID: 850822195}
   targetAll: {fileID: 292424612}
   enemy: {fileID: 5346775692859097398}
   turnEnemyUIPrefab: {fileID: 8652167983533702435, guid: 1e22e683f2ed81743942b03a8cbc3101, type: 3}
-  hpEnemy: 100
-  atkBoss: 3
+  hpEnemy: 10000
+  atkBoss: 750
   speedBoss: 3
   skillCount: 1
   cameraObj: {fileID: 0}
@@ -30661,6 +30662,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCabbage: 0
+  fieldCabbage: {fileID: 0}
   isBird: 0
   otherSound1: {fileID: 0}
   PlayerAudioSource: {fileID: 0}

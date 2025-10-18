@@ -2938,8 +2938,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 32.66}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 874, y: 244}
-  m_SizeDelta: {x: 97.8765, y: 64.2808}
+  m_AnchoredPosition: {x: 884, y: 251.9}
+  m_SizeDelta: {x: 142.39, y: 64.2808}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183852884
 MonoBehaviour:
@@ -2995,7 +2995,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -10321,6 +10321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCabbage: 0
+  fieldCabbage: {fileID: 0}
   isBird: 0
   otherSound1: {fileID: 0}
   PlayerAudioSource: {fileID: 0}
@@ -14542,6 +14543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCabbage: 0
+  fieldCabbage: {fileID: 0}
   isBird: 0
   otherSound1: {fileID: 0}
   PlayerAudioSource: {fileID: 0}
@@ -25860,8 +25862,8 @@ MonoBehaviour:
     takeDamageSound: {fileID: 8300000, guid: 74a3df4adcfbbab4ba92c6633781fd01, type: 3}
     skill1Sound: {fileID: 8300000, guid: b866bc3df0d2dba4d9e6bde9f2700b64, type: 3}
     skill2Sound: {fileID: 8300000, guid: 03b27d9da6ca1d042a94c12fb3860a64, type: 3}
-    hpPlayer: 20
-    atkPlayer: 2
+    hpPlayer: 5000
+    atkPlayer: 200
     speedPlayer: 4
   - playerObject: {fileID: 1519959869}
     playerSkillUI: {fileID: 1816477666}
@@ -25871,16 +25873,16 @@ MonoBehaviour:
     takeDamageSound: {fileID: 8300000, guid: 3374fe21dbff9ac4bb37323a467e4fb5, type: 3}
     skill1Sound: {fileID: 8300000, guid: 51012cf3342984e4597b5c9b749b13ad, type: 3}
     skill2Sound: {fileID: 8300000, guid: c8b8cf8b0a4ed4b4fabd9b5f0246a509, type: 3}
-    hpPlayer: 20
-    atkPlayer: 2
+    hpPlayer: 5000
+    atkPlayer: 200
     speedPlayer: 4
   targetBoss: {fileID: 61259633}
   targetEnd: {fileID: 850822195}
   targetAll: {fileID: 292424612}
   enemy: {fileID: 816971638}
   turnEnemyUIPrefab: {fileID: 8652167983533702435, guid: 1e22e683f2ed81743942b03a8cbc3101, type: 3}
-  hpEnemy: 100
-  atkBoss: 100
+  hpEnemy: 10000
+  atkBoss: 750
   speedBoss: 3
   skillCount: 1
   cameraObj: {fileID: 1539008387}
@@ -27358,6 +27360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCabbage: 1
+  fieldCabbage: {fileID: 2136118479}
   isBird: 0
   otherSound1: {fileID: 0}
   PlayerAudioSource: {fileID: 0}
@@ -27406,6 +27409,7 @@ Transform:
   - {fileID: 1890750479}
   - {fileID: 1813540040}
   - {fileID: 1944470738}
+  - {fileID: 2136118480}
   - {fileID: 1336492238}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -27.368, z: 0}
@@ -37719,6 +37723,115 @@ Transform:
   - {fileID: 632284177}
   m_Father: {fileID: 1231297885}
   m_LocalEulerAnglesHint: {x: 0.7212904, y: 36.344376, z: -89.79652}
+--- !u!1 &2136118479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2136118480}
+  - component: {fileID: 2136118483}
+  - component: {fileID: 2136118482}
+  - component: {fileID: 2136118481}
+  m_Layer: 0
+  m_Name: ForceField
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2136118480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136118479}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.23657058, z: -0, w: 0.97161436}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1519959872}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &2136118481
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136118479}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2960224688415880698, guid: 57a893aee1092a649833649de031d07c, type: 3}
+--- !u!23 &2136118482
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136118479}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 0960f507df40faa4ea033d24d5327f61, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &2136118483
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136118479}
+  m_Mesh: {fileID: 2960224688415880698, guid: 57a893aee1092a649833649de031d07c, type: 3}
 --- !u!1 &2136281531
 GameObject:
   m_ObjectHideFlags: 0
@@ -41427,6 +41540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCabbage: 0
+  fieldCabbage: {fileID: 0}
   isBird: 0
   otherSound1: {fileID: 0}
   PlayerAudioSource: {fileID: 0}

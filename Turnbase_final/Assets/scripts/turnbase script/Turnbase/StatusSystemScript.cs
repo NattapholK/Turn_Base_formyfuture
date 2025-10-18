@@ -162,6 +162,8 @@ public class StatusSystemScript : MonoBehaviour
 
     public void useMana(int playerIndex, int skillID)
     {
+        Debug.Log("playerIndex = " + playerIndex);
+        Debug.Log("skillID = " + skillID);
         if (playerIndex < 1 || playerIndex > manaPlayerList.Count)
         {
             Debug.Log("playerIndex ไม่ถูกต้อง");
@@ -182,7 +184,10 @@ public class StatusSystemScript : MonoBehaviour
                 break;
             case 2:
                 manaCost = maxMana;
-                manaPlayerList[playerIndex - 1] -= manaCost;
+                if (manaPlayerList[playerIndex - 1] - manaCost >= 0)
+                {
+                    manaPlayerList[playerIndex - 1] -= manaCost;
+                }
                 Debug.Log("Player " + playerIndex + " เหลือ mana " + manaPlayerList[playerIndex - 1]);
                 break;
             default:

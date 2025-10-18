@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.Rendering;
 using System.Linq;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public struct Data
@@ -161,6 +162,12 @@ public class AttackSceneManager : MonoBehaviour
         yield return new WaitForSeconds(1.3f);
         StartCoroutine(uiScript.CheckDiedPlayerIcon());
         yield return new WaitForSeconds(1f / gameSpeed);
+
+        setattack cabbageSATK = playerData[numberOfCabbage].playerObject.GetComponent<setattack>();
+        if(cabbageSATK.fieldCabbage!= null && !isLure)
+        {
+            cabbageSATK.fieldCabbage.SetActive(false);
+        }
 
         if (isEnding) //จบแล้วเอากล้องไปตรงนี้
         {
