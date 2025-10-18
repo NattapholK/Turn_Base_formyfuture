@@ -75,7 +75,7 @@ public class setattack : MonoBehaviour
         int atk = playerAtk;
         int targetSkill = -1;
 
-        CameraShake.Instance.ExecuteCameraShakeWithThisAnimation(anim);
+        
 
         foreach (AnimatorControllerParameter param in anim.parameters)
         {
@@ -99,6 +99,7 @@ public class setattack : MonoBehaviour
                 {
                     atk = Mathf.RoundToInt(atk * 1.5f);
                     statusScript.playerAttack(atk);
+                    CameraShake.Instance.ExecuteCameraShakeWithThisAnimation(anim);
                 }
                 else
                 {
@@ -249,12 +250,20 @@ public class setattack : MonoBehaviour
             }
         }
     }
-    
+
     public void OtherSoundEffectSkill()
     {
-        if(otherSound1 != null)
+        if (otherSound1 != null)
         {
             PlayerAudioSource.PlayOneShot(otherSound1);
-        } 
+        }
+    }
+    
+    public void ResetRotationAfterAttack() //Animation Event ที่ใช้เฉพาะกับ animation หนูเท่านั้น เซ็ตแล้ว ไม่มีปัญหา
+    {
+        if (CameraManager.Instance != null && CameraManager.Instance.bossRotateTowardsTarget != null)
+        {
+            CameraManager.Instance.bossRotateTowardsTarget.ResetTargetAndLerpRotationToZero();
+        }
     }
 }

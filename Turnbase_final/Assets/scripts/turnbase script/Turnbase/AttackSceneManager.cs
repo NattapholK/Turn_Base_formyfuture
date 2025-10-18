@@ -46,6 +46,7 @@ public class AttackSceneManager : MonoBehaviour
 
     [Header("ตั้งค่าเกม")]
     public float gameSpeed = 1f; //เอาค่าไปหาร พวก WaitForSeconds ใน Coroutine || เอาไว้ตอนทดสอบ ขี้เกียจรอ
+    public int SceneIndex;
 
     [Header("Debug Setting")]
     public bool useOldCameraMode = false;
@@ -337,22 +338,35 @@ public class AttackSceneManager : MonoBehaviour
             Transform turnAnimatorTransform = bossRoot.transform.Find("GameObject/GameObject/Turn Animator");
             if (turnAnimatorTransform != null)
             {
-                
-
                 if (bossSkillToUse == 0)
                 {
                     //หันแล้วก็โดดไปตี
                     Debug.Log("triggerName = " + "ratTurnAttack_" + bossSkillTarget);
                     string triggerName = "ratTurnAttack_" + bossSkillTarget;
+
+                    if (SceneIndex == 2 && CameraManager.Instance != null)
+                    {
+                        CameraManager.Instance.bossRotateTowardsTarget.AssignTargetAndEnable(CameraManager.Instance.GetCharacterTargetPosition(bossSkillTarget - 1));
+                        triggerName = "ratTurnAttack"; //ชั่วคราว 
+                    }
+                    
                     turnAnimatorTransform.GetComponent<Animator>().SetTrigger(triggerName);
-                    //unit.animator.SetBool("isNormalAttack", true);
+
                 }
                 else if (bossSkillToUse == 1)
                 {
                     //หันเฉยๆ (สกิลเสกหนู)
                     Debug.Log("triggerName = " + "ratTurn_" + bossSkillTarget);
-                    string skillTriggerName = "ratTurn_" + bossSkillTarget;
-                    turnAnimatorTransform.GetComponent<Animator>().SetTrigger(skillTriggerName);
+
+                    if (SceneIndex == 2 && CameraManager.Instance != null)
+                    {
+                        CameraManager.Instance.bossRotateTowardsTarget.AssignTargetAndEnable(CameraManager.Instance.GetCharacterTargetPosition(bossSkillTarget - 1));
+                    } else
+                    {
+                        string skillTriggerName = "ratTurn_" + bossSkillTarget;
+                        turnAnimatorTransform.GetComponent<Animator>().SetTrigger(skillTriggerName);
+                    }
+                    
                 }
                 string bossTrigger = "isAttack" + bossSkillTarget + bossSkillToUse;
                 unit.animator.SetBool(bossTrigger, true);
