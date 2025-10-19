@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 public class StatusSystemScript : MonoBehaviour
@@ -156,10 +157,20 @@ public class StatusSystemScript : MonoBehaviour
         if (CurrenthpEnemy <= 0)
         {
             Debug.Log("Enemy defeated!");
+            if(!string.IsNullOrEmpty(NextSceneName))
+            {
+                Debug.Log("LevelManager.Instance.LoadScene(NextSceneName); ทำงาน");
+                LevelManager.Instance.LoadScene(NextSceneName);
+            }
         }
         else if (isAllPlayerDied())
         {
             Debug.Log("Player defeated!");
+            if(!string.IsNullOrEmpty(LostSceneName))
+            {
+                Debug.Log("LevelManager.Instance.LoadScene(LostSceneName); ทำงาน");
+                LevelManager.Instance.LoadScene(LostSceneName);
+            }
         }
     }
 

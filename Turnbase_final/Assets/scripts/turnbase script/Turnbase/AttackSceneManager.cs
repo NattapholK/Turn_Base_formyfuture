@@ -171,6 +171,7 @@ public class AttackSceneManager : MonoBehaviour
         if (isEnding) //จบแล้วเอากล้องไปตรงนี้
         {
             MoveToPosition(targetEnd.position);
+            Debug.Log("เริ่มตรงนี้แล้วEndTurn");
             yield return new WaitForSeconds(3f);
             statusScript.endFight();
             yield break;
