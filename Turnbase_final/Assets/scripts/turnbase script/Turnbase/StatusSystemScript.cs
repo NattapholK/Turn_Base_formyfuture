@@ -13,6 +13,9 @@ public class StatusSystemScript : MonoBehaviour
     public GameObject FloatingTextPrefab;
     public GameObject UICanvas;
     public GameObject DamageUI;
+    [Header("Scene Manage")]
+    public string NextSceneName;
+    public string LostSceneName;
 
 
     [HideInInspector] public List<int> CurrenthpPlayerList = new List<int>();
