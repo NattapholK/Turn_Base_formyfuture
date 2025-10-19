@@ -129,7 +129,6 @@ public class AttackSceneManager : MonoBehaviour
         if (statusScript.checkEndGame() && !isEnding)
         {
             isEnding = true;
-            statusScript.endFight();
         }
     }
 
@@ -172,6 +171,8 @@ public class AttackSceneManager : MonoBehaviour
         if (isEnding) //จบแล้วเอากล้องไปตรงนี้
         {
             MoveToPosition(targetEnd.position);
+            yield return new WaitForSeconds(3f);
+            statusScript.endFight();
             yield break;
         }
 

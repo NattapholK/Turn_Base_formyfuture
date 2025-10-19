@@ -15,7 +15,7 @@ public class ShowRealPoint : MonoBehaviour
     }
     void Update()
     {
-        UpdateFloatingUI(BossTarget);
+        UpdateFloatingUI();
     }
 
     private void showfloatingUI()
@@ -24,11 +24,11 @@ public class ShowRealPoint : MonoBehaviour
         UIingame = Instantiate(UIprefab, UICanvas.transform);
     }
     
-    private void UpdateFloatingUI(GameObject boss)
+    private void UpdateFloatingUI()
     {
-        float distance = Vector3.Distance(player.transform.position, boss.transform.position);
+        float distance = Vector3.Distance(player.transform.position, BossTarget.transform.position);
 
-        Vector3 worldPos = boss.transform.position;
+        Vector3 worldPos = BossTarget.transform.position;
 
         // แปลงไปเป็น screen position
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
