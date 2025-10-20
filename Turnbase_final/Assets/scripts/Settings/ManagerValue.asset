@@ -15,7 +15,7 @@ MonoBehaviour:
   gameSound: 0
   playerSound: 0
   sensitiveValue: 1.7101179
-  fpsIndex: 0
+  fpsIndex: 3
   textureIndex: 2
   qualityIndex: 2
   LODIndex: 2
