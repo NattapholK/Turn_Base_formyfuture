@@ -29838,6 +29838,8 @@ MonoBehaviour:
   FloatingTextPrefab: {fileID: 6081694316323726468, guid: d630c8bcb3adb9b4aa1d07d61c3aa8cf, type: 3}
   UICanvas: {fileID: 1063441748}
   DamageUI: {fileID: 706470038}
+  NextSceneName: 
+  LostSceneName: 
   CurrenthpPlayerList: 
   manaPlayerList: 000000000000000000000000
   CurrenthpEnemy: 0

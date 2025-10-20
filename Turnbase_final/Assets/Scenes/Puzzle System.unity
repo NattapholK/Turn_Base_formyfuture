@@ -13746,7 +13746,7 @@ Transform:
   m_Children:
   - {fileID: 4333664818485478938}
   m_Father: {fileID: 3164982296958242087}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.2402141}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4298001597674265871
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -14145,7 +14145,7 @@ Transform:
   m_Children:
   - {fileID: 8942081605428124331}
   m_Father: {fileID: 5094988294879594990}
-  m_LocalEulerAnglesHint: {x: -90, y: 0.18073669, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}
 --- !u!1 &7623545440076608224
 GameObject:
   m_ObjectHideFlags: 0
