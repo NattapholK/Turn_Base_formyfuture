@@ -58,6 +58,7 @@ public class AttackSceneManager : MonoBehaviour
     public AudioSource GameAudioSource;
 
 
+
     private bool isLure = false;
     private int turnCount = 0;
     private int numberOfCabbage = 0;
@@ -210,6 +211,10 @@ public class AttackSceneManager : MonoBehaviour
             }
             if (statusScript.manaPlayerList[playerIndex] < statusScript.maxManaData())
             {
+                Debug.Log("playerIndex = " + playerIndex);
+                Debug.Log("statusScript.manaPlayerList[playerIndex] = " + statusScript.manaPlayerList[playerIndex]);
+                Debug.Log("unit.index = " + unit.index);
+                Debug.Log("statusScript.manaPlayerList[unit.index] = " + statusScript.manaPlayerList[unit.index]);
                 Debug.Log("Player มานาไม่พอ");
                 return;
             }

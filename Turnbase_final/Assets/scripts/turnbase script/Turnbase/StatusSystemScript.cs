@@ -17,6 +17,8 @@ public class StatusSystemScript : MonoBehaviour
     [Header("Scene Manage")]
     public string NextSceneName;
     public string LostSceneName;
+    public ManagerValue managerValue;
+    public int GameSceneIndex = 0;//สร้างไว้ไม่กล้าแตะอันก่อนหน้า
 
 
     [HideInInspector] public List<int> CurrenthpPlayerList = new List<int>();
@@ -156,6 +158,20 @@ public class StatusSystemScript : MonoBehaviour
     {
         if (CurrenthpEnemy <= 0)
         {
+            switch (GameSceneIndex)
+            {
+                case -1:
+                    break;
+                case 0:
+                    managerValue.isCompleteGame1 = true;
+                    break;
+                case 1:
+                    managerValue.isCompleteGame2 = true;
+                    break;
+                case 2:
+                    managerValue.isCompleteGame3 = true;
+                    break;
+            }
             Debug.Log("Enemy defeated!");
             if(!string.IsNullOrEmpty(NextSceneName))
             {
