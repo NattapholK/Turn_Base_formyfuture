@@ -28089,7 +28089,7 @@ Transform:
   m_GameObject: {fileID: 1376208349}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -500, y: 0, z: -500}
+  m_LocalPosition: {x: -143.6, y: 0, z: -118.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29840,6 +29840,8 @@ MonoBehaviour:
   DamageUI: {fileID: 706470038}
   NextSceneName: 
   LostSceneName: 
+  managerValue: {fileID: 0}
+  GameSceneIndex: 0
   CurrenthpPlayerList: 
   manaPlayerList: 000000000000000000000000
   CurrenthpEnemy: 0

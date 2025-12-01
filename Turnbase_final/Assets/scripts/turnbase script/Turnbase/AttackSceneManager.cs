@@ -119,7 +119,11 @@ public class AttackSceneManager : MonoBehaviour
             isdied = false
         });
 
-        allUnits = allUnits.OrderByDescending(u => u.speed).ToList(); //เรียงเทิร์นตาม speed
+        // allUnits = allUnits.OrderByDescending(u => u.speed).ToList();
+        for(int i = 0; i < allUnits.Count; i++)
+        {
+            Sort(allUnits, i);//เรียงเทิร์นตาม speed
+        }
 
         StartTurn(allUnits[currentTurnIndex]);// เริ่มเทิร์นแรก
 
@@ -192,6 +196,18 @@ public class AttackSceneManager : MonoBehaviour
         }
 
         StartTurn(allUnits[currentTurnIndex]);
+    }
+
+    void Sort(List<BattleUnit> list , int Index)
+    {
+        BattleUnit temp = list[Index];
+        int j = Index - 1;
+        while(j >= 0 && list[j].speed > temp.speed)
+        {
+            list[j+1] = list[j];
+            j--;
+        }
+        list[j+1] = temp;
     }
 
     // เรียกใช้ผ่าน UI Button

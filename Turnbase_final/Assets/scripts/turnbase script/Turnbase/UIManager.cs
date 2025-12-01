@@ -46,11 +46,27 @@ public class UIManager : MonoBehaviour
             index = uiUnits.Count
         });
 
-        uiUnits = uiUnits.OrderByDescending(u => u.speed).ToList();
+        // uiUnits = uiUnits.OrderByDescending(u => u.speed).ToList();
+        for(int i = 0; i < uiUnits.Count ; i++)
+        {
+            Sort(uiUnits, i);
+        }
 
         bgUIRecttranform = backgroundUI.GetComponent<RectTransform>();
         bgUIHight = bgUIRecttranform.rect.height;
         CreateTurnIcons();
+    }
+
+    void Sort(List<UIUnit> list, int Index)
+    {
+        int j = Index - 1;
+        UIUnit temp = list[Index];
+        while(j >= 0 && list[j].speed > temp.speed)
+        {
+            list[j + 1] = list[j];
+            j--;
+        }
+        list[j + 1] = temp;
     }
     public void CreateTurnIcons()
     {
