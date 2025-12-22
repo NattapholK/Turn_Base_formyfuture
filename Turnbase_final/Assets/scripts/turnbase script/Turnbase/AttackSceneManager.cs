@@ -62,7 +62,7 @@ public class AttackSceneManager : MonoBehaviour
     private bool isLure = false;
     private int turnCount = 0;
     private int numberOfCabbage = 0;
-    private int currentTurnIndex = 0; //ทำเป็น public เพราะจะดูค่า
+    public int currentTurnIndex = 0; //ทำเป็น public เพราะจะดูค่า
     private bool isEnding = false;
     private UIManager uiScript;
     private Coroutine moveCoroutine;

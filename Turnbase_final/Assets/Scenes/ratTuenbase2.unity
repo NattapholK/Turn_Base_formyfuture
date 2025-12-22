@@ -21217,6 +21217,7 @@ MonoBehaviour:
   lockPlayerCursorOnStart: 1
   PlayerAudioSource: {fileID: 1746941936}
   GameAudioSource: {fileID: 1418477286}
+  currentTurnIndex: 0
 --- !u!4 &1428851251
 Transform:
   m_ObjectHideFlags: 0
