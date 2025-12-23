@@ -13,7 +13,9 @@ public class Hurt : Control
     }
     public override void Update()
     {
-        
+        //เดี๋ยวค่อยเขียนเพิ่ม
+        NextState = new Idle(Me);
+        Stage = EVENT.EXIT;
     }
 
     public override void Exit()

@@ -13,7 +13,7 @@ public class Dead : Control
     }
     public override void Update()
     {
-        
+        //ตายแล้ว
     }
 
     public override void Exit()

@@ -18,6 +18,16 @@ public class Idle : Control
             NextState = new Select(Me);
             Stage = EVENT.EXIT;
         }
+        if (Me._Animator.GetBool("isTakingDamage"))
+        {
+            NextState = new Hurt(Me);
+            Stage = EVENT.EXIT;
+        }
+        if (Me.GetHp() <= 0)
+        {
+            NextState = new Dead(Me);
+            Stage = EVENT.EXIT;
+        }
     }
 
     public override void Exit()

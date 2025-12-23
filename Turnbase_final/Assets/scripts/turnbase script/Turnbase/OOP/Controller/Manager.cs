@@ -1,20 +1,30 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    public Character[] characters;
-    private List<Character> c;
+    public Player[] players;
+    public Enemy[] enemies;
+    private List<Character> characters;
     private int Current_Index = 0;
 
     void Awake()
     {
-        int i = 0;
-        foreach (Character unit in characters)
+        characters.Clear();
+        characters.AddRange(players.Where(p => p != null));
+        characters.AddRange(enemies.Where(e => e != null));
+        for(int i = 0; i< characters.Count; i++)
         {
-            c.Add(unit);
+            if(characters[i] is Player p)
+            {
+                p.enemies = enemies;
+            }
+            else if(characters[i] is Enemy e)
+            {
+                e.players = players;
+            }
             InsertionSort(i);
-            i++;
         }
     }
 
@@ -25,32 +35,32 @@ public class Manager : MonoBehaviour
 
     public void StartTurn()
     {
-        c[Current_Index].MyTurn = true;
+        characters[Current_Index].MyTurn = true;
     }
 
     public void EndTurn()
     {
-        c[Current_Index].MyTurn = false;
+        characters[Current_Index].MyTurn = false;
 
         do
         {
             Current_Index++;
-            if (Current_Index >= c.Count) Current_Index = 0; // วนกลับรอบใหม่
+            if (Current_Index >= characters.Count) Current_Index = 0; // วนกลับรอบใหม่
         }
-        while (c[Current_Index].GetHp() <= 0);
+        while (characters[Current_Index].GetHp() <= 0);
 
         StartTurn();
     }
 
     public void InsertionSort(int Index)
     {
-        Character temp = c[Index];
+        Character temp = characters[Index];
         int j = Index - 1;
-        while (j >= 0 && (c[j].GetSpeed() > temp.GetSpeed()))
+        while (j >= 0 && (characters[j].GetSpeed() > temp.GetSpeed()))
         {
-            c[j+1] = c[j];
+            characters[j+1] = characters[j];
             j--;
         }
-        c[j+1] = temp;
+        characters[j+1] = temp;
     }
 }

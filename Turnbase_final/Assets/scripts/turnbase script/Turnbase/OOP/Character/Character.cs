@@ -43,28 +43,42 @@ public class Character : MonoBehaviour
 
     void Awake()
     {
-        _currentState = new Idle(this);
         SetCurrentStatus();
+        _currentState = new Idle(this);
+        _Animator = _Character.GetComponent<Animator>();
+        _SoundSource = _Character.GetComponent<AudioSource>();
     }
 
     void FixedUpdate()
     {
         _currentState = _currentState.Process();
     }
-    
-    public virtual void Attack(Character Enemy)
+
+    public virtual void Skill01()
     {
-        Enemy.TakeDamage(this._ATK);
+        
     }
 
-    public virtual void TakeDamage(float Damage)
+    public virtual void Skill02()
     {
-        this._HP -= Damage;
+        
+    }
+    
+    public virtual void Attack()
+    {
+        Attack atk = _currentState as Attack;
+        atk.Enemy.TakeDamage(Current_Atk);
+        atk.FinishAction();
+    }
+    protected virtual void TakeDamage(float Damage)
+    {
+        Current_Hp -= Damage;
+        _Animator.SetBool("isTakingDamage", true);
     }
 
     public virtual void Heal(float Heal)
     {
-        this._HP += Heal;
+        Current_Hp += Heal;
     }
 
 }

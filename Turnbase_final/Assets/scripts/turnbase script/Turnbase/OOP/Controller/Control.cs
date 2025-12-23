@@ -27,6 +27,7 @@ public class Control
     protected Control NextState;
 
     protected Character Me;
+
     public Control(Character c)
     {
         Me = c;
