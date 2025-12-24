@@ -21187,7 +21187,7 @@ MonoBehaviour:
     skill1Sound: {fileID: 8300000, guid: b866bc3df0d2dba4d9e6bde9f2700b64, type: 3}
     skill2Sound: {fileID: 8300000, guid: 03b27d9da6ca1d042a94c12fb3860a64, type: 3}
     hpPlayer: 5000
-    atkPlayer: 10000
+    atkPlayer: 1
     speedPlayer: 1
   - playerObject: {fileID: 1519959869}
     playerSkillUI: {fileID: 1816477666}
@@ -21198,7 +21198,7 @@ MonoBehaviour:
     skill1Sound: {fileID: 8300000, guid: 51012cf3342984e4597b5c9b749b13ad, type: 3}
     skill2Sound: {fileID: 8300000, guid: c8b8cf8b0a4ed4b4fabd9b5f0246a509, type: 3}
     hpPlayer: 5000
-    atkPlayer: 200
+    atkPlayer: 1
     speedPlayer: 4
   targetBoss: {fileID: 61259633}
   targetEnd: {fileID: 850822195}

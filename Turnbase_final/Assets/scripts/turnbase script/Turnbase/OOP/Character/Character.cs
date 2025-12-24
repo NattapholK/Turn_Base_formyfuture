@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
     private float Current_Atk;
     private float Curren_Def;
     private float Current_Speed;
-    private Control _currentState;
+    protected Control _currentState;
 
     protected virtual void SetCurrentStatus()
     {
@@ -54,15 +54,8 @@ public class Character : MonoBehaviour
         _currentState = _currentState.Process();
     }
 
-    public virtual void Skill01()
-    {
-        
-    }
-
-    public virtual void Skill02()
-    {
-        
-    }
+    public virtual void Skill01(){}
+    public virtual void Skill02(){}
     
     public virtual void Attack()
     {

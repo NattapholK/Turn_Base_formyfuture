@@ -30,4 +30,14 @@ public class Player : Character
     {
         return Current_Mana;
     }
+
+    public override void Skill01()
+    {
+        _Animator.SetBool("isAttack1",true);
+    }
+
+    public override void Skill02()
+    {
+        _Animator.SetBool("isAttack2",true);
+    }
 }

@@ -1,23 +1,26 @@
 using UnityEngine;
 
-public class Skill : Attack
+public class NormalAttack : Attack
 {
-    public Skill(Character c, Character enemy, int enemy_index) : base(c, enemy, enemy_index)
+    public NormalAttack(Character c, Character enemy, int enemy_index) : base(c, enemy, enemy_index)
     {
-        Use_Skill = SKILL.SKILL01;
+        Use_Skill = SKILL.NORMAL_ATTACK;
     }
 
     public override void Enter()
     {
         if(Me is Player p)
         {
-            p.UseMana(p._Mana);
+            if(p.GetMana() < p._Mana)
+            {
+                p.IncreaseMana(p._Mana / 2f);
+            }
         }
         else if (Me is Enemy e)
         {
             //เดี๋ยวเขียนเพิ่ม
         }
-        Me.Skill02();
+        Me.Skill01();
         base.Enter();
     }
     public override void Update()

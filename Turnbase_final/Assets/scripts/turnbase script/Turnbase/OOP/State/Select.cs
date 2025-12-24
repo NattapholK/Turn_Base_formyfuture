@@ -37,7 +37,7 @@ public class Select : Control
                     _Skill_1_Rect.localScale = Vector3.one * 2;
                     // attackSceneManager.PlayCurrentTurn(1);
 
-                    NextState = new Attack(Me, p.enemies[0]);//เขียนทิ้งไว้ก่อน
+                    NextState = new NormalAttack(Me, p.enemies[0], 0);//เขียนทิ้งไว้ก่อน
                     Stage = EVENT.EXIT;
                 }
                 else
@@ -61,7 +61,7 @@ public class Select : Control
                     // attackSceneManager.PlayCurrentTurn(2);
 
                     if(p.GetMana() < p._Mana) return;
-                    NextState = new Skill(Me, p.enemies[0]);//เขียนทิ้งไว้ก่อน
+                    NextState = new Skill(Me, p.enemies[0], 0);//เขียนทิ้งไว้ก่อน
                     Stage = EVENT.EXIT;
                 }
                 else
@@ -96,11 +96,11 @@ public class Select : Control
 
             if(bossSkillToUse == 0)
             {
-                NextState = new Skill(Me, e.players[bossSkillTarget - 1]);    
+                NextState = new NormalAttack(Me, e.players[bossSkillTarget - 1], bossSkillTarget - 1);    
             }
             else
             {
-                NextState = new Attack(Me, e.players[bossSkillTarget - 1]);       
+                NextState = new Skill(Me, e.players[bossSkillTarget - 1], bossSkillTarget - 1);       
             }
             Stage = EVENT.EXIT;
         }
