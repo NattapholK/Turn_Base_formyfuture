@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Select : Control
+public class Select : StateMachine
 {
     private bool isUsingSkill1UITracker;
     private bool isUsingSkill2UITracker;
@@ -13,8 +13,10 @@ public class Select : Control
 
     public override void Enter()
     {
+        Debug.Log("Select ของ" + Me + "ทำงาน");
         if(Me is Player p)
         {
+            p._SkillUIObject.SetActive(true);
             _Skill_1_UI = p._SkillUIObject.transform.GetChild(0).gameObject;
             _Skill_2_UI = p._SkillUIObject.transform.GetChild(1).gameObject;
         }
@@ -35,9 +37,9 @@ public class Select : Control
                 {
                     isUsingSkill1UI = false;
                     _Skill_1_Rect.localScale = Vector3.one * 2;
-                    // attackSceneManager.PlayCurrentTurn(1);
 
                     NextState = new NormalAttack(Me, p.enemies[0], 0);//เขียนทิ้งไว้ก่อน
+                    p._SkillUIObject.SetActive(false);
                     Stage = EVENT.EXIT;
                 }
                 else
@@ -58,10 +60,10 @@ public class Select : Control
                 {
                     isUsingSkill2UI = false;
                     _Skill_2_Rect.localScale = Vector3.one * 2;
-                    // attackSceneManager.PlayCurrentTurn(2);
 
                     if(p.GetMana() < p._Mana) return;
                     NextState = new Skill(Me, p.enemies[0], 0);//เขียนทิ้งไว้ก่อน
+                    p._SkillUIObject.SetActive(false);
                     Stage = EVENT.EXIT;
                 }
                 else
@@ -96,11 +98,11 @@ public class Select : Control
 
             if(bossSkillToUse == 0)
             {
-                NextState = new NormalAttack(Me, e.players[bossSkillTarget - 1], bossSkillTarget - 1);    
+                NextState = new NormalAttack(Me, e.players[bossSkillTarget - 1], bossSkillTarget);    
             }
             else
             {
-                NextState = new Skill(Me, e.players[bossSkillTarget - 1], bossSkillTarget - 1);       
+                NextState = new Skill(Me, e.players[bossSkillTarget - 1], bossSkillTarget);       
             }
             Stage = EVENT.EXIT;
         }
@@ -108,6 +110,7 @@ public class Select : Control
 
     public override void Exit()
     {
+        Debug.Log("Select ของ" + Me + "จบแล้ว");
         base.Exit();
     }
 
@@ -121,8 +124,8 @@ public class Select : Control
             {
                 isUsingSkill1UITracker = value;
 
-                if (value) CameraManager.Instance.currentCameraState = CameraTurnbaseState.SelectingFirstSkillButton;
-                else CameraManager.Instance.currentCameraState = CameraTurnbaseState.Idle;
+                // if (value) CameraManager.Instance.currentCameraState = CameraTurnbaseState.SelectingFirstSkillButton;
+                // else CameraManager.Instance.currentCameraState = CameraTurnbaseState.Idle;
                 
             }
         }
@@ -137,8 +140,8 @@ public class Select : Control
             {
                 isUsingSkill2UITracker = value;
                 
-                if (value) CameraManager.Instance.currentCameraState = CameraTurnbaseState.SelectingSecondSkillButton;
-                else CameraManager.Instance.currentCameraState = CameraTurnbaseState.Idle;
+                // if (value) CameraManager.Instance.currentCameraState = CameraTurnbaseState.SelectingSecondSkillButton;
+                // else CameraManager.Instance.currentCameraState = CameraTurnbaseState.Idle;
             }
         }
     }

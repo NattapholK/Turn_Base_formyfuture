@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    [Header("Main-Setting")]
     public GameObject _Character;
-    public Manager _Manager;
     public GameObject _TurnUI;
     public AudioClip _HurtSound;
     public Transform _CameraPos;
 
+    [Header("Default-Status")]
     public float _HP;
     public float _ATK;
     public float _DEF;
@@ -16,13 +17,14 @@ public class Character : MonoBehaviour
 
     [HideInInspector] public bool MyTurn = false;
     [HideInInspector] public Animator _Animator;  
+    [HideInInspector] public Manager _Manager;
     [HideInInspector] public AudioSource _SoundSource;
     private Rigidbody _Rb;
     private float Current_Hp;
     private float Current_Atk;
     private float Curren_Def;
     private float Current_Speed;
-    protected Control _currentState;
+    protected StateMachine _currentState;
 
     protected virtual void SetCurrentStatus()
     {
@@ -47,6 +49,7 @@ public class Character : MonoBehaviour
         _currentState = new Idle(this);
         _Animator = _Character.GetComponent<Animator>();
         _SoundSource = _Character.GetComponent<AudioSource>();
+        _Manager = FindAnyObjectByType<Manager>();
     }
 
     void FixedUpdate()
@@ -59,14 +62,29 @@ public class Character : MonoBehaviour
     
     public virtual void Attack()
     {
+        Debug.Log(_Character + "ไป Attack");
         Attack atk = _currentState as Attack;
         atk.Enemy.TakeDamage(Current_Atk);
-        atk.FinishAction();
     }
     protected virtual void TakeDamage(float Damage)
     {
+        Debug.Log(_Character + "โดน Takedamage");
         Current_Hp -= Damage;
-        _Animator.SetBool("isTakingDamage", true);
+        if(Current_Hp > 0)
+        {
+            _Animator.SetBool("isTakingDamage", true);
+        }
+    }
+
+    public void StopAction()
+    {
+        Debug.Log(_Character + "เลิก Action");
+        foreach (AnimatorControllerParameter param in _Animator.parameters)
+        {
+            _Animator.SetBool(param.name, false);
+        }
+        _currentState.FinishAction();
+        Debug.Log("###########-StopAction-#################");
     }
 
     public virtual void Heal(float Heal)

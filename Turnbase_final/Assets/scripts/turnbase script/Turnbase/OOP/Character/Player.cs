@@ -3,9 +3,12 @@ using UnityEngine;
 public class Player : Character
 {
     public float _Mana;
+
+    [Header("Player UI&Sound")]
     public GameObject _SkillUIObject;
     public AudioClip _FirstSkillSound;
     public AudioClip _SecondSkillSound;
+
     [HideInInspector] public Enemy[] enemies;
 
     private float Current_Mana;

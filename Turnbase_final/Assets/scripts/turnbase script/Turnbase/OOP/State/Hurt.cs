@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Hurt : Control
+public class Hurt : StateMachine
 {
     public Hurt(Character c) : base(c)
     {
@@ -9,12 +9,14 @@ public class Hurt : Control
 
     public override void Enter()
     {
+        status = STATUS.ACTION;
         base.Enter();
     }
     public override void Update()
     {
         //เดี๋ยวค่อยเขียนเพิ่ม
-        NextState = new Idle(Me);
+        if(status == STATUS.ACTION) return;
+        NextState = new Idle(Me);                                 
         Stage = EVENT.EXIT;
     }
 

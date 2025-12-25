@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Control
+public class StateMachine
 {
     public UnityEvent OnStageChanged;
 
@@ -12,7 +12,8 @@ public class Control
         ATTACK,
         SKILL,
         HURT,
-        DEAD
+        DEAD,
+        END
     }
 
     public enum EVENT
@@ -21,17 +22,30 @@ public class Control
         UPDATE,
         EXIT
     }
+
+    public enum STATUS
+    {
+        ACTION,
+        NONE
+    }
     
     public STATE Name;
+    protected STATUS status;
     protected EVENT Stage;
-    protected Control NextState;
+    protected StateMachine NextState;
 
     protected Character Me;
 
-    public Control(Character c)
+    public StateMachine(Character c)
     {
         Me = c;
+        status = STATUS.NONE;
         Stage = EVENT.ENTER;
+    }
+
+    public void FinishAction()
+    {
+        status = STATUS.NONE;
     }
 
     //what to do when enter this stage
@@ -49,7 +63,7 @@ public class Control
         Stage = EVENT.UPDATE;
     }
 
-    public Control Process()
+    public StateMachine Process()
     {
         if (Stage == EVENT.ENTER)
         {

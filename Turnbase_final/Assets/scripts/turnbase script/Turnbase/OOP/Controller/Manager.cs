@@ -6,12 +6,11 @@ public class Manager : MonoBehaviour
 {
     public Player[] players;
     public Enemy[] enemies;
-    private List<Character> characters;
+    private List<Character> characters = new List<Character>();
     private int Current_Index = 0;
 
     void Awake()
     {
-        characters.Clear();
         characters.AddRange(players.Where(p => p != null));
         characters.AddRange(enemies.Where(e => e != null));
         for(int i = 0; i< characters.Count; i++)
@@ -35,11 +34,13 @@ public class Manager : MonoBehaviour
 
     public void StartTurn()
     {
+        Debug.Log("StartTurn ทำงาน");
         characters[Current_Index].MyTurn = true;
     }
 
     public void EndTurn()
     {
+        Debug.Log("EndTurn ทำงาน");
         characters[Current_Index].MyTurn = false;
 
         do
@@ -54,6 +55,7 @@ public class Manager : MonoBehaviour
 
     public void InsertionSort(int Index)
     {
+        Debug.Log("InsertionSort ทำงาน");
         Character temp = characters[Index];
         int j = Index - 1;
         while (j >= 0 && (characters[j].GetSpeed() > temp.GetSpeed()))

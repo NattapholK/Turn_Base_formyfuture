@@ -9,6 +9,7 @@ public class Skill : Attack
 
     public override void Enter()
     {
+        base.Enter();
         if(Me is Player p)
         {
             p.UseMana(p._Mana);
@@ -18,7 +19,6 @@ public class Skill : Attack
             //เดี๋ยวเขียนเพิ่ม
         }
         Me.Skill02();
-        base.Enter();
     }
     public override void Update()
     {

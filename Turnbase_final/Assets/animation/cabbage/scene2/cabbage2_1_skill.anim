@@ -675,22 +675,15 @@ AnimationClip:
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.38333333
-    functionName: SoundEffectSkill
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.53333336
-    functionName: OnPlayerAttackFinished
+  - time: 0.6
+    functionName: Attack
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.0833334
-    functionName: OnAnimFinished
+    functionName: StopAction
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
