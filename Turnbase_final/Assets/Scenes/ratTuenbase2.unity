@@ -1758,7 +1758,7 @@ Transform:
   m_Children:
   - {fileID: 921794688}
   m_Father: {fileID: 1148272642}
-  m_LocalEulerAnglesHint: {x: -7.888106, y: -1.6292319, z: 15.380468}
+  m_LocalEulerAnglesHint: {x: -8.323477, y: 1.1494697, z: 2.886729}
 --- !u!1 &153906897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,7 +2146,7 @@ Transform:
   - {fileID: 1144476843}
   - {fileID: 224252739}
   m_Father: {fileID: 1049416628}
-  m_LocalEulerAnglesHint: {x: -0.18204606, y: 0.18327188, z: -6.813284}
+  m_LocalEulerAnglesHint: {x: 0.24131978, y: 0.11887677, z: 10.0350065}
 --- !u!1 &179506828
 GameObject:
   m_ObjectHideFlags: 0
@@ -4129,7 +4129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &364395920
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7737,7 +7737,7 @@ RectTransform:
   m_Father: {fileID: 1996842018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 5.137295, y: 0}
   m_SizeDelta: {x: 20.2745, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7890,7 +7890,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &598072985
 Transform:
   m_ObjectHideFlags: 0
@@ -8421,29 +8421,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &621657298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132148567409055}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e89745d2faed14f81b24aa19eb0588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCabbage: 0
-  fieldCabbage: {fileID: 0}
-  isBird: 0
-  otherSound1: {fileID: 0}
-  PlayerAudioSource: {fileID: 0}
-  skillSound: []
-  NamePlayer: 
-  isPlayer: 1
-  playerAtk: 2
-  bossAtk: 2
-  attackManager: {fileID: 1428851249}
 --- !u!1001 &622939868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10302,7 +10279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &706214347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11648,7 +11625,6 @@ GameObject:
   m_Component:
   - component: {fileID: 816971639}
   - component: {fileID: 816971641}
-  - component: {fileID: 816971640}
   - component: {fileID: 816971642}
   m_Layer: 0
   m_Name: Rat - Actual Model With Animator
@@ -11683,29 +11659,6 @@ Transform:
   - {fileID: 2102677924}
   m_Father: {fileID: 1455534104}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &816971640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 816971638}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e89745d2faed14f81b24aa19eb0588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCabbage: 0
-  fieldCabbage: {fileID: 0}
-  isBird: 0
-  otherSound1: {fileID: 0}
-  PlayerAudioSource: {fileID: 0}
-  skillSound: []
-  NamePlayer: 
-  isPlayer: 1
-  playerAtk: 0
-  bossAtk: 0
-  attackManager: {fileID: 0}
 --- !u!95 &816971641
 Animator:
   serializedVersion: 7
@@ -11741,17 +11694,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 816971638}
-  _TurnUI: {fileID: 0}
+  _SoundSource: {fileID: 1746941936}
+  _TurnUI: {fileID: 8652167983533702435, guid: 1e22e683f2ed81743942b03a8cbc3101, type: 3}
+  _HealthSliderObject: {fileID: 181528359}
   _HurtSound: {fileID: 0}
-  _CameraPos: {fileID: 0}
+  _CameraPos: {fileID: 61259633}
+  floattextset2: 0
   _HP: 1000
   _ATK: 100
   _DEF: 100
   _SPEED: 2
+  _TAUNT: 0
   MyTurn: 0
   _Animator: {fileID: 0}
   _Manager: {fileID: 0}
-  _SoundSource: {fileID: 0}
   SkillCount: 1
   players: []
 --- !u!1 &829021695
@@ -12336,7 +12292,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &871630940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12375,7 +12331,6 @@ MonoBehaviour:
   CodeMovementObj: {fileID: 2031845119}
   CameraShakeObj: {fileID: 1232789777}
   cameraAnimator: {fileID: 1609426839}
-  attackSceneManager: {fileID: 1428851250}
   bossRotateTowardsTarget: {fileID: 236975746}
 --- !u!4 &871630941
 Transform:
@@ -12714,7 +12669,7 @@ Transform:
   - {fileID: 1247860214}
   - {fileID: 692372573}
   m_Father: {fileID: 1049416628}
-  m_LocalEulerAnglesHint: {x: -0.0051684454, y: 0.16016705, z: -48.878765}
+  m_LocalEulerAnglesHint: {x: 0.24131916, y: 0.11888783, z: -32.38783}
 --- !u!1 &882815395
 GameObject:
   m_ObjectHideFlags: 0
@@ -13721,7 +13676,7 @@ Transform:
   m_Children:
   - {fileID: 1603631169}
   m_Father: {fileID: 151524711}
-  m_LocalEulerAnglesHint: {x: 1.3446076, y: 1.173334, z: -2.738482}
+  m_LocalEulerAnglesHint: {x: 1.286791, y: 0.016444493, z: 2.8342938}
 --- !u!1001 &924045909
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15153,8 +15108,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2034582868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -17636,7 +17591,7 @@ Transform:
   m_Children:
   - {fileID: 151524711}
   m_Father: {fileID: 810706872}
-  m_LocalEulerAnglesHint: {x: 6.9739647, y: -2.555748, z: 22.76991}
+  m_LocalEulerAnglesHint: {x: 6.0246687, y: -1.1618396, z: 3.5687125}
 --- !u!1 &1149095554
 GameObject:
   m_ObjectHideFlags: 0
@@ -17717,7 +17672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1178810603
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21182,10 +21137,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1428851251}
-  - component: {fileID: 1428851250}
-  - component: {fileID: 1428851252}
-  - component: {fileID: 1428851253}
   - component: {fileID: 1428851254}
+  - component: {fileID: 1428851255}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -21193,59 +21146,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1428851250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428851249}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc0c970974bc8364a8908803200a89a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerData:
-  - playerObject: {fileID: 919132148567409055}
-    playerSkillUI: {fileID: 565751116}
-    playerProfileUI: {fileID: 946878591}
-    turnPlayerUIPrefab: {fileID: 2665912035870635597, guid: c7111a21fcee79a4997d292fb7cf685d, type: 3}
-    targetPlayerCamera: {fileID: 879411611}
-    takeDamageSound: {fileID: 8300000, guid: 74a3df4adcfbbab4ba92c6633781fd01, type: 3}
-    skill1Sound: {fileID: 8300000, guid: b866bc3df0d2dba4d9e6bde9f2700b64, type: 3}
-    skill2Sound: {fileID: 8300000, guid: 03b27d9da6ca1d042a94c12fb3860a64, type: 3}
-    hpPlayer: 5000
-    atkPlayer: 1
-    speedPlayer: 1
-  - playerObject: {fileID: 1519959869}
-    playerSkillUI: {fileID: 1816477666}
-    playerProfileUI: {fileID: 1062545955}
-    turnPlayerUIPrefab: {fileID: 3476558603976315161, guid: 945de7ba8a4589c4595c41d1051af7c0, type: 3}
-    targetPlayerCamera: {fileID: 572072784}
-    takeDamageSound: {fileID: 8300000, guid: 3374fe21dbff9ac4bb37323a467e4fb5, type: 3}
-    skill1Sound: {fileID: 8300000, guid: 51012cf3342984e4597b5c9b749b13ad, type: 3}
-    skill2Sound: {fileID: 8300000, guid: c8b8cf8b0a4ed4b4fabd9b5f0246a509, type: 3}
-    hpPlayer: 5000
-    atkPlayer: 1
-    speedPlayer: 4
-  targetBoss: {fileID: 61259633}
-  targetEnd: {fileID: 850822195}
-  targetAll: {fileID: 292424612}
-  enemy: {fileID: 816971638}
-  turnEnemyUIPrefab: {fileID: 8652167983533702435, guid: 1e22e683f2ed81743942b03a8cbc3101, type: 3}
-  hpEnemy: 10000
-  atkBoss: 750
-  speedBoss: 3
-  skillCount: 2
-  cameraObj: {fileID: 1539008387}
-  moveTime: 1.5
-  gameSpeed: 1
-  SceneIndex: 2
-  useOldCameraMode: 0
-  lockPlayerCursorOnStart: 1
-  PlayerAudioSource: {fileID: 1746941936}
-  GameAudioSource: {fileID: 1418477286}
-  currentTurnIndex: 0
 --- !u!4 &1428851251
 Transform:
   m_ObjectHideFlags: 0
@@ -21261,45 +21161,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1428851252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428851249}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1364f7f812310e4aa80a29e143822b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BossUI: {fileID: 181528359}
-  floattextset2: 1
-  FloatingTextPrefab: {fileID: 6081694316323726468, guid: d630c8bcb3adb9b4aa1d07d61c3aa8cf, type: 3}
-  UICanvas: {fileID: 1063441748}
-  DamageUI: {fileID: 706470038}
-  NextSceneName: FirstScene
-  LostSceneName: FirstScene
-  managerValue: {fileID: 11400000, guid: 7d47ffa6bee87d84b95258969530466d, type: 2}
-  GameSceneIndex: 0
-  CurrenthpPlayerList: 
-  manaPlayerList: 000000000000000000000000
-  CurrenthpEnemy: 0
---- !u!114 &1428851253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1428851249}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48c5dc5b491651e489f82c0242d8cfe9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  space: 20
-  backgroundUI: {fileID: 98382383}
-  parentPanel: {fileID: 1328816891}
 --- !u!114 &1428851254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21317,6 +21178,29 @@ MonoBehaviour:
   - {fileID: 1519959873}
   enemies:
   - {fileID: 816971642}
+  _cameraObj: {fileID: 691776150}
+  moveTime: 1.5
+  SceneIndex: 2
+  _FloatingTextPrefab: {fileID: 6081694316323726468, guid: d630c8bcb3adb9b4aa1d07d61c3aa8cf, type: 3}
+  _UICanvas: {fileID: 1063441748}
+  _EndPosition: {fileID: 850822195}
+  _DamageUI: {fileID: 706470038}
+--- !u!114 &1428851255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428851249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a33294dd5f6a345b3aac922855be24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  space: 20
+  backgroundUI: {fileID: 98382383}
+  parentPanel: {fileID: 1328816891}
+  characters: []
 --- !u!1 &1434821935
 GameObject:
   m_ObjectHideFlags: 0
@@ -22124,8 +22008,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1848131780}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -22477,7 +22361,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1519959872}
   - component: {fileID: 1519959871}
-  - component: {fileID: 1519959870}
   - component: {fileID: 1519959873}
   m_Layer: 0
   m_Name: cabbage
@@ -22486,29 +22369,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1519959870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1519959869}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e89745d2faed14f81b24aa19eb0588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCabbage: 1
-  fieldCabbage: {fileID: 2136118479}
-  isBird: 0
-  otherSound1: {fileID: 0}
-  PlayerAudioSource: {fileID: 0}
-  skillSound: []
-  NamePlayer: 
-  isPlayer: 1
-  playerAtk: 0
-  bossAtk: 0
-  attackManager: {fileID: 0}
 --- !u!95 &1519959871
 Animator:
   serializedVersion: 7
@@ -22565,21 +22425,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 1519959869}
-  _TurnUI: {fileID: 0}
-  _HurtSound: {fileID: 0}
-  _CameraPos: {fileID: 0}
+  _SoundSource: {fileID: 1746941936}
+  _TurnUI: {fileID: 3476558603976315161, guid: 945de7ba8a4589c4595c41d1051af7c0, type: 3}
+  _HealthSliderObject: {fileID: 909109519}
+  _HurtSound: {fileID: 8300000, guid: 3374fe21dbff9ac4bb37323a467e4fb5, type: 3}
+  _CameraPos: {fileID: 572072784}
+  floattextset2: 0
   _HP: 1000
   _ATK: 100
   _DEF: 100
   _SPEED: 100
+  _TAUNT: 30
   MyTurn: 0
   _Animator: {fileID: 0}
   _Manager: {fileID: 0}
-  _SoundSource: {fileID: 0}
   _Mana: 100
+  _FillSkillUIObject: {fileID: 155730375}
   _SkillUIObject: {fileID: 1816477666}
-  _FirstSkillSound: {fileID: 0}
-  _SecondSkillSound: {fileID: 0}
+  _ProfileUIObject: {fileID: 1062545955}
+  _FirstSkillSound: {fileID: 8300000, guid: 51012cf3342984e4597b5c9b749b13ad, type: 3}
+  _SecondSkillSound: {fileID: 8300000, guid: c8b8cf8b0a4ed4b4fabd9b5f0246a509, type: 3}
   enemies: []
 --- !u!1 &1522222554
 GameObject:
@@ -22972,7 +22837,7 @@ RectTransform:
   m_Father: {fileID: 1716108484}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -8.4, y: -3.7}
   m_SizeDelta: {x: -0.8588867, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -25834,7 +25699,6 @@ MonoBehaviour:
   CodeMovementObj: {fileID: 1843723970}
   CameraShakeObj: {fileID: 595622752}
   cameraAnimator: {fileID: 1185655207}
-  attackSceneManager: {fileID: 1428851250}
   bossRotateTowardsTarget: {fileID: 0}
 --- !u!1 &1766344953
 GameObject:
@@ -27482,7 +27346,7 @@ Transform:
   m_Children:
   - {fileID: 2112238271}
   m_Father: {fileID: 1049416628}
-  m_LocalEulerAnglesHint: {x: -0.18211178, y: 0.18335342, z: -24.613283}
+  m_LocalEulerAnglesHint: {x: 0.24131791, y: 0.11888653, z: -7.7499986}
 --- !u!1 &1915389081
 GameObject:
   m_ObjectHideFlags: 0
@@ -29005,7 +28869,7 @@ RectTransform:
   m_Father: {fileID: 1747191789}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 4.8217, y: 0}
   m_SizeDelta: {x: 19.6433, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -32122,7 +31986,6 @@ GameObject:
   m_Component:
   - component: {fileID: 543450653111933733}
   - component: {fileID: 621657296}
-  - component: {fileID: 621657298}
   - component: {fileID: 919132148567409056}
   m_Layer: 0
   m_Name: carrot
@@ -32144,21 +32007,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 919132148567409055}
-  _TurnUI: {fileID: 0}
-  _HurtSound: {fileID: 0}
-  _CameraPos: {fileID: 0}
+  _SoundSource: {fileID: 1746941936}
+  _TurnUI: {fileID: 2665912035870635597, guid: c7111a21fcee79a4997d292fb7cf685d, type: 3}
+  _HealthSliderObject: {fileID: 2130837504}
+  _HurtSound: {fileID: 8300000, guid: 74a3df4adcfbbab4ba92c6633781fd01, type: 3}
+  _CameraPos: {fileID: 879411611}
+  floattextset2: 0
   _HP: 1000
-  _ATK: 10000
+  _ATK: 100
   _DEF: 100
   _SPEED: 100
+  _TAUNT: 30
   MyTurn: 0
   _Animator: {fileID: 0}
   _Manager: {fileID: 0}
-  _SoundSource: {fileID: 0}
   _Mana: 100
+  _FillSkillUIObject: {fileID: 1522222556}
   _SkillUIObject: {fileID: 565751116}
-  _FirstSkillSound: {fileID: 0}
-  _SecondSkillSound: {fileID: 0}
+  _ProfileUIObject: {fileID: 538983277}
+  _FirstSkillSound: {fileID: 8300000, guid: b866bc3df0d2dba4d9e6bde9f2700b64, type: 3}
+  _SecondSkillSound: {fileID: 8300000, guid: 03b27d9da6ca1d042a94c12fb3860a64, type: 3}
   enemies: []
 --- !u!1 &919132149476940388
 GameObject:
@@ -33363,7 +33231,7 @@ Transform:
   m_Children:
   - {fileID: 4156520419629639584}
   m_Father: {fileID: 5094988296490986303}
-  m_LocalEulerAnglesHint: {x: 90, y: 7.5603967, z: 0}
+  m_LocalEulerAnglesHint: {x: 89.9965, y: -0.10608132, z: -15.345766}
 --- !u!137 &3187941948241369788
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -34169,7 +34037,7 @@ Transform:
   m_Children:
   - {fileID: 4333664820095296715}
   m_Father: {fileID: 3164982296421134326}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.24021241}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.2880766}
 --- !u!4 &4202362539078418113
 Transform:
   m_ObjectHideFlags: 0
@@ -35884,7 +35752,7 @@ Transform:
   m_Children:
   - {fileID: 8942081604891015290}
   m_Father: {fileID: 5094988296490986303}
-  m_LocalEulerAnglesHint: {x: -90, y: 0.18073565, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.994705, y: -0.21675356, z: 0}
 --- !u!4 &7478626118749759067
 Transform:
   m_ObjectHideFlags: 0

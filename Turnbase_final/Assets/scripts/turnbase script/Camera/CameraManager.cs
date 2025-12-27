@@ -45,7 +45,7 @@ public class CameraManager : MonoBehaviour
     [Space]
     public Animator cameraAnimator;
     [Space]
-    public AttackSceneManager attackSceneManager;   
+    // public AttackSceneManager attackSceneManager;   
     public RotateTowardsTarget bossRotateTowardsTarget;
 
 

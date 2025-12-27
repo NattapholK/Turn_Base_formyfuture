@@ -28,6 +28,7 @@ public class Attack : StateMachine
     public override void Update()
     {
         if(status == STATUS.ACTION) return;
+        CameraShake.Instance.PresetShake_GeneralAttack();
         NextState = new End(Me);                                 
         Stage = EVENT.EXIT;
     }

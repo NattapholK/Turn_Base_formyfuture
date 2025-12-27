@@ -1,11 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : Character
 {
     public float _Mana;
 
     [Header("Player UI&Sound")]
+    public Image _FillSkillUIObject;
     public GameObject _SkillUIObject;
+    public GameObject _ProfileUIObject;
     public AudioClip _FirstSkillSound;
     public AudioClip _SecondSkillSound;
 
@@ -16,22 +19,40 @@ public class Player : Character
     protected override void SetCurrentStatus()
     {
         base.SetCurrentStatus();
-        Current_Mana = _Mana;
+        Current_Mana = 0;
     }
 
     public void IncreaseMana(float total)
     {
         Current_Mana += total;
+        _FillSkillUIObject.fillAmount = 1 - Current_Mana/_Mana;
     }
 
     public void UseMana(float total)
     {
         Current_Mana -= total;
+        _FillSkillUIObject.fillAmount = 1 - Current_Mana/_Mana;
     }
 
     public float GetMana()
     {
         return Current_Mana;
+    }
+
+    public void SkillSound(int skill_index)
+    {
+        switch (skill_index)
+        {
+            case 1:
+                _SoundSource.PlayOneShot(_FirstSkillSound);
+                break;
+            case 2:
+                _SoundSource.PlayOneShot(_FirstSkillSound);
+                break;
+            default:
+                Debug.LogError("SkillSound ใส่ index ผิด");
+                break;
+        }
     }
 
     public override void Skill01()
@@ -42,5 +63,19 @@ public class Player : Character
     public override void Skill02()
     {
         _Animator.SetBool("isAttack2",true);
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+    }
+
+    public override void TakeDamage(float Damage)
+    {
+        float Currend_Dmg = Damage * (100 / (100 + Current_Def));
+        Current_Hp -= Currend_Dmg;
+
+        ShowFloatingText((int)Currend_Dmg, 1f);
+        base.TakeDamage(Damage);
     }
 }
