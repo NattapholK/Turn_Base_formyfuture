@@ -10,10 +10,8 @@ public class StateMachine
         IDLE,
         SELECT,
         ATTACK,
-        SKILL,
         HURT,
-        DEAD,
-        END
+        DEAD
     }
 
     public enum EVENT
@@ -30,7 +28,7 @@ public class StateMachine
     }
     
     public STATE Name;
-    protected STATUS status;
+    protected STATUS Status;
     protected EVENT Stage;
     protected StateMachine NextState;
 
@@ -39,26 +37,26 @@ public class StateMachine
     public StateMachine(Character c)
     {
         Me = c;
-        status = STATUS.NONE;
+        Status = STATUS.NONE;
         Stage = EVENT.ENTER;
     }
 
     public void FinishAction()
     {
-        status = STATUS.NONE;
+        Status = STATUS.NONE;
     }
 
     //what to do when enter this stage
-    public virtual void Enter()
+    protected virtual void Enter()
     {
         Stage = EVENT.UPDATE;
     }
-    public virtual void Update()
+    protected virtual void Update()
     {
         Stage = EVENT.UPDATE;
     }
 
-    public virtual void Exit()
+    protected virtual void Exit()
     {
         Stage = EVENT.UPDATE;
     }

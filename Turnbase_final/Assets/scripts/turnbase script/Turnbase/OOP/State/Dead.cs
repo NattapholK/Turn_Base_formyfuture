@@ -7,20 +7,20 @@ public class Dead : StateMachine
         Name = STATE.DEAD;
     }
 
-    public override void Enter()
+    protected override void Enter()
     {
         Me._Animator.SetBool("isDie",true);
-        status = STATUS.ACTION;
+        Status = STATUS.ACTION;
         base.Enter();
     }
-    public override void Update()
+    protected override void Update()
     {
         //ตายแล้ว
-        if(status == STATUS.ACTION) return;
+        if(Status == STATUS.ACTION) return;
         Me._Character.SetActive(false);
     }
 
-    public override void Exit()
+    protected override void Exit()
     {
         base.Exit();
     }

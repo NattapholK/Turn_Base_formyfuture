@@ -24,12 +24,12 @@ public class Character : MonoBehaviour
     [HideInInspector] public bool MyTurn = false;
     [HideInInspector] public Animator _Animator;  
     [HideInInspector] public Manager _Manager;
-    protected float Current_Hp;
-    protected float Current_Atk;
-    protected float Current_Def = 0f;
-    protected float Current_Speed;
-    protected float Current_Taunt = 30f;
-    protected StateMachine _currentState;
+    public float Current_Hp{get; protected set;}
+    public float Current_Atk{get; protected set;}
+    public float Current_Def{get; protected set;} = 0f;
+    public float Current_Speed{get; protected set;}
+    public float Current_Taunt {get; protected set;} = 30f;
+    public StateMachine _currentState{get; private set;}
 
     protected virtual void SetCurrentStatus()
     {
@@ -38,20 +38,6 @@ public class Character : MonoBehaviour
         Current_Def = _DEF;
         Current_Speed = _SPEED;
         Current_Taunt = _TAUNT;
-    }
-
-    public float GetHp()
-    {
-        return Current_Hp;
-    }
-    public float GetSpeed()
-    {
-        return Current_Speed;
-    }
-
-    public float GetTaunt()
-    {
-        return Current_Taunt;
     }
 
     public void HurtSound()

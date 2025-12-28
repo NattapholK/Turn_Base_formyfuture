@@ -20,7 +20,7 @@ public class Select : StateMachine
         Name = STATE.SELECT;
     }
 
-    public override void Enter()
+    protected override void Enter()
     {
         // Debug.Log("Select ของ" + Me + "ทำงาน");
         if(Me is Player p)
@@ -46,7 +46,7 @@ public class Select : StateMachine
             List<int> targets = new List<int>();
             for(int i= 0; i < e.players.Count(); i++)
             {
-                for(int j = 0; j < e.players[i].GetTaunt(); j++)
+                for(int j = 0; j < e.players[i].Current_Taunt; j++)
                 {
                     targets.Add(i);
                 }
@@ -58,7 +58,7 @@ public class Select : StateMachine
                 bossSkillTarget = targets[target];
                 Debug.Log("bossSkillTarget = " + bossSkillTarget);
             }
-            while(e.players[bossSkillTarget].GetHp() <= 0);
+            while(e.players[bossSkillTarget].Current_Hp <= 0);
 
             if(bossSkillToUse == 0)
             {
@@ -76,7 +76,7 @@ public class Select : StateMachine
         }
         base.Enter();
     }
-    public override void Update()
+    protected override void Update()
     {
         if(Me is Player p)
         {
@@ -115,10 +115,10 @@ public class Select : StateMachine
                     isUsingSkill2UI = false;
                     _Skill_2_Rect.localScale = Vector3.one * 2;
 
-                    Debug.Log("p.GetMana() = " + p.GetMana());
+                    Debug.Log("p.GetMana() = " + p.Current_Mana);
                     Debug.Log("p._Mana = " + p._Mana);
 
-                    if(p.GetMana() < p._Mana) return;
+                    if(p.Current_Mana< p._Mana) return;
                     NextState = new Skill(Me, p.enemies[0], 0);//เขียนทิ้งไว้ก่อน
                     p._SkillUIObject.SetActive(false);
                     Stage = EVENT.EXIT;
@@ -146,7 +146,7 @@ public class Select : StateMachine
         }
     }
 
-    public override void Exit()
+    protected override void Exit()
     {
         Debug.Log("Select ของ" + Me + "จบแล้ว");
         base.Exit();

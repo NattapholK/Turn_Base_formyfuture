@@ -43,6 +43,14 @@ public class Manager : MonoBehaviour
         characters.AddRange(enemies.Where(e => e != null));
         for(int i = 0; i< characters.Count; i++)
         {
+            Debug.Log("i = " + i + ", character = " + characters[i]);
+        }
+    }
+
+    void Start()
+    {
+        for(int i = 0; i< characters.Count; i++)
+        {
             if(characters[i] is Player p)
             {
                 p.enemies = enemies;
@@ -53,10 +61,10 @@ public class Manager : MonoBehaviour
             }
             InsertionSort(i);
         }
-    }
-
-    void Start()
-    {
+        for(int i = 0; i< characters.Count; i++)
+        {
+            Debug.Log("i = " + i + ", character = " + characters[i]);
+        }
         RectTransform rectUI = _DamageUI.GetComponent<RectTransform>();
         startDamgeUIPos = rectUI.anchoredPosition;
         DmgText = _DamageUI.transform.GetChild(_DamageUI.transform.childCount - 1).gameObject.GetComponent<TextMeshProUGUI>();
@@ -116,7 +124,7 @@ public class Manager : MonoBehaviour
                 Current_Index++;
                 if (Current_Index >= characters.Count) Current_Index = 0; // วนกลับรอบใหม่
             }
-            while (characters[Current_Index].GetHp() <= 0);
+            while (characters[Current_Index].Current_Hp <= 0);
 
             StartTurn();
         }
@@ -127,7 +135,7 @@ public class Manager : MonoBehaviour
         Debug.Log("InsertionSort ทำงาน");
         Character temp = characters[Index];
         int j = Index - 1;
-        while (j >= 0 && (characters[j].GetSpeed() > temp.GetSpeed()))
+        while (j >= 0 && (characters[j].Current_Speed < temp.Current_Speed))
         {
             characters[j+1] = characters[j];
             j--;
@@ -202,7 +210,7 @@ public class Manager : MonoBehaviour
         bool state = false;
         foreach(Character c in characters)
         {
-            if(c.GetHp() <= 0 && c is Player p)
+            if(c.Current_Hp <= 0 && c is Player p)
             {
                 state = true;
             }

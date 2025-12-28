@@ -11703,7 +11703,7 @@ MonoBehaviour:
   _HP: 1000
   _ATK: 100
   _DEF: 100
-  _SPEED: 2
+  _SPEED: 4
   _TAUNT: 30
   MyTurn: 0
   _Animator: {fileID: 0}
@@ -22438,7 +22438,7 @@ MonoBehaviour:
   _HP: 1000
   _ATK: 70
   _DEF: 100
-  _SPEED: 50
+  _SPEED: 1
   _TAUNT: 30
   MyTurn: 0
   _Animator: {fileID: 0}
@@ -32021,7 +32021,7 @@ MonoBehaviour:
   _HP: 1000
   _ATK: 100
   _DEF: 100
-  _SPEED: 100
+  _SPEED: 2
   _TAUNT: 30
   MyTurn: 0
   _Animator: {fileID: 0}

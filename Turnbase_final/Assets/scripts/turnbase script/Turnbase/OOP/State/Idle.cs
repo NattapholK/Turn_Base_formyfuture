@@ -7,11 +7,11 @@ public class Idle : StateMachine
         Name = STATE.IDLE;
     }
 
-    public override void Enter()
+    protected override void Enter()
     {
         base.Enter();
     }
-    public override void Update()
+    protected override void Update()
     {
         if (Me.MyTurn)
         {
@@ -19,7 +19,7 @@ public class Idle : StateMachine
             Stage = EVENT.EXIT;
         }
 
-        if (Me.GetHp() <= 0)
+        if (Me.Current_Hp <= 0)
         {
             NextState = new Dead(Me);
             Stage = EVENT.EXIT;
@@ -31,7 +31,7 @@ public class Idle : StateMachine
         }
     }
 
-    public override void Exit()
+    protected override void Exit()
     {
         base.Exit();
     }

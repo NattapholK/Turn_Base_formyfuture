@@ -2,22 +2,19 @@ using UnityEngine;
 
 public class Skill : Attack
 {
-    public Skill(Character c, Character enemy, int enemy_index) : base(c, enemy, enemy_index)
-    {
-        Use_Skill = SKILL.SKILL01;
-    }
+    public Skill(Character c, Character enemy, int enemy_index) : base(c, enemy, enemy_index){}
 
-    public override void Enter()
+    protected override void Enter()
     {
         base.Enter();
         Me.Skill02();
     }
-    public override void Update()
+    protected override void Update()
     {
         base.Update();
     }
 
-    public override void Exit()
+    protected override void Exit()
     {
         base.Exit();
     }

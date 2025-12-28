@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 [System.Serializable]
 public struct Unit
@@ -47,6 +48,7 @@ public class UI : MonoBehaviour
                 i = 0;
             }
             LastTurn = i + 1;
+            Debug.Log("LastTurn = " + LastTurn);
 
             GameObject icon = Instantiate(characters[i]._TurnUI, parentPanelTranform);
             RectTransform rt = icon.GetComponent<RectTransform>();
@@ -101,21 +103,22 @@ public class UI : MonoBehaviour
         do
         {
             LastTurn++;
-            if (LastTurn >= characters.Count)
+            if (LastTurn >= characters.Count + 1)
             {
-                LastTurn = 0;
+                LastTurn = 1;
             }
+            Debug.Log("LastTurn = " + LastTurn);
         }
-        while(characters[LastTurn].GetHp() <= 0);
+        while(characters[LastTurn - 1].Current_Hp <= 0);
 
-        GameObject icon = Instantiate(characters[LastTurn]._TurnUI, parentPanelTranform);
+        GameObject icon = Instantiate(characters[LastTurn - 1]._TurnUI, parentPanelTranform);
         RectTransform rt = icon.GetComponent<RectTransform>();
         rt.anchoredPosition = new Vector2(-firstX, -LastOffset);
 
         uiInScene.Add(new Unit
         {
             UI = icon,
-            index = LastTurn
+            index = LastTurn - 1
         });
     }
 
@@ -157,7 +160,7 @@ public class UI : MonoBehaviour
 
         foreach (Character c in characters)
         {
-            if (c.GetHp() <= 0)
+            if (c.Current_Hp <= 0)
             {
                 PlayerDieIndex.Add(characters.IndexOf(c));
                 Debug.Log("characters.IndexOf(c) = " + characters.IndexOf(c));

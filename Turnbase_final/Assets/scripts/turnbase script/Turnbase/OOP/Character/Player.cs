@@ -14,7 +14,7 @@ public class Player : Character
 
     [HideInInspector] public Enemy[] enemies;
 
-    private float Current_Mana;
+    public float Current_Mana{get; protected set;}
 
     protected override void SetCurrentStatus()
     {
@@ -32,11 +32,6 @@ public class Player : Character
     {
         Current_Mana -= total;
         _FillSkillUIObject.fillAmount = 1 - Current_Mana/_Mana;
-    }
-
-    public float GetMana()
-    {
-        return Current_Mana;
     }
 
     public void SkillSound(int skill_index)
@@ -68,11 +63,6 @@ public class Player : Character
     {
         UseMana(_Mana);
         _Animator.SetBool("isAttack2",true);
-    }
-
-    public override void Attack()
-    {
-        base.Attack();
     }
 
     public override void TakeDamage(float Damage)

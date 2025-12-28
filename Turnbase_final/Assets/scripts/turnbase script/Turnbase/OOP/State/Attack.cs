@@ -5,12 +5,6 @@ public class Attack : StateMachine
 {
     public Character Enemy;
     public int Enemy_Index;
-    public enum SKILL
-    {
-        NORMAL_ATTACK,
-        SKILL01
-    }
-    public SKILL Use_Skill;
     public Attack(Character c, Character enemy, int enemy_index) : base(c)
     {
         Name = STATE.ATTACK;
@@ -18,22 +12,23 @@ public class Attack : StateMachine
         Enemy_Index = enemy_index;
     }
 
-    public override void Enter()
+    protected override void Enter()
     {
         Debug.Log("Attack ของ "+ Me +" ทำงาน");
-        status = STATUS.ACTION;
+        Status = STATUS.ACTION;
         base.Enter();
     }
 
-    public override void Update()
+    protected override void Update()
     {
-        if(status == STATUS.ACTION) return;
+        if(Status == STATUS.ACTION) return;
         CameraShake.Instance.PresetShake_GeneralAttack();
-        NextState = new End(Me);                                 
+        Me._Manager.EndTurn();
+        NextState = new Idle(Me);                                 
         Stage = EVENT.EXIT;
     }
 
-    public override void Exit()
+    protected override void Exit()
     {
         base.Exit();
     }

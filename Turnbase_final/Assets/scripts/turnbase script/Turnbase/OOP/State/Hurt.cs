@@ -7,20 +7,20 @@ public class Hurt : StateMachine
         Name = STATE.HURT;
     }
 
-    public override void Enter()
+    protected override void Enter()
     {
-        status = STATUS.ACTION;
+        Status = STATUS.ACTION;
         base.Enter();
     }
-    public override void Update()
+    protected override void Update()
     {
         //เดี๋ยวค่อยเขียนเพิ่ม
-        if(status == STATUS.ACTION) return;
+        if(Status == STATUS.ACTION) return;
         NextState = new Idle(Me);                                 
         Stage = EVENT.EXIT;
     }
 
-    public override void Exit()
+    protected override void Exit()
     {
         base.Exit();
     }
