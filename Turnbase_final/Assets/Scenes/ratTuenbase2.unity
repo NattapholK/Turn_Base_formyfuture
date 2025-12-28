@@ -1077,8 +1077,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -846, y: 244.58755}
-  m_SizeDelta: {x: 57.1918, y: 292.46832}
+  m_AnchoredPosition: {x: -846, y: 150.17447}
+  m_SizeDelta: {x: 57.1918, y: 481.2945}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &98382385
 MonoBehaviour:
@@ -11704,7 +11704,7 @@ MonoBehaviour:
   _ATK: 100
   _DEF: 100
   _SPEED: 2
-  _TAUNT: 0
+  _TAUNT: 30
   MyTurn: 0
   _Animator: {fileID: 0}
   _Manager: {fileID: 0}
@@ -14243,11 +14243,11 @@ RectTransform:
   - {fileID: 2130837503}
   m_Father: {fileID: 538983278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -835, y: -489.8}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -790, y: -419.8}
   m_SizeDelta: {x: 190, y: 240}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &946878593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15834,11 +15834,11 @@ RectTransform:
   - {fileID: 909109518}
   m_Father: {fileID: 538983278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -565, y: -489.80005}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -520, y: -419.80005}
   m_SizeDelta: {x: 190, y: 240}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1062545957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21185,6 +21185,10 @@ MonoBehaviour:
   _UICanvas: {fileID: 1063441748}
   _EndPosition: {fileID: 850822195}
   _DamageUI: {fileID: 706470038}
+  NextSceneName: 
+  LostSceneName: 
+  managerValue: {fileID: 11400000, guid: 7d47ffa6bee87d84b95258969530466d, type: 2}
+  GameSceneIndex: 0
 --- !u!114 &1428851255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22421,7 +22425,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1519959869}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab68e4b33d6b28a42b9805a46af2121a, type: 3}
+  m_Script: {fileID: 11500000, guid: e4e8fe3a27bca7a45b86c5372d1f2f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 1519959869}
@@ -22432,9 +22436,9 @@ MonoBehaviour:
   _CameraPos: {fileID: 572072784}
   floattextset2: 0
   _HP: 1000
-  _ATK: 100
+  _ATK: 70
   _DEF: 100
-  _SPEED: 100
+  _SPEED: 50
   _TAUNT: 30
   MyTurn: 0
   _Animator: {fileID: 0}
@@ -22446,6 +22450,7 @@ MonoBehaviour:
   _FirstSkillSound: {fileID: 8300000, guid: 51012cf3342984e4597b5c9b749b13ad, type: 3}
   _SecondSkillSound: {fileID: 8300000, guid: c8b8cf8b0a4ed4b4fabd9b5f0246a509, type: 3}
   enemies: []
+  _ArmorField: {fileID: 2136118479}
 --- !u!1 &1522222554
 GameObject:
   m_ObjectHideFlags: 0
@@ -32024,7 +32029,7 @@ MonoBehaviour:
   _Mana: 100
   _FillSkillUIObject: {fileID: 1522222556}
   _SkillUIObject: {fileID: 565751116}
-  _ProfileUIObject: {fileID: 538983277}
+  _ProfileUIObject: {fileID: 946878591}
   _FirstSkillSound: {fileID: 8300000, guid: b866bc3df0d2dba4d9e6bde9f2700b64, type: 3}
   _SecondSkillSound: {fileID: 8300000, guid: 03b27d9da6ca1d042a94c12fb3860a64, type: 3}
   enemies: []

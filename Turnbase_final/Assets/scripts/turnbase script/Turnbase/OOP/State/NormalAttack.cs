@@ -10,17 +10,6 @@ public class NormalAttack : Attack
     public override void Enter()
     {
         base.Enter();
-        if(Me is Player p)
-        {
-            if(p.GetMana() < p._Mana)
-            {
-                p.IncreaseMana(p._Mana / 2f);
-            }
-        }
-        else if (Me is Enemy e)
-        {
-            //เดี๋ยวเขียนเพิ่ม
-        }
         Me.Skill01();
     }
     public override void Update()

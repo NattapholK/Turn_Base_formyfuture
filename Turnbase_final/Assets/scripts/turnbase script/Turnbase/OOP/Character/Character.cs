@@ -24,7 +24,6 @@ public class Character : MonoBehaviour
     [HideInInspector] public bool MyTurn = false;
     [HideInInspector] public Animator _Animator;  
     [HideInInspector] public Manager _Manager;
-    private Rigidbody _Rb;
     protected float Current_Hp;
     protected float Current_Atk;
     protected float Current_Def = 0f;

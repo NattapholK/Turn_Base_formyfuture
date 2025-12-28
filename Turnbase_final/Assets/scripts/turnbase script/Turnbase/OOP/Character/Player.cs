@@ -57,11 +57,16 @@ public class Player : Character
 
     public override void Skill01()
     {
+        if(Current_Mana < _Mana)
+        {
+            IncreaseMana(_Mana / 2f);
+        }
         _Animator.SetBool("isAttack1",true);
     }
 
     public override void Skill02()
     {
+        UseMana(_Mana);
         _Animator.SetBool("isAttack2",true);
     }
 

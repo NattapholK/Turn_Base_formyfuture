@@ -30,9 +30,6 @@ public class UI : MonoBehaviour
         parentPanelTranform = parentPanel.GetComponent<Transform>();
         RectTransform rfx = parentPanel.GetComponent<RectTransform>();
         firstX = rfx.rect.width * rfx.localScale.y / 2;
-    }
-    void Start()
-    {
         bgUIRecttranform = backgroundUI.GetComponent<RectTransform>();
         bgUIHight = bgUIRecttranform.rect.height;
     }
@@ -124,7 +121,7 @@ public class UI : MonoBehaviour
 
     public IEnumerator ScaleUI(RectTransform UI, string scaleType)
     {
-        float duration = 0.05f;
+        float duration = 0.2f;
         Vector3 startScale = UI.localScale;
         float multipleScale = 1;
         switch (scaleType)

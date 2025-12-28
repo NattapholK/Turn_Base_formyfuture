@@ -10,14 +10,6 @@ public class Skill : Attack
     public override void Enter()
     {
         base.Enter();
-        if(Me is Player p)
-        {
-            p.UseMana(p._Mana);
-        }
-        else if (Me is Enemy e)
-        {
-            //เดี๋ยวเขียนเพิ่ม
-        }
         Me.Skill02();
     }
     public override void Update()

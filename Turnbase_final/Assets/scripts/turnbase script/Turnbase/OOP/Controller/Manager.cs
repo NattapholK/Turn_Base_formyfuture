@@ -20,13 +20,19 @@ public class Manager : MonoBehaviour
     public GameObject _UICanvas;
     public Transform _EndPosition;
     public GameObject _DamageUI;
-    private TextMeshProUGUI DmgText;
-    private Vector2 startDamgeUIPos;
+
+    [Header("Scene Manage")]
+    public string NextSceneName;
+    public string LostSceneName;
+    public ManagerValue managerValue;
+    public int GameSceneIndex = 0;//สร้างไว้ไม่กล้าแตะอันก่อนหน้า
 
     private List<Character> characters = new List<Character>();
     private Coroutine moveCoroutine;
     private UI ui;
     private int Current_Index = 0;
+    private TextMeshProUGUI DmgText;
+    private Vector2 startDamgeUIPos;
 
     void Awake()
     {
@@ -101,6 +107,7 @@ public class Manager : MonoBehaviour
         {
             Debug.Log("จบแล้ว");
             MoveToPosition(_EndPosition.position);
+            // endFight();
         }
         else
         {
@@ -203,4 +210,59 @@ public class Manager : MonoBehaviour
 
         return state;
     }
+
+    // private bool isAllEmenyDied()
+    // {
+    //     bool state = false;
+    //     foreach(Character c in characters)
+    //     {
+    //         if(c.GetHp() <= 0 && c is Enemy e)
+    //         {
+    //             state = true;
+    //         }
+    //     }
+
+    //     return state;
+    // }
+
+    // private void endFight()
+    // {
+    //     float timer = 0;
+    //     while(timer < 2f)
+    //     {
+    //         timer += Time.deltaTime;
+    //     }
+    //     if (isAllEmenyDied())
+    //     {
+    //         switch (GameSceneIndex)
+    //         {
+    //             case -1:
+    //                 break;
+    //             case 0:
+    //                 managerValue.isCompleteGame1 = true;
+    //                 break;
+    //             case 1:
+    //                 managerValue.isCompleteGame2 = true;
+    //                 break;
+    //             case 2:
+    //                 managerValue.isCompleteGame3 = true;
+    //                 break;
+    //         }
+    //         Debug.Log("Enemy defeated!");
+    //         if(!string.IsNullOrEmpty(NextSceneName))
+    //         {
+    //             Debug.Log("LevelManager.Instance.LoadScene(NextSceneName); ทำงาน");
+    //             LevelManager.Instance.LoadScene(NextSceneName);
+    //         }
+    //     }
+    //     else if (isAllPlayerDied())
+    //     {
+    //         Debug.Log("Player defeated!");
+    //         if(!string.IsNullOrEmpty(LostSceneName))
+    //         {
+    //             Debug.Log("LevelManager.Instance.LoadScene(LostSceneName); ทำงาน");
+    //             LevelManager.Instance.LoadScene(LostSceneName);
+    //         }
+    //     }
+    // }
 }
