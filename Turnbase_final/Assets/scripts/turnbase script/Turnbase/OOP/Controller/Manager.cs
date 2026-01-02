@@ -145,7 +145,7 @@ public class Manager : MonoBehaviour
 
 
     // เรียกใช้เพื่อย้ายกล้องไปตำแหน่งใหม่
-    public void MoveToPosition(Vector3 newPos)
+    private void MoveToPosition(Vector3 newPos)
     {
         if (_cameraObj == null)
         {
@@ -219,58 +219,58 @@ public class Manager : MonoBehaviour
         return state;
     }
 
-    // private bool isAllEmenyDied()
-    // {
-    //     bool state = false;
-    //     foreach(Character c in characters)
-    //     {
-    //         if(c.GetHp() <= 0 && c is Enemy e)
-    //         {
-    //             state = true;
-    //         }
-    //     }
+    private bool isAllEmenyDied()
+    {
+        bool state = false;
+        foreach(Character c in characters)
+        {
+            if(c.Current_Hp <= 0 && c is Enemy e)
+            {
+                state = true;
+            }
+        }
 
-    //     return state;
-    // }
+        return state;
+    }
 
-    // private void endFight()
-    // {
-    //     float timer = 0;
-    //     while(timer < 2f)
-    //     {
-    //         timer += Time.deltaTime;
-    //     }
-    //     if (isAllEmenyDied())
-    //     {
-    //         switch (GameSceneIndex)
-    //         {
-    //             case -1:
-    //                 break;
-    //             case 0:
-    //                 managerValue.isCompleteGame1 = true;
-    //                 break;
-    //             case 1:
-    //                 managerValue.isCompleteGame2 = true;
-    //                 break;
-    //             case 2:
-    //                 managerValue.isCompleteGame3 = true;
-    //                 break;
-    //         }
-    //         Debug.Log("Enemy defeated!");
-    //         if(!string.IsNullOrEmpty(NextSceneName))
-    //         {
-    //             Debug.Log("LevelManager.Instance.LoadScene(NextSceneName); ทำงาน");
-    //             LevelManager.Instance.LoadScene(NextSceneName);
-    //         }
-    //     }
-    //     else if (isAllPlayerDied())
-    //     {
-    //         Debug.Log("Player defeated!");
-    //         if(!string.IsNullOrEmpty(LostSceneName))
-    //         {
-    //             Debug.Log("LevelManager.Instance.LoadScene(LostSceneName); ทำงาน");
-    //             LevelManager.Instance.LoadScene(LostSceneName);
-    //         }
-    //     }
-    // }
+    private void endFight()
+    {
+        float timer = 0;
+        while(timer < 2f)
+        {
+            timer += Time.deltaTime;
+        }
+        if (isAllEmenyDied())
+        {
+            switch (GameSceneIndex)
+            {
+                case -1:
+                    break;
+                case 0:
+                    managerValue.isCompleteGame1 = true;
+                    break;
+                case 1:
+                    managerValue.isCompleteGame2 = true;
+                    break;
+                case 2:
+                    managerValue.isCompleteGame3 = true;
+                    break;
+            }
+            Debug.Log("Enemy defeated!");
+            if(!string.IsNullOrEmpty(NextSceneName))
+            {
+                Debug.Log("LevelManager.Instance.LoadScene(NextSceneName); ทำงาน");
+                LevelManager.Instance.LoadScene(NextSceneName);
+            }
+        }
+        else if (isAllPlayerDied())
+        {
+            Debug.Log("Player defeated!");
+            if(!string.IsNullOrEmpty(LostSceneName))
+            {
+                Debug.Log("LevelManager.Instance.LoadScene(LostSceneName); ทำงาน");
+                LevelManager.Instance.LoadScene(LostSceneName);
+            }
+        }
+    }
 }

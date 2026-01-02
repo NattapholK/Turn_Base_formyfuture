@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class Player : Character
 {
     public float _Mana;
+    public float _EnergyReCharge = 100;
 
     [Header("Player UI&Sound")]
     public Image _FillSkillUIObject;
@@ -22,15 +23,15 @@ public class Player : Character
         Current_Mana = 0;
     }
 
-    public void IncreaseMana(float total)
+    public void IncreaseMana()
     {
-        Current_Mana += total;
+        Current_Mana += 20 * (_EnergyReCharge / 100);
         _FillSkillUIObject.fillAmount = 1 - Current_Mana/_Mana;
     }
 
-    public void UseMana(float total)
+    public void UseMana()
     {
-        Current_Mana -= total;
+        Current_Mana -= _Mana;
         _FillSkillUIObject.fillAmount = 1 - Current_Mana/_Mana;
     }
 
@@ -52,17 +53,19 @@ public class Player : Character
 
     public override void Skill01()
     {
-        if(Current_Mana < _Mana)
-        {
-            IncreaseMana(_Mana / 2f);
-        }
         _Animator.SetBool("isAttack1",true);
     }
 
     public override void Skill02()
     {
-        UseMana(_Mana);
         _Animator.SetBool("isAttack2",true);
+    }
+
+    public override void Attack()
+    {
+        base.Attack();
+        if(Current_Mana == _Mana) UseMana();
+        if(Current_Mana < _Mana) IncreaseMana();
     }
 
     public override void TakeDamage(float Damage)

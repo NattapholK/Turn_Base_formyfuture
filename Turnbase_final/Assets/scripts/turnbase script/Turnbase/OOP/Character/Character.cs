@@ -31,6 +31,9 @@ public class Character : MonoBehaviour
     public float Current_Taunt {get; protected set;} = 30f;
     public StateMachine _currentState{get; private set;}
 
+    public bool isBleeding{get; private set;} = false;
+    private int TurnBleeding = 0;
+
     protected virtual void SetCurrentStatus()
     {
         Current_Hp = _HP;
@@ -93,6 +96,22 @@ public class Character : MonoBehaviour
     public virtual void Heal(float Heal)
     {
         Current_Hp += Heal;
+    }
+
+    public void Bleeding()
+    {
+        if (!isBleeding)
+        {
+            isBleeding = true;
+            TurnBleeding = 0;
+        }
+        else
+        {
+            TurnBleeding++;
+            Current_Hp -= _HP * 0.05f;
+            if(TurnBleeding == 2) isBleeding = false;
+            _HealthSliderObject.value = Current_Hp/_HP;
+        }
     }
 
     public void ShowFloatingText(int dmg, float radius)

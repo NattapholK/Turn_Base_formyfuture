@@ -15,6 +15,7 @@ public class Idle : StateMachine
     {
         if (Me.MyTurn)
         {
+            if(Me.isBleeding) Me.Bleeding();
             NextState = new Select(Me);
             Stage = EVENT.EXIT;
         }

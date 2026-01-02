@@ -22444,6 +22444,7 @@ MonoBehaviour:
   _Animator: {fileID: 0}
   _Manager: {fileID: 0}
   _Mana: 100
+  _EnergyReCharge: 100
   _FillSkillUIObject: {fileID: 155730375}
   _SkillUIObject: {fileID: 1816477666}
   _ProfileUIObject: {fileID: 1062545955}
@@ -32008,7 +32009,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 919132148567409055}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab68e4b33d6b28a42b9805a46af2121a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3456a1b9bdbd32740ae3e1c99fe1afd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 919132148567409055}
@@ -32027,6 +32028,7 @@ MonoBehaviour:
   _Animator: {fileID: 0}
   _Manager: {fileID: 0}
   _Mana: 100
+  _EnergyReCharge: 100
   _FillSkillUIObject: {fileID: 1522222556}
   _SkillUIObject: {fileID: 565751116}
   _ProfileUIObject: {fileID: 946878591}
